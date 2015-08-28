@@ -4,6 +4,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.jbrunton.pockettimeline.api.DaggerRestServiceComponent;
+import com.jbrunton.pockettimeline.api.RestServiceComponent;
+import com.jbrunton.pockettimeline.api.RestServiceFactory;
+import com.jbrunton.pockettimeline.api.resources.Timeline;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +23,26 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        DaggerRestServiceComponent.create().createService().getTimelines()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Timeline>>() {
+                    @Override
+                    public void call(List<Timeline> timelines) {
+                        Toast.makeText(MainActivity.this, "Timelines: " + timelines.size(), Toast.LENGTH_LONG).show();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(MainActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override
