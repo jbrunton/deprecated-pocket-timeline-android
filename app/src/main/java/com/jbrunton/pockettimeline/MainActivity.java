@@ -6,18 +6,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.jbrunton.pockettimeline.api.DaggerRestServiceComponent;
-import com.jbrunton.pockettimeline.api.RestServiceComponent;
-import com.jbrunton.pockettimeline.api.RestServiceFactory;
-import com.jbrunton.pockettimeline.api.resources.Timeline;
+import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
+import com.jbrunton.pockettimeline.api.RestService;
+import com.jbrunton.pockettimeline.api.resources.TimelineResource;
+import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends ActionBarActivity {
+
+    @Inject RestService restService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        DaggerRestServiceComponent.create().createService().getTimelines()
+        DaggerProvidersComponent.create().timelinesProvider().getTimelines()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<Timeline>>() {

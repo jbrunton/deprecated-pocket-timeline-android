@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.api;
 
-import com.jbrunton.pockettimeline.api.resources.Timeline;
+import com.jbrunton.pockettimeline.api.resources.TimelineResource;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import rx.Observable;
 
 public interface RestService {
     @GET("/timelines.json")
-    Observable<List<Timeline>> getTimelines();
+    Observable<List<TimelineResource>> getTimelines();
 }
