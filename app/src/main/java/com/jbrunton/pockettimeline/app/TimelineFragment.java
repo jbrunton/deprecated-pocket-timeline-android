@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
+import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 import com.jbrunton.pockettimeline.models.Timeline;
 
@@ -78,7 +79,7 @@ public class TimelineFragment extends Fragment {
 
     private void onTimelineAvailable(Timeline timeline) {
         getActivity().setTitle(timeline.getTitle());
-        eventsAdapter.setData(timeline.getEvents());
+        eventsAdapter.setDataSource(timeline.getEvents());
     }
 
     private void onError(Throwable throwable) {
@@ -93,42 +94,31 @@ public class TimelineFragment extends Fragment {
         return getArguments().getString("timelineId");
     }
 
-    private static class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.ViewHolder> {
-        private List<Event> events = new ArrayList<>();
+    private static class EventsListAdapter extends BaseRecyclerAdapter<Event, EventsListAdapter.ViewHolder> {
+        protected EventsListAdapter() {
+            super(android.R.layout.simple_list_item_1, new EventsListAdapter.ViewHolderFactory());
+        }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
             private TextView textView;
 
-            public ViewHolder(TextView textView) {
-                super(textView);
-                this.textView = textView;
+            public ViewHolder(View view) {
+                super(view);
+                this.textView = (TextView) view;
             }
         }
 
-        @Override
-        public EventsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-            TextView textView = (TextView) LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+        public static class ViewHolderFactory implements BaseRecyclerAdapter.ViewHolderFactory<Event, ViewHolder> {
 
-            return new ViewHolder(textView);
-        }
+            @Override
+            public ViewHolder createViewHolder(View view) {
+                return new ViewHolder(view);
+            }
 
-        @Override
-        public void onBindViewHolder(EventsListAdapter.ViewHolder holder, int position) {
-            holder.textView.setText(events.get(position).getTitle());
-            holder.textView.setOnClickListener(v -> {
-
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return events.size();
-        }
-
-        public void setData(Collection<Event> events) {
-            this.events = new ArrayList<>(events);
-            notifyDataSetChanged();
+            @Override
+            public void bindHolder(ViewHolder holder, Event item) {
+                holder.textView.setText(item.getTitle());
+            }
         }
     }
 }
