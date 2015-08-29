@@ -23,6 +23,10 @@ public class BaseFragment extends Fragment {
         showMessage("Error: " + throwable.getMessage());
     }
 
+    protected void setTitle(String title) {
+        getActivity().setTitle(title);
+    }
+
     protected void addSubscription(Subscription subscription) {
         subscriptions.add(subscription);
     }

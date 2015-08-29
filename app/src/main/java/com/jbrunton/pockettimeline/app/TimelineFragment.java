@@ -63,7 +63,7 @@ public class TimelineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        getActivity().setTitle("Timeline");
+        setTitle("Timeline");
         subscribeTo(getTimeline(getTimelineId()), this::onTimelineAvailable);
     }
 

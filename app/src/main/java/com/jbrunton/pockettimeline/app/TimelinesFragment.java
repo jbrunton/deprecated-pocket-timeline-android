@@ -26,9 +26,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class TimelinesFragment extends BaseFragment {
-    final ProvidersComponent providers = DaggerProvidersComponent.create();
+    private final ProvidersComponent providers = DaggerProvidersComponent.create();
     private TextViewRecyclerAdapter<Timeline> timelinesAdapter;
-    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class TimelinesFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        getActivity().setTitle("Timelines");
+        setTitle("Timelines");
         subscribeTo(providers.timelinesProvider().getTimelines(),
                 this::onTimelinesAvailable);
     }
