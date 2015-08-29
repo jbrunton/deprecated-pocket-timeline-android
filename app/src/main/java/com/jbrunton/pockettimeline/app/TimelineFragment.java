@@ -36,11 +36,13 @@ public class TimelineFragment extends BaseFragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
     private TextViewRecyclerAdapter<Event> eventsAdapter;
 
+    private static final String TIMELINE_ID = "timelineId";
+
     public static TimelineFragment newInstance(String timelineId) {
         TimelineFragment fragment = new TimelineFragment();
 
         Bundle args = new Bundle();
-        args.putString("timelineId", timelineId);
+        args.putString(TIMELINE_ID, timelineId);
         fragment.setArguments(args);
 
         return fragment;
@@ -81,6 +83,6 @@ public class TimelineFragment extends BaseFragment {
     }
 
     private String getTimelineId() {
-        return getArguments().getString("timelineId");
+        return getArguments().getString(TIMELINE_ID);
     }
 }
