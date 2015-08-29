@@ -13,8 +13,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_holder);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_holder, new TimelinesFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, new TimelinesFragment())
+                    .commit();
+        }
     }
 }
