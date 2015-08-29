@@ -38,17 +38,10 @@ public class MainActivity extends ActionBarActivity {
         providers.timelinesProvider().getTimelines()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Timeline>>() {
-                    @Override
-                    public void call(List<Timeline> timelines) {
-                        Toast.makeText(MainActivity.this, "Timelines: " + timelines.size(), Toast.LENGTH_LONG).show();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Toast.makeText(MainActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                .subscribe(
+                        (List<Timeline> timelines) -> onTimelinesAvailable(timelines),
+                        throwable -> onError(throwable)
+                );
     }
 
     @Override
@@ -71,5 +64,17 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onTimelinesAvailable(List<Timeline> timelines) {
+        showMessage("Timelines: " + timelines.size());
+    }
+
+    private void onError(Throwable throwable) {
+        showMessage("Error: " + throwable.getMessage());
+    }
+
+    private void showMessage(String text) {
+        Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
     }
 }
