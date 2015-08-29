@@ -12,17 +12,23 @@ import android.widget.Toast;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
+import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
-public class TimelinesFragment extends Fragment {
+public class TimelinesFragment extends BaseFragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
     private TextViewRecyclerAdapter<Timeline> timelinesAdapter;
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,10 +53,11 @@ public class TimelinesFragment extends Fragment {
         super.onResume();
         getActivity().setTitle("Timelines");
 
-        providers.timelinesProvider().getTimelines()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onTimelinesAvailable, this::onError);
+        subscribeTo(Observable.just("hey")
+                .delay(5, TimeUnit.SECONDS), foo -> getActivity().setTitle(foo));
+
+        subscribeTo(providers.timelinesProvider().getTimelines(),
+                this::onTimelinesAvailable);
     }
 
     private void showTimeline(Timeline timeline) {
@@ -64,11 +71,4 @@ public class TimelinesFragment extends Fragment {
         timelinesAdapter.setDataSource(timelines);
     }
 
-    private void onError(Throwable throwable) {
-        showMessage("Error: " + throwable.getMessage());
-    }
-
-    private void showMessage(String text) {
-        Toast.makeText(this.getActivity(), text, Toast.LENGTH_LONG).show();
-    }
 }

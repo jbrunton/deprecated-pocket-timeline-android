@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
+import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
@@ -31,7 +32,7 @@ import rx.schedulers.Schedulers;
 
 import static rx.Observable.zip;
 
-public class TimelineFragment extends Fragment {
+public class TimelineFragment extends BaseFragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
     private TextViewRecyclerAdapter<Event> eventsAdapter;
 
@@ -64,10 +65,7 @@ public class TimelineFragment extends Fragment {
 
         getActivity().setTitle("Timeline");
 
-        getTimeline(getTimelineId())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onTimelineAvailable, this::onError);
+        subscribeTo(getTimeline(getTimelineId()), this::onTimelineAvailable);
     }
 
     private Observable<Timeline> getTimeline(String timelineId) {
@@ -81,14 +79,6 @@ public class TimelineFragment extends Fragment {
     private void onTimelineAvailable(Timeline timeline) {
         getActivity().setTitle(timeline.getTitle());
         eventsAdapter.setDataSource(timeline.getEvents());
-    }
-
-    private void onError(Throwable throwable) {
-        showMessage("Error: " + throwable.getMessage());
-    }
-
-    private void showMessage(String text) {
-        Toast.makeText(this.getActivity(), text, Toast.LENGTH_LONG).show();
     }
 
     private String getTimelineId() {
