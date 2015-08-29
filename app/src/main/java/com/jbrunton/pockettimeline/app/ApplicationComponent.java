@@ -1,6 +1,8 @@
 package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
+import com.jbrunton.pockettimeline.app.timelines.TimelineFragment;
+import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 
 import javax.inject.Singleton;
 

@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.TimelineActivity" />
+        <activity android:name=".app.timelines.TimelineActivity" />
 
     </application>
 

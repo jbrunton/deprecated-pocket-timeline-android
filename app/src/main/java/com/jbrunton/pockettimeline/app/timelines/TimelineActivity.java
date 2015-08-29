@@ -1,14 +1,11 @@
-package com.jbrunton.pockettimeline.app;
+package com.jbrunton.pockettimeline.app.timelines;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
-import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 
 public class TimelineActivity extends BaseActivity {
     private static final String ARG_TIMELINE_ID = "timelineId";
