@@ -59,10 +59,7 @@ public class TimelineFragment extends Fragment {
         providers.eventsProvider().getEvents(getArguments().getString("timelineId"))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (List<Event> events) -> onEventsAvailable(events),
-                        throwable -> onError(throwable)
-                );
+                .subscribe(this::onEventsAvailable, this::onError);
     }
 
     private void onEventsAvailable(List<Event> events) {

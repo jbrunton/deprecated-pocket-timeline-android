@@ -58,10 +58,7 @@ public class TimelinesFragment extends Fragment {
         providers.timelinesProvider().getTimelines()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (List<Timeline> timelines) -> onTimelinesAvailable(timelines),
-                        throwable -> onError(throwable)
-                );
+                .subscribe(this::onTimelinesAvailable, this::onError);
     }
 
     private void onTimelinesAvailable(List<Timeline> timelines) {
