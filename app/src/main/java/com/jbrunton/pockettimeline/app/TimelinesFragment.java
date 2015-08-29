@@ -51,12 +51,8 @@ public class TimelinesFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
         getActivity().setTitle("Timelines");
-
-        subscribeTo(Observable.just("hey")
-                .delay(5, TimeUnit.SECONDS)
-                .doOnEach(foo -> { throw new RuntimeException("oops"); }), foo -> getActivity().setTitle(foo));
-
         subscribeTo(providers.timelinesProvider().getTimelines(),
                 this::onTimelinesAvailable);
     }
