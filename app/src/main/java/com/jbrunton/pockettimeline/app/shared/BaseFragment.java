@@ -1,6 +1,8 @@
 package com.jbrunton.pockettimeline.app.shared;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.Toast;
 
 import rx.Observable;
@@ -14,7 +16,7 @@ public class BaseFragment extends Fragment {
     private final CompositeSubscription subscriptions = new CompositeSubscription();
 
     protected void showMessage(String text) {
-        Toast.makeText(this.getActivity(), text, Toast.LENGTH_LONG).show();
+        Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
 
     protected void onError(Throwable throwable) {

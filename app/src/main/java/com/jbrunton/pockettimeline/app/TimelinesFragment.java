@@ -54,7 +54,8 @@ public class TimelinesFragment extends BaseFragment {
         getActivity().setTitle("Timelines");
 
         subscribeTo(Observable.just("hey")
-                .delay(5, TimeUnit.SECONDS), foo -> getActivity().setTitle(foo));
+                .delay(5, TimeUnit.SECONDS)
+                .doOnEach(foo -> { throw new RuntimeException("oops"); }), foo -> getActivity().setTitle(foo));
 
         subscribeTo(providers.timelinesProvider().getTimelines(),
                 this::onTimelinesAvailable);
