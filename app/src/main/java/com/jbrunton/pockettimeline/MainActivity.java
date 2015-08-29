@@ -7,7 +7,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
+import com.jbrunton.pockettimeline.api.ProvidersComponent;
 import com.jbrunton.pockettimeline.api.RestService;
+import com.jbrunton.pockettimeline.api.TimelinesProvider;
 import com.jbrunton.pockettimeline.api.resources.TimelineResource;
 import com.jbrunton.pockettimeline.models.Timeline;
 
@@ -21,7 +23,7 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends ActionBarActivity {
 
-    @Inject RestService restService;
+    final ProvidersComponent providers = DaggerProvidersComponent.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        DaggerProvidersComponent.create().timelinesProvider().getTimelines()
+        providers.timelinesProvider().getTimelines()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<Timeline>>() {
