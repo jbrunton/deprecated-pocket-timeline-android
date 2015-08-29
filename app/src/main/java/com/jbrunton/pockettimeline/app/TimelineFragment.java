@@ -13,9 +13,8 @@ import android.widget.Toast;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.models.Event;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,9 +22,19 @@ import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TimelinesFragment extends Fragment {
+public class TimelineFragment extends Fragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
-    private TimelinesListAdapter timelinesAdapter;
+    private EventsListAdapter eventsAdapter;
+
+    public static TimelineFragment newInstance(String timelineId) {
+        TimelineFragment fragment = new TimelineFragment();
+
+        Bundle args = new Bundle();
+        args.putString("timelineId", timelineId);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,16 +46,8 @@ public class TimelinesFragment extends Fragment {
 
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        timelinesAdapter = new TimelinesListAdapter() {
-            @Override
-            protected void onTimelineClicked(Timeline timeline) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_holder, TimelineFragment.newInstance(timeline.getId()))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        };
-        view.setAdapter(timelinesAdapter);
+        eventsAdapter = new EventsListAdapter();
+        view.setAdapter(eventsAdapter);
 
         return view;
     }
@@ -55,17 +56,17 @@ public class TimelinesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        providers.timelinesProvider().getTimelines()
+        providers.eventsProvider().getEvents(getArguments().getString("timelineId"))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (List<Timeline> timelines) -> onTimelinesAvailable(timelines),
+                        (List<Event> events) -> onEventsAvailable(events),
                         throwable -> onError(throwable)
                 );
     }
 
-    private void onTimelinesAvailable(List<Timeline> timelines) {
-        timelinesAdapter.setData(timelines);
+    private void onEventsAvailable(List<Event> events) {
+        eventsAdapter.setData(events);
     }
 
     private void onError(Throwable throwable) {
@@ -76,18 +77,10 @@ public class TimelinesFragment extends Fragment {
         Toast.makeText(this.getActivity(), text, Toast.LENGTH_LONG).show();
     }
 
-    private static abstract class TimelinesListAdapter extends RecyclerView.Adapter<TimelinesListAdapter.ViewHolder> {
-        private List<Timeline> timelines = new ArrayList<>();
+    private static class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.ViewHolder> {
+        private List<Event> events = new ArrayList<>();
 
-        private final View.OnClickListener itemClicked = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Timeline timeline = (Timeline) v.getTag();
-                onTimelineClicked(timeline);
-            }
-        };
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             private TextView textView;
 
             public ViewHolder(TextView textView) {
@@ -97,31 +90,29 @@ public class TimelinesFragment extends Fragment {
         }
 
         @Override
-        public TimelinesListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        public EventsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
             TextView textView = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(android.R.layout.simple_list_item_1, parent, false);
-            textView.setOnClickListener(itemClicked);
 
             return new ViewHolder(textView);
         }
 
         @Override
-        public void onBindViewHolder(TimelinesListAdapter.ViewHolder holder, int position) {
-            Timeline timeline = timelines.get(position);
-            holder.textView.setText(timeline.getTitle());
-            holder.textView.setTag(timeline);
+        public void onBindViewHolder(EventsListAdapter.ViewHolder holder, int position) {
+            holder.textView.setText(events.get(position).getTitle());
+            holder.textView.setOnClickListener(v -> {
+
+            });
         }
 
         @Override
         public int getItemCount() {
-            return timelines.size();
+            return events.size();
         }
 
-        public void setData(Collection<Timeline> timelines) {
-            this.timelines = new ArrayList<>(timelines);
+        public void setData(Collection<Event> events) {
+            this.events = new ArrayList<>(events);
             notifyDataSetChanged();
         }
-
-        protected abstract void onTimelineClicked(Timeline timeline);
     }
 }
