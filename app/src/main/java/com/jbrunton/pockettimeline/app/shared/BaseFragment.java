@@ -2,6 +2,8 @@ package com.jbrunton.pockettimeline.app.shared;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -55,5 +57,11 @@ public class BaseFragment extends Fragment {
 
     protected ApplicationComponent component() {
         return ((PocketTimelineApplication) getActivity().getApplication()).component();
+    }
+
+    protected void setHomeAsUp(boolean showHomeAsUp) {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
+        actionBar.setDisplayShowHomeEnabled(showHomeAsUp);
     }
 }
