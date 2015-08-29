@@ -11,12 +11,14 @@ import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 
 public class TimelineActivity extends BaseActivity {
+    private static final String ARG_TIMELINE_ID = "timelineId";
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_holder);
 
         if (savedInstanceState == null) {
-            String timelineId = getIntent().getStringExtra("timelineId");
+            String timelineId = getIntent().getStringExtra(ARG_TIMELINE_ID);
             TimelineFragment fragment = TimelineFragment.newInstance(timelineId);
 
             getSupportFragmentManager().beginTransaction()
@@ -27,7 +29,7 @@ public class TimelineActivity extends BaseActivity {
 
     public static void start(Context context, String timelineId) {
         Intent intent = new Intent(context, TimelineActivity.class);
-        intent.putExtra("timelineId", timelineId);
+        intent.putExtra(ARG_TIMELINE_ID, timelineId);
         context.startActivity(intent);
     }
 }
