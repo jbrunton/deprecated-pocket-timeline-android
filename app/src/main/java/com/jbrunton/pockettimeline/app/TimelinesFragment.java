@@ -55,10 +55,7 @@ public class TimelinesFragment extends BaseFragment {
     }
 
     private void showTimeline(Timeline timeline) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_holder, TimelineFragment.newInstance(timeline.getId()))
-                .addToBackStack(null)
-                .commit();
+        TimelineActivity.start(getActivity(), timeline.getId());
     }
 
     private void onTimelinesAvailable(List<Timeline> timelines) {

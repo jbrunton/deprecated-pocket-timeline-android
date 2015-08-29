@@ -1,4 +1,4 @@
-package com.jbrunton.pockettimeline;
+package com.jbrunton.pockettimeline.app;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.TimelinesFragment;
+import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +23,5 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragment_holder, new TimelinesFragment())
                     .commit();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onUpPressed();
-                return true;
-        }
-
-        return(super.onOptionsItemSelected(item));
-    }
-
-    protected void onUpPressed() {
-        getSupportFragmentManager().popBackStack();
     }
 }
