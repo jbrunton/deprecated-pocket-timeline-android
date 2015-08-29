@@ -7,9 +7,11 @@ import com.jbrunton.pockettimeline.models.Event;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
+@Singleton
 public class EventsProvider {
     @Inject RestService service;
 

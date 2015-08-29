@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jbrunton.pockettimeline.PocketTimelineApplication;
+import com.jbrunton.pockettimeline.app.ApplicationComponent;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -48,5 +51,9 @@ public class BaseFragment extends Fragment {
     public void onDestroy() {
         subscriptions.unsubscribe();
         super.onDestroy();
+    }
+
+    protected ApplicationComponent component() {
+        return ((PocketTimelineApplication) getActivity().getApplication()).component();
     }
 }

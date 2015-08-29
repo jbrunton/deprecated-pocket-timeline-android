@@ -1,32 +1,24 @@
 package com.jbrunton.pockettimeline.app;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
-import com.jbrunton.pockettimeline.api.ProvidersComponent;
+import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import javax.inject.Inject;
 
 public class TimelinesFragment extends BaseFragment {
-    private final ProvidersComponent providers = DaggerProvidersComponent.create();
+    @Inject TimelinesProvider timelinesProvider;
     private TextViewRecyclerAdapter<Timeline> timelinesAdapter;
 
     @Override
@@ -47,12 +39,17 @@ public class TimelinesFragment extends BaseFragment {
         return view;
     }
 
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        component().inject(this);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
         setTitle("Timelines");
-        subscribeTo(providers.timelinesProvider().getTimelines(),
+        subscribeTo(timelinesProvider.getTimelines(),
                 this::onTimelinesAvailable);
     }
 

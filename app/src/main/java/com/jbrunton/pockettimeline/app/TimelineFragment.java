@@ -3,27 +3,28 @@ package com.jbrunton.pockettimeline.app;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
-import com.jbrunton.pockettimeline.api.ProvidersComponent;
+import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
-import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 import com.jbrunton.pockettimeline.models.Timeline;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
 import static rx.Observable.zip;
 
 public class TimelineFragment extends BaseFragment {
-    final ProvidersComponent providers = DaggerProvidersComponent.create();
+    @Inject TimelinesProvider timelinesProvider;
+    @Inject EventsProvider eventsProvider;
     private EventsAdapter eventsAdapter;
 
     private static final String ARG_TIMELINE_ID = "timelineId";
@@ -50,6 +51,11 @@ public class TimelineFragment extends BaseFragment {
         return view;
     }
 
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        component().inject(this);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -60,8 +66,8 @@ public class TimelineFragment extends BaseFragment {
 
     private Observable<Timeline> getTimeline(String timelineId) {
         return zip(
-                providers.timelinesProvider().getTimeline(timelineId),
-                providers.eventsProvider().getEvents(timelineId),
+                timelinesProvider.getTimeline(timelineId),
+                eventsProvider.getEvents(timelineId),
                 Timeline::withEvents
         );
     }
