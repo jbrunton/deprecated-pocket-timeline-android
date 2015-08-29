@@ -1,34 +1,21 @@
 package com.jbrunton.pockettimeline.app;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
-import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 import com.jbrunton.pockettimeline.models.Timeline;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 import static rx.Observable.zip;
 
@@ -36,13 +23,13 @@ public class TimelineFragment extends BaseFragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
     private TextViewRecyclerAdapter<Event> eventsAdapter;
 
-    private static final String TIMELINE_ID = "timelineId";
+    private static final String ARG_TIMELINE_ID = "timelineId";
 
     public static TimelineFragment newInstance(String timelineId) {
         TimelineFragment fragment = new TimelineFragment();
 
         Bundle args = new Bundle();
-        args.putString(TIMELINE_ID, timelineId);
+        args.putString(ARG_TIMELINE_ID, timelineId);
         fragment.setArguments(args);
 
         return fragment;
@@ -83,6 +70,6 @@ public class TimelineFragment extends BaseFragment {
     }
 
     private String getTimelineId() {
-        return getArguments().getString(TIMELINE_ID);
+        return getArguments().getString(ARG_TIMELINE_ID);
     }
 }
