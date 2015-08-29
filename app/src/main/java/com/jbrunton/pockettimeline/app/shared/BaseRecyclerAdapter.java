@@ -30,7 +30,7 @@ public abstract class BaseRecyclerAdapter<D, H extends RecyclerView.ViewHolder> 
 
     @Override
     public H onCreateViewHolder(ViewGroup parent, int position) {
-        View view = (TextView) LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false);
 
         view.setOnClickListener(clickListener);
