@@ -17,4 +17,9 @@ public class Event extends Resource {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }

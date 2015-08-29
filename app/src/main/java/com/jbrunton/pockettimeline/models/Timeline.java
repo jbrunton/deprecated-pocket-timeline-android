@@ -33,4 +33,9 @@ public class Timeline extends Resource {
     public List<Event> getEvents() {
         return events;
     }
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }

@@ -15,6 +15,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.DaggerProvidersComponent;
 import com.jbrunton.pockettimeline.api.ProvidersComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
+import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 import com.jbrunton.pockettimeline.models.Timeline;
 
@@ -32,7 +33,7 @@ import static rx.Observable.zip;
 
 public class TimelineFragment extends Fragment {
     final ProvidersComponent providers = DaggerProvidersComponent.create();
-    private EventsListAdapter eventsAdapter;
+    private TextViewRecyclerAdapter<Event> eventsAdapter;
 
     public static TimelineFragment newInstance(String timelineId) {
         TimelineFragment fragment = new TimelineFragment();
@@ -51,7 +52,7 @@ public class TimelineFragment extends Fragment {
         view.setHasFixedSize(true);
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        eventsAdapter = new EventsListAdapter();
+        eventsAdapter = new TextViewRecyclerAdapter<Event>();
         view.setAdapter(eventsAdapter);
 
         return view;
@@ -92,33 +93,5 @@ public class TimelineFragment extends Fragment {
 
     private String getTimelineId() {
         return getArguments().getString("timelineId");
-    }
-
-    private static class EventsListAdapter extends BaseRecyclerAdapter<Event, EventsListAdapter.ViewHolder> {
-        protected EventsListAdapter() {
-            super(android.R.layout.simple_list_item_1, new EventsListAdapter.ViewHolderFactory());
-        }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            private TextView textView;
-
-            public ViewHolder(View view) {
-                super(view);
-                this.textView = (TextView) view;
-            }
-        }
-
-        public static class ViewHolderFactory implements BaseRecyclerAdapter.ViewHolderFactory<Event, ViewHolder> {
-
-            @Override
-            public ViewHolder createViewHolder(View view) {
-                return new ViewHolder(view);
-            }
-
-            @Override
-            public void bindHolder(ViewHolder holder, Event item) {
-                holder.textView.setText(item.getTitle());
-            }
-        }
     }
 }
