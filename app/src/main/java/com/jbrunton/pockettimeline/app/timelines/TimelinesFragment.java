@@ -19,7 +19,7 @@ import javax.inject.Inject;
 
 public class TimelinesFragment extends BaseFragment {
     @Inject TimelinesProvider timelinesProvider;
-    private TextViewRecyclerAdapter<Timeline> timelinesAdapter;
+    private TimelinesAdapter timelinesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class TimelinesFragment extends BaseFragment {
         view.setHasFixedSize(true);
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        timelinesAdapter = new TextViewRecyclerAdapter<Timeline>() {
+        timelinesAdapter = new TimelinesAdapter() {
             @Override
             protected void onItemClicked(Timeline timeline) {
                 showTimeline(timeline);
