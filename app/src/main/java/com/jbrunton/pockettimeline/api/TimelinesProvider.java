@@ -3,6 +3,7 @@ package com.jbrunton.pockettimeline.api;
 import com.jbrunton.pockettimeline.api.resources.TimelineResource;
 import com.jbrunton.pockettimeline.models.Timeline;
 
+import java.sql.Time;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,5 +23,10 @@ public class TimelinesProvider {
                 .flatMap(Observable::from)
                 .map(TimelineResource::toModel)
                 .toList();
+    }
+
+    public Observable<Timeline> getTimeline(String timelineId) {
+        return service.getTimeline(timelineId)
+                .map(TimelineResource::toModel);
     }
 }

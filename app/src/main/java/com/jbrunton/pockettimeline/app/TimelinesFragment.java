@@ -54,6 +54,7 @@ public class TimelinesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle("Timelines");
 
         providers.timelinesProvider().getTimelines()
                 .subscribeOn(Schedulers.newThread())

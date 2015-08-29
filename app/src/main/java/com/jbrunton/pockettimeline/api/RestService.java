@@ -14,6 +14,9 @@ public interface RestService {
     @GET("/timelines.json")
     Observable<List<TimelineResource>> getTimelines();
 
+    @GET("/timelines/{id}.json")
+    Observable<TimelineResource> getTimeline(@Path("id") String timelineId);
+
     @GET("/timelines/{id}/events.json")
     Observable<List<EventResource>> getEvents(@Path("id") String timelineId);
 }
