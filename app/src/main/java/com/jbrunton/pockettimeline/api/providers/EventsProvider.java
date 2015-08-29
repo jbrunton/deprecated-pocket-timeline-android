@@ -1,9 +1,8 @@
-package com.jbrunton.pockettimeline.api;
+package com.jbrunton.pockettimeline.api.providers;
 
+import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.resources.EventResource;
-import com.jbrunton.pockettimeline.api.resources.TimelineResource;
 import com.jbrunton.pockettimeline.models.Event;
-import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
 
