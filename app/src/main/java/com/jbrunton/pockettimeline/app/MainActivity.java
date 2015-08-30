@@ -26,6 +26,7 @@ public class MainActivity extends BaseActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
         setHomeAsUp(true);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
