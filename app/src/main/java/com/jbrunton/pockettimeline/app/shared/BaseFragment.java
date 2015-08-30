@@ -60,8 +60,6 @@ public class BaseFragment extends Fragment {
     }
 
     protected void setHomeAsUp(boolean showHomeAsUp) {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
-        actionBar.setDisplayShowHomeEnabled(showHomeAsUp);
+        ((BaseActivity) getActivity()).setHomeAsUp(showHomeAsUp);
     }
 }
