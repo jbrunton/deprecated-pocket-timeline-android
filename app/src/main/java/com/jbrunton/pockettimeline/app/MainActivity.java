@@ -5,10 +5,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.jbrunton.pockettimeline.R;
+import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
@@ -21,6 +23,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setHomeAsUp(true);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -28,6 +33,18 @@ public class MainActivity extends BaseActivity {
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_timelines:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.drawer_content, new TimelinesFragment())
+                                .commit();
+                        break;
+                    case R.id.nav_quiz:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.drawer_content, new QuizFragment())
+                                .commit();
+                        break;
+                }
                 drawerLayout.closeDrawers();
                 return true;
             }
@@ -36,8 +53,8 @@ public class MainActivity extends BaseActivity {
         drawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 drawerLayout,         /* DrawerLayout object */
-                R.string.abc_action_mode_done,  /* "open drawer" description */
-                R.string.abc_action_mode_done  /* "close drawer" description */
+                R.string.open_drawer,  /* "open drawer" description */
+                R.string.close_drawer  /* "close drawer" description */
         ) {
 
             /** Called when a drawer has settled in a completely closed state. */

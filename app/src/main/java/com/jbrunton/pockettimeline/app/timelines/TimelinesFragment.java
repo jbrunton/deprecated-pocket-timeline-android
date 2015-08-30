@@ -49,7 +49,6 @@ public class TimelinesFragment extends BaseFragment {
         super.onResume();
 
         setTitle("Timelines");
-        setHomeAsUp(false);
         subscribeTo(timelinesProvider.getTimelines(),
                 this::onTimelinesAvailable);
     }
