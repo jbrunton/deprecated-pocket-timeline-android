@@ -29,21 +29,11 @@ import javax.annotation.Resource;
 import static org.mockito.Mockito.mock;
 
 @Config(constants = BuildConfig.class, sdk = 21)
-public abstract class FragmentTestSuite<T extends Fragment> {
+public abstract class FragmentTestSuite<T extends Fragment, C extends ApplicationComponent> {
     private T fragment;
     private BaseActivity activity;
     private ActivityController<BaseActivity> controller;
-
-    private void configureFragment(T fragment) {
-        this.fragment = fragment;
-
-        controller = Robolectric.buildActivity(BaseActivity.class);
-        activity = controller.create().get();
-
-        activity.getSupportFragmentManager().beginTransaction()
-                .add(fragment, null)
-                .commit();
-    }
+    private C component;
 
     protected T fragment() {
         return fragment;
@@ -77,31 +67,30 @@ public abstract class FragmentTestSuite<T extends Fragment> {
         return (Button) textView(resId);
     }
 
-    private void configureComponent(ApplicationComponent component) {
+    protected void configureTestSuite(T fragment) {
+        configureComponent(createComponent());
+        configureFragment(fragment);
+    }
+
+    protected C component() {
+        return component;
+    }
+
+    private void configureComponent(C component) {
+        this.component = component;
         application().setComponent(component);
     }
 
-    private <T> void inject(T object) {
-        ApplicationComponent component = application().component();
-        ((Injects<T>) component).inject(object);
+    private void configureFragment(T fragment) {
+        this.fragment = fragment;
+
+        controller = Robolectric.buildActivity(BaseActivity.class);
+        activity = controller.create().get();
+
+        activity.getSupportFragmentManager().beginTransaction()
+                .add(fragment, null)
+                .commit();
     }
 
-    protected ConfigureDsl configureTestSuite() {
-        configureComponent(createComponent());
-        return new ConfigureDsl();
-    }
-
-    protected class ConfigureDsl {
-        public ConfigureDsl fragment(T fragment) {
-            configureFragment(fragment);
-            return this;
-        }
-
-        public ConfigureDsl inject() {
-            FragmentTestSuite.this.inject(FragmentTestSuite.this);
-            return this;
-        }
-    }
-
-    protected abstract ApplicationComponent createComponent();
+    protected abstract C createComponent();
 }

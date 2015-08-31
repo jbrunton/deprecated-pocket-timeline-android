@@ -39,17 +39,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
+public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragmentTest.TestApplicationComponent> {
     @Inject EventsProvider eventsProvider;
     final Event EVENT_ONE = new Event("1", new LocalDate(2014, DateTimeConstants.JUNE, 3), "Event One", null);
     final Event EVENT_TWO = new Event("2", new LocalDate(2015, DateTimeConstants.JUNE, 4), "Event Two", null);
 
     @Before public void setUp() {
-        configureTestSuite()
-                .fragment(new QuizFragment())
-                .inject();
+        configureTestSuite(new QuizFragment());
 
+        component().inject(this);
         stubProviderToReturn(EVENT_ONE, EVENT_TWO);
+
         controller().start().resume();
     }
 
@@ -117,11 +117,9 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
         void inject(QuizFragmentTest test);
     }
 
-    final ApplicationComponent testComponent = DaggerQuizFragmentTest_TestApplicationComponent.builder()
-            .deterministicRandomHelperModule(new DeterministicRandomHelperModule(1, 0))
-            .build();
-
-    @Override protected ApplicationComponent createComponent() {
-        return testComponent;
+    @Override protected TestApplicationComponent createComponent() {
+        return DaggerQuizFragmentTest_TestApplicationComponent.builder()
+                .deterministicRandomHelperModule(new DeterministicRandomHelperModule(1, 0))
+                .build();
     }
 }
