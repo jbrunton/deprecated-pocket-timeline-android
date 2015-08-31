@@ -29,11 +29,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
-        setHomeAsUp(true);
-
+        configureActionBar();
         configureDrawer();
 
         if (savedInstanceState == null) {
@@ -53,6 +49,13 @@ public class HomeActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void configureActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+        setHomeAsUp(true);
     }
 
     private void configureDrawer() {
