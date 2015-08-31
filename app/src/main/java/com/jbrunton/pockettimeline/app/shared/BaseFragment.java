@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app.shared;
 
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -18,7 +19,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class BaseFragment extends Fragment {
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private CompositeSubscription subscriptions;
 
     protected void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
@@ -49,8 +50,12 @@ public class BaseFragment extends Fragment {
         subscribeTo(observable, onNext, this::onError);
     }
 
-    @Override
-    public void onDestroy() {
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        subscriptions = new CompositeSubscription();
+    }
+
+    @Override public void onDestroy() {
         subscriptions.unsubscribe();
         super.onDestroy();
     }
