@@ -3,6 +3,8 @@ package com.jbrunton.pockettimeline.fixtures;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.BuildConfig;
 import com.jbrunton.pockettimeline.Injects;
@@ -21,6 +23,8 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
+
+import javax.annotation.Resource;
 
 import static org.mockito.Mockito.mock;
 
@@ -55,6 +59,22 @@ public abstract class FragmentTestSuite<T extends Fragment> {
 
     protected PocketTimelineApplication application() {
         return (PocketTimelineApplication) RuntimeEnvironment.application;
+    }
+
+    protected String getString(int resId) {
+        return application().getString(resId);
+    }
+
+    protected String getString(int resId, Object... formatArgs) {
+        return application().getString(resId, formatArgs);
+    }
+
+    protected TextView textView(int resId) {
+        return (TextView) fragment().getView().findViewById(resId);
+    }
+
+    protected Button button(int resId) {
+        return (Button) textView(resId);
     }
 
     private void configureComponent(ApplicationComponent component) {
