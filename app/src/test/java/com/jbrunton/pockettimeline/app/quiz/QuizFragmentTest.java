@@ -22,6 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -88,8 +91,8 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
         assertThat(answer()).isEmpty();
     }
 
-    private void stubProviderToReturn(Event event1, Event event2) {
-        when(eventsProvider.getEvents()).thenReturn(Observable.just(event1, event2).toList());
+    private void stubProviderToReturn(Event... events) {
+        when(eventsProvider.getEvents()).thenReturn(Observable.just(Arrays.asList(events)));
     }
 
     private void submitAnswer(LocalDate date) {
