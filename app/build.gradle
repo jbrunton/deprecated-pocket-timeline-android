@@ -53,8 +53,12 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.google.dagger:dagger:2.0.1'
     apt 'com.google.dagger:dagger-compiler:2.0.1'
+    testCompile 'com.google.dagger:dagger-compiler:2.0.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'joda-time:joda-time:2.8.2'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'com.squareup.assertj:assertj-android:1.1.0'
 }

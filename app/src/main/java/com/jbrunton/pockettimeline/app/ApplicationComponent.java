@@ -8,6 +8,7 @@ import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import rx.Scheduler;
 
 @Singleton
 @Component(modules = RestServiceModule.class)

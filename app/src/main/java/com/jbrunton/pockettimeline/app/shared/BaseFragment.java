@@ -39,7 +39,7 @@ public class BaseFragment extends Fragment {
 
     protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext, final Action1<Throwable> onError) {
         Subscription subscription = observable
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(getApplication().defaultScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
 
@@ -60,8 +60,12 @@ public class BaseFragment extends Fragment {
         super.onDestroy();
     }
 
+    protected PocketTimelineApplication getApplication() {
+        return ((PocketTimelineApplication) getActivity().getApplication());
+    }
+
     protected ApplicationComponent applicationComponent() {
-        return ((PocketTimelineApplication) getActivity().getApplication()).component();
+        return getApplication().component();
     }
 
     protected void setHomeAsUp(boolean showHomeAsUp) {
