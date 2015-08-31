@@ -1,7 +1,7 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
