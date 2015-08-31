@@ -39,24 +39,31 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class QuizFragmentTest {
     @Inject EventsProvider eventsProvider;
+    QuizFragment fragment;
+    ActivityController<AppCompatActivity> controller;
 
-    @Test public void shouldDisplayEvent() {
+    @Before public void setUp() {
         TestApplicationComponent component = DaggerQuizFragmentTest_TestApplicationComponent.create();
         ((PocketTimelineApplication) RuntimeEnvironment.application).setComponent(component);
 
         component.inject(this);
 
-        Event event = new Event("1", new LocalDate(2001, 1, 1), "Some Event", "Some description");
-        when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
+        controller = Robolectric.buildActivity(AppCompatActivity.class);
+        controller.create();
 
-        ActivityController<AppCompatActivity> controller = Robolectric.buildActivity(AppCompatActivity.class);
-        controller.create().start().resume();
-
-        QuizFragment fragment = new QuizFragment();
+        fragment = new QuizFragment();
         controller.get().getSupportFragmentManager()
                 .beginTransaction()
                 .add(fragment, null)
                 .commit();
+
+    }
+
+    @Test public void shouldDisplayEventDetailsOnResume() {
+        Event event = new Event("1", new LocalDate(2001, 1, 1), "Some Event", "Some description");
+        when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
+
+        controller.start().resume();
 
         assertThat(((TextView) fragment.getView().findViewById(R.id.event_title)).getText()).isEqualTo(event.getTitle());
     }
