@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
-import com.jbrunton.pockettimeline.app.shared.TextViewRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class TimelinesFragment extends BaseFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component().inject(this);
+        applicationComponent().inject(this);
     }
 
     @Override

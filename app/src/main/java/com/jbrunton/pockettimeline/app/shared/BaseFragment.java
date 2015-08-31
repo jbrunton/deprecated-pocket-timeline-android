@@ -60,7 +60,7 @@ public class BaseFragment extends Fragment {
         super.onDestroy();
     }
 
-    protected ApplicationComponent component() {
+    protected ApplicationComponent applicationComponent() {
         return ((PocketTimelineApplication) getActivity().getApplication()).component();
     }
 
