@@ -1,26 +1,37 @@
 package com.jbrunton.pockettimeline.app;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
+import com.jbrunton.pockettimeline.app.timelines.TimelineFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    
+    private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>() {{
+        put(R.id.nav_timelines, new TimelinesFragment());
+        put(R.id.nav_quiz, new QuizFragment());
+    }};
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -29,60 +40,14 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
         setHomeAsUp(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
-        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_timelines:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.drawer_content, new TimelinesFragment())
-                                .commit();
-                        break;
-                    case R.id.nav_quiz:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.drawer_content, new QuizFragment())
-                                .commit();
-                        break;
-                }
-                drawerLayout.closeDrawers();
-                return true;
-            }
-        });
-
-        drawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                drawerLayout,         /* DrawerLayout object */
-                R.string.open_drawer,  /* "open drawer" description */
-                R.string.close_drawer  /* "close drawer" description */
-        ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                // getActionBar().setTitle(mTitle);
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                // getActionBar().setTitle(mDrawerTitle);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        drawerLayout.setDrawerListener(drawerToggle);
+        configureDrawer();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawer_content, new TimelinesFragment())
-                    .commit();
+            selectDrawerOption(R.id.nav_timelines);
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -94,5 +59,33 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void configureDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
+        view.setNavigationItemSelectedListener(this::onDrawerItemSelected);
+
+        drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                R.string.open_drawer,
+                R.string.close_drawer);
+
+        drawerLayout.setDrawerListener(drawerToggle);
+    }
+
+    private boolean onDrawerItemSelected(MenuItem menuItem) {
+        menuItem.setChecked(true);
+        drawerLayout.closeDrawers();
+        selectDrawerOption(menuItem.getItemId());
+        return true;
+    }
+
+    private void selectDrawerOption(int menuItemId) {
+        Fragment fragment = DRAWER_OPTIONS.get(menuItemId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.drawer_content, fragment)
+                .commit();
     }
 }
