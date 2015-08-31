@@ -1,6 +1,5 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -16,7 +15,6 @@ import com.jbrunton.pockettimeline.helpers.RandomHelper;
 import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,17 +27,17 @@ public class QuizFragment extends BaseFragment {
 
     private TextView answerField;
     private Event event;
-
-    private List<Event> events = Arrays.asList(
-            new Event("1", new LocalDate(2001, 1, 1), "Some title", "Some event")
-    );
+    private List<Event> events;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
 
         answerField = (TextView) view.findViewById(R.id.answer);
-        answerField.setOnEditorActionListener(this::onEditorAction);
-        view.findViewById(R.id.submit).setOnClickListener(this::onSubmitAnswer);
+        answerField.setOnEditorActionListener((v, actionId, event) -> {
+            submitAnswer();
+            return true;
+        });
+        view.findViewById(R.id.submit).setOnClickListener(v -> submitAnswer());
 
         return view;
     }
@@ -60,7 +58,6 @@ public class QuizFragment extends BaseFragment {
     }
 
     private void selectEvent() {
-        answerField.setText("");
         event = events.get(randomHelper.getNext(events.size()));
         updateView(event);
     }
@@ -68,9 +65,10 @@ public class QuizFragment extends BaseFragment {
     private void updateView(Event event) {
         TextView eventTitle = (TextView) getView().findViewById(R.id.event_title);
         eventTitle.setText(event.getTitle());
+        answerField.setText("");
     }
 
-    private void onSubmitAnswer(View view) {
+    private void submitAnswer() {
         String submittedAnswer = answerField.getText().toString();
         String correctAnswer = Integer.toString(event.getDate().getYear());
         if (correctAnswer.equals(submittedAnswer)) {
@@ -78,11 +76,6 @@ public class QuizFragment extends BaseFragment {
         } else {
             showAlert(getString(R.string.incorrect_answer, correctAnswer));
         }
-    }
-
-    private boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-        onSubmitAnswer(view);
-        return true;
     }
 
     private void showAlert(String message) {
