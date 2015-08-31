@@ -1,10 +1,8 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.jbrunton.pockettimeline.BuildConfig;
+import com.jbrunton.pockettimeline.Injects;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
@@ -15,14 +13,10 @@ import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
-import org.robolectric.util.ActivityController;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,12 +35,9 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
     @Inject EventsProvider eventsProvider;
 
     @Before public void setUp() {
-        TestApplicationComponent component = DaggerQuizFragmentTest_TestApplicationComponent.create();
-        ((PocketTimelineApplication) RuntimeEnvironment.application).setComponent(component);
-
-        component.inject(this);
-
-        configure(new QuizFragment());
+        configure().component(DaggerQuizFragmentTest_TestApplicationComponent.create())
+                .fragment(new QuizFragment())
+                .inject();
     }
 
     @Test public void shouldDisplayEventDetailsOnResume() {
@@ -66,7 +57,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
     }
 
     @Singleton @Component(modules = {TestEventsProviderModule.class, RestServiceModule.class})
-    public static interface TestApplicationComponent extends ApplicationComponent {
+    public static interface TestApplicationComponent extends ApplicationComponent, Injects<QuizFragmentTest> {
         void inject(QuizFragmentTest test);
     }
 
