@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.app;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -10,18 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
-import com.jbrunton.pockettimeline.app.timelines.TimelineFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class MainActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -33,7 +27,7 @@ public class MainActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

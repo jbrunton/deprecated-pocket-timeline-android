@@ -12,7 +12,7 @@
         android:name=".PocketTimelineApplication">
 
         <activity
-            android:name=".app.MainActivity"
+            android:name=".app.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/HomeTheme">
             <intent-filter>
