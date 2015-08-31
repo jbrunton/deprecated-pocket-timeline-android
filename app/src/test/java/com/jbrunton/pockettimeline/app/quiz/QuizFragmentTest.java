@@ -10,6 +10,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.LocalDate;
@@ -36,11 +37,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
-public class QuizFragmentTest {
+public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
     @Inject EventsProvider eventsProvider;
-    QuizFragment fragment;
-    ActivityController<AppCompatActivity> controller;
 
     @Before public void setUp() {
         TestApplicationComponent component = DaggerQuizFragmentTest_TestApplicationComponent.create();
@@ -48,24 +46,16 @@ public class QuizFragmentTest {
 
         component.inject(this);
 
-        controller = Robolectric.buildActivity(AppCompatActivity.class);
-        controller.create();
-
-        fragment = new QuizFragment();
-        controller.get().getSupportFragmentManager()
-                .beginTransaction()
-                .add(fragment, null)
-                .commit();
-
+        configure(new QuizFragment());
     }
 
     @Test public void shouldDisplayEventDetailsOnResume() {
         Event event = new Event("1", new LocalDate(2001, 1, 1), "Some Event", "Some description");
         when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
 
-        controller.start().resume();
+        controller().start().resume();
 
-        assertThat(((TextView) fragment.getView().findViewById(R.id.event_title)).getText()).isEqualTo(event.getTitle());
+        assertThat(((TextView) fragment().getView().findViewById(R.id.event_title)).getText()).isEqualTo(event.getTitle());
     }
 
     @Singleton @Module
