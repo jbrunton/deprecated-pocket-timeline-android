@@ -13,10 +13,10 @@ import rx.Observable;
 
 @Singleton
 public class EventsProvider {
-    @Inject RestService service;
+    private final RestService service;
 
-    @Inject public EventsProvider() {
-
+    @Inject public EventsProvider(RestService service) {
+        this.service = service;
     }
 
     public Observable<List<Event>> getEvents(String timelineId) {

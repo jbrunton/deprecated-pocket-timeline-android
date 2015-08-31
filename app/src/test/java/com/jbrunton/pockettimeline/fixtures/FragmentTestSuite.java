@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import com.jbrunton.pockettimeline.BuildConfig;
 import com.jbrunton.pockettimeline.Injects;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
+import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
+import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.jbrunton.pockettimeline.app.DaggerApplicationComponent;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragmentTest;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
@@ -18,8 +22,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
+import static org.mockito.Mockito.mock;
+
 @Config(constants = BuildConfig.class, sdk = 21)
-public class FragmentTestSuite<T extends Fragment> {
+public abstract class FragmentTestSuite<T extends Fragment> {
     private T fragment;
     private BaseActivity activity;
     private ActivityController<BaseActivity> controller;
@@ -60,7 +66,8 @@ public class FragmentTestSuite<T extends Fragment> {
         ((Injects<T>) component).inject(object);
     }
 
-    protected ConfigureDsl configure() {
+    protected ConfigureDsl configureTestSuite() {
+        configureComponent(createComponent());
         return new ConfigureDsl();
     }
 
@@ -70,14 +77,11 @@ public class FragmentTestSuite<T extends Fragment> {
             return this;
         }
 
-        public ConfigureDsl component(ApplicationComponent component) {
-            configureComponent(component);
-            return this;
-        }
-
         public ConfigureDsl inject() {
             FragmentTestSuite.this.inject(FragmentTestSuite.this);
             return this;
         }
     }
+
+    protected abstract ApplicationComponent createComponent();
 }

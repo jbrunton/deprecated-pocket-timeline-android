@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app;
 
+import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelineFragment;
@@ -11,7 +12,7 @@ import dagger.Component;
 import rx.Scheduler;
 
 @Singleton
-@Component(modules = RestServiceModule.class)
+@Component(modules = {RestServiceModule.class, ProvidersModule.class})
 public interface ApplicationComponent {
     void inject(TimelineFragment fragment);
     void inject(TimelinesFragment fragment);

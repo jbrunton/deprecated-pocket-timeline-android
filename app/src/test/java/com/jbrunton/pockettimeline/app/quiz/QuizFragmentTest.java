@@ -3,12 +3,13 @@ package com.jbrunton.pockettimeline.app.quiz;
 import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.Injects;
-import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
+import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.LocalDate;
@@ -16,14 +17,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.Module;
-import dagger.Provides;
 import rx.Observable;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,30 +33,36 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
     @Inject EventsProvider eventsProvider;
 
     @Before public void setUp() {
-        configure().component(DaggerQuizFragmentTest_TestApplicationComponent.create())
+        configureTestSuite()
                 .fragment(new QuizFragment())
                 .inject();
     }
 
     @Test public void shouldDisplayEventDetailsOnResume() {
-        Event event = new Event("1", new LocalDate(2001, 1, 1), "Some Event", "Some description");
-        when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
+        Event event = createEvent();
+        stubProviderToReturn(event);
 
         controller().start().resume();
 
         assertThat(((TextView) fragment().getView().findViewById(R.id.event_title)).getText()).isEqualTo(event.getTitle());
     }
 
-    @Singleton @Module
-    static class TestEventsProviderModule {
-        @Singleton @Provides EventsProvider provide() {
-            return mock(EventsProvider.class);
-        }
+    private Event createEvent() {
+        return new Event("1", new LocalDate(2001, 1, 1), "Some Event", "Some description");
     }
 
-    @Singleton @Component(modules = {TestEventsProviderModule.class, RestServiceModule.class})
+    private void stubProviderToReturn(Event event) {
+        when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
+    }
+
+    @Singleton @Component(modules = {RestServiceModule.class, ProvidersModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent, Injects<QuizFragmentTest> {
         void inject(QuizFragmentTest test);
     }
 
+    @Override protected ApplicationComponent createComponent() {
+        return DaggerQuizFragmentTest_TestApplicationComponent.builder()
+                .providersModule(new TestProvidersModule())
+                .build();
+    }
 }
