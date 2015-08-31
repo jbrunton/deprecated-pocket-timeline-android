@@ -38,17 +38,8 @@ public class QuizFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
 
         answerField = (TextView) view.findViewById(R.id.answer);
-        view.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                onSubmitAnswer();
-            }
-        });
-
-        answerField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return QuizFragment.this.onEditorAction();
-            }
-        });
+        answerField.setOnEditorActionListener(this::onEditorAction);
+        view.findViewById(R.id.submit).setOnClickListener(this::onSubmitAnswer);
 
         return view;
     }
@@ -59,13 +50,17 @@ public class QuizFragment extends BaseFragment {
         setTitle("Quiz");
         applicationComponent().inject(this);
 
-        subscribeTo(eventsProvider.getEvents(), (events) -> {
-            this.events = events;
-            selectEvent();
-        });
+        subscribeTo(eventsProvider.getEvents(),
+                this::onEventsAvailable);
+    }
+
+    private void onEventsAvailable(List<Event> events) {
+        this.events = events;
+        selectEvent();
     }
 
     private void selectEvent() {
+        answerField.setText("");
         event = events.get(randomHelper.getNext(events.size()));
         updateView(event);
     }
@@ -75,7 +70,7 @@ public class QuizFragment extends BaseFragment {
         eventTitle.setText(event.getTitle());
     }
 
-    private void onSubmitAnswer() {
+    private void onSubmitAnswer(View view) {
         String submittedAnswer = answerField.getText().toString();
         String correctAnswer = Integer.toString(event.getDate().getYear());
         if (correctAnswer.equals(submittedAnswer)) {
@@ -85,23 +80,15 @@ public class QuizFragment extends BaseFragment {
         }
     }
 
-    private boolean onEditorAction() {
-        onSubmitAnswer();
+    private boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+        onSubmitAnswer(view);
         return true;
     }
 
     private void showAlert(String message) {
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                answerField.setText("");
-                selectEvent();
-            }
-        };
-
         new AlertDialog.Builder(getActivity())
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, onClickListener)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> selectEvent())
                 .create()
                 .show();
     }
