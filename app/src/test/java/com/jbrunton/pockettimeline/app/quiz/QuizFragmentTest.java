@@ -53,7 +53,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         controller().start().resume();
     }
 
-    @Test public void shouldDisplayEventDetailsOnResume() {
+    @Test public void shouldDisplayEventDetails() {
         assertThat(eventTitle()).isEqualTo(EVENT_TWO.getTitle());
     }
 
