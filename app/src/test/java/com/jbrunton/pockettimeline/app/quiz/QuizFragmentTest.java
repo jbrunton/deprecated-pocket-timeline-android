@@ -1,18 +1,14 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
 import android.app.Dialog;
-import android.widget.TextView;
 
-import com.jbrunton.pockettimeline.Injects;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelperModule;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
-import com.jbrunton.pockettimeline.helpers.RandomHelper;
 import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.DateTimeConstants;
@@ -23,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -113,7 +108,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
     }
 
     @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, DeterministicRandomHelperModule.class})
-    public static interface TestApplicationComponent extends ApplicationComponent, Injects<QuizFragmentTest> {
+    public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }
 

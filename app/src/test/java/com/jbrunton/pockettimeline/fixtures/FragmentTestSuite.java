@@ -2,29 +2,18 @@ package com.jbrunton.pockettimeline.fixtures;
 
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.BuildConfig;
-import com.jbrunton.pockettimeline.Injects;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
-import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
-import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.jbrunton.pockettimeline.app.DaggerApplicationComponent;
-import com.jbrunton.pockettimeline.app.quiz.QuizFragmentTest;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
-import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
-
-import javax.annotation.Resource;
 
 import static org.mockito.Mockito.mock;
 
