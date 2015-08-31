@@ -59,13 +59,13 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
     }
 
     @Singleton @Module
-    static class TestEventsProviderModel {
+    static class TestEventsProviderModule {
         @Singleton @Provides EventsProvider provide() {
             return mock(EventsProvider.class);
         }
     }
 
-    @Singleton @Component(modules = {TestEventsProviderModel.class, RestServiceModule.class})
+    @Singleton @Component(modules = {TestEventsProviderModule.class, RestServiceModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }
