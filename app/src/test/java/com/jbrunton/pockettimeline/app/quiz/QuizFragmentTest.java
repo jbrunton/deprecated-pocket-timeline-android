@@ -114,9 +114,11 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
         void inject(QuizFragmentTest test);
     }
 
+    final ApplicationComponent testComponent = DaggerQuizFragmentTest_TestApplicationComponent.builder()
+            .deterministicRandomHelperModule(new DeterministicRandomHelperModule(1, 0))
+            .build();
+
     @Override protected ApplicationComponent createComponent() {
-        return DaggerQuizFragmentTest_TestApplicationComponent.builder()
-                .deterministicRandomHelperModule(new DeterministicRandomHelperModule(1, 0))
-                .build();
+        return testComponent;
     }
 }
