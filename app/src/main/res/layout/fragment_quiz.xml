@@ -5,8 +5,36 @@
               android:layout_height="match_parent">
 
     <TextView
+        android:text="What year was this?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quiz" />
+        android:gravity="center"
+        style="@style/MediumLabel" />
+
+    <TextView
+        android:id="@+id/event_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        style="@style/LargeLabel" />
+
+    <TextView
+        android:id="@+id/timeline_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/answer"
+        android:imeOptions="actionGo"
+        android:inputType="number"
+        android:maxLines="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/submit"
+        android:text="@string/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

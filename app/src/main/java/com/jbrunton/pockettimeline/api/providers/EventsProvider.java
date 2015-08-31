@@ -20,8 +20,15 @@ public class EventsProvider {
     }
 
     public Observable<List<Event>> getEvents(String timelineId) {
-        return service.getEvents(timelineId)
-                .flatMap(Observable::from)
+        return createModels(service.getEvents(timelineId));
+    }
+
+    public Observable<List<Event>> getEvents() {
+        return createModels(service.getEvents());
+    }
+
+    private Observable<List<Event>> createModels(Observable<List<EventResource>> resources) {
+        return resources.flatMap(Observable::from)
                 .map(EventResource::toModel)
                 .toList();
     }

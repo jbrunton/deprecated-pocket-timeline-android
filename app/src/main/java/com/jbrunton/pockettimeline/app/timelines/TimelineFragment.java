@@ -50,7 +50,7 @@ public class TimelineFragment extends BaseFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component().inject(this);
+        applicationComponent().inject(this);
     }
 
     @Override
