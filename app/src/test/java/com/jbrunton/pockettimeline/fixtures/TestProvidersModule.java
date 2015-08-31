@@ -4,10 +4,16 @@ import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestService;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
 import static org.mockito.Mockito.mock;
 
-public class TestProvidersModule extends ProvidersModule {
-    @Override public EventsProvider eventsProvider(RestService service) {
+@Module
+public class TestProvidersModule {
+    @Singleton @Provides EventsProvider eventsProvider() {
         return mock(EventsProvider.class);
     }
 }

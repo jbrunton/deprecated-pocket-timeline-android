@@ -9,7 +9,7 @@ import dagger.Provides;
 
 @Module
 public class ProvidersModule {
-    @Singleton @Provides public EventsProvider eventsProvider(RestService service) {
+    @Singleton @Provides EventsProvider eventsProvider(RestService service) {
         return new EventsProvider(service);
     }
 }

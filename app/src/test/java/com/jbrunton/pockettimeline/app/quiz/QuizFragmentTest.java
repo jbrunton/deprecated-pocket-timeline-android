@@ -55,14 +55,12 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
         when(eventsProvider.getEvents()).thenReturn(Observable.just(event).toList());
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, ProvidersModule.class})
+    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent, Injects<QuizFragmentTest> {
         void inject(QuizFragmentTest test);
     }
 
     @Override protected ApplicationComponent createComponent() {
-        return DaggerQuizFragmentTest_TestApplicationComponent.builder()
-                .providersModule(new TestProvidersModule())
-                .build();
+        return DaggerQuizFragmentTest_TestApplicationComponent.create();
     }
 }
