@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import rx.Observable;
 import rx.Subscription;
@@ -18,9 +19,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class BaseFragment extends Fragment {
-    private CompositeSubscription subscriptions;
-
+public class BaseFragment extends RxFragment {
     protected void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
@@ -33,31 +32,16 @@ public class BaseFragment extends Fragment {
         getActivity().setTitle(title);
     }
 
-    protected void addSubscription(Subscription subscription) {
-        subscriptions.add(subscription);
-    }
-
     protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext, final Action1<Throwable> onError) {
-        Subscription subscription = observable
+        observable
                 .subscribeOn(getApplication().defaultScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle())
                 .subscribe(onNext, onError);
-
-        addSubscription(subscription);
     }
 
     protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext) {
         subscribeTo(observable, onNext, this::onError);
-    }
-
-    @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        subscriptions = new CompositeSubscription();
-    }
-
-    @Override public void onDestroy() {
-        subscriptions.unsubscribe();
-        super.onDestroy();
     }
 
     protected PocketTimelineApplication getApplication() {
