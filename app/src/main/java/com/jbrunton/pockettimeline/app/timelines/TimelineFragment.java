@@ -71,6 +71,10 @@ public class TimelineFragment extends BaseFragment {
         }), this::onTimelineAvailable);
     }
 
+    @Override protected String contextId() {
+        return getTimelineId();
+    }
+
     private Observable<Timeline> getTimeline() {
         String timelineId = getTimelineId();
         return zip(
