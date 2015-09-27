@@ -18,6 +18,12 @@ public class RxCacheFragment extends RxFragment {
         }
     }
 
+    /**
+     * Use this to distinguish between instances of the fragment if you may have multiple instances
+     * active at the same time.
+     *
+     * @return A unique identifier for the fragment.
+     */
     protected String ownerId() {
         return null;
     }
