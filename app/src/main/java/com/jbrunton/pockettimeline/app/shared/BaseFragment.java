@@ -1,36 +1,15 @@
 package com.jbrunton.pockettimeline.app.shared;
 
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Toast;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.trello.rxlifecycle.components.support.RxFragment;
-
-import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func0;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
-public class BaseFragment extends RxFragment {
-    @Inject RxCache cache;
-
-    @Override public void onDestroy() {
-        super.onDestroy();
-        if (getActivity().isFinishing()) {
-            cache.invalidate(getContext(), contextId());
-        }
-    }
+public class BaseFragment extends RxCacheFragment {
 
     protected void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
@@ -66,13 +45,5 @@ public class BaseFragment extends RxFragment {
 
     protected void setHomeAsUp(boolean showHomeAsUp) {
         ((BaseActivity) getActivity()).setHomeAsUp(showHomeAsUp);
-    }
-
-    protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
-        return cache.cache(getContext(), contextId(), key, factory);
-    }
-
-    protected String contextId() {
-        return null;
     }
 }
