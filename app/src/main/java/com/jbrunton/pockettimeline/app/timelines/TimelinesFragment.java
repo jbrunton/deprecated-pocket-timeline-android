@@ -53,11 +53,8 @@ public class TimelinesFragment extends BaseFragment {
         super.onResume();
         setTitle("Timelines");
 
-        subscribeTo(cache(TIMELINES_CACHE_KEY, new Func0<Observable<List<Timeline>>>() {
-            @Override public Observable<List<Timeline>> call() {
-                return timelinesProvider.getTimelines();
-            }
-        }), this::onTimelinesAvailable);
+        subscribeTo(cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines),
+                this::onTimelinesAvailable);
     }
 
     private void showTimeline(Timeline timeline) {

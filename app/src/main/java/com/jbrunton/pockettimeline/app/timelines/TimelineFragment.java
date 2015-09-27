@@ -64,11 +64,8 @@ public class TimelineFragment extends BaseFragment {
         setTitle("Timeline");
         setHomeAsUp(true);
 
-        subscribeTo(cache(TIMELINE_CACHE_KEY, new Func0<Observable<Timeline>>() {
-            @Override public Observable<Timeline> call() {
-                return getTimeline();
-            }
-        }), this::onTimelineAvailable);
+        subscribeTo(cache(TIMELINE_CACHE_KEY, TimelineFragment.this::getTimeline),
+                this::onTimelineAvailable);
     }
 
     @Override protected String contextId() {
