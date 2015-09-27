@@ -9,13 +9,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.functions.Func0;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
 
+@Singleton
 public class RxCache {
     private Map<String, Observable> cache = new HashMap<>();
+
+    @Inject public RxCache() {}
 
     public <T> void cache(String key, Observable<T> observable) {
         Subject<T, T> subject = ReplaySubject.create(1);

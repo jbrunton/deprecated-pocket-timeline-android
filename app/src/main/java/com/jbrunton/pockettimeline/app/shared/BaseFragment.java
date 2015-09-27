@@ -12,14 +12,26 @@ import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class BaseFragment extends RxFragment {
+    @Inject RxCache cache;
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        if (getActivity().isFinishing()) {
+            cache.invalidate(getContext());
+        }
+    }
+
     protected void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
@@ -54,5 +66,9 @@ public class BaseFragment extends RxFragment {
 
     protected void setHomeAsUp(boolean showHomeAsUp) {
         ((BaseActivity) getActivity()).setHomeAsUp(showHomeAsUp);
+    }
+
+    protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
+        return cache.cache(getContext(), key, factory);
     }
 }
