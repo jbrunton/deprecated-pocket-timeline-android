@@ -23,6 +23,8 @@ public class TimelinesFragment extends BaseFragment {
     @Inject TimelinesProvider timelinesProvider;
     private TimelinesAdapter timelinesAdapter;
 
+    private final static String TIMELINES_CACHE_KEY = "timelines";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
@@ -51,7 +53,7 @@ public class TimelinesFragment extends BaseFragment {
         super.onResume();
         setTitle("Timelines");
 
-        subscribeTo(cache("timelines", new Func0<Observable<List<Timeline>>>() {
+        subscribeTo(cache(TIMELINES_CACHE_KEY, new Func0<Observable<List<Timeline>>>() {
             @Override public Observable<List<Timeline>> call() {
                 return timelinesProvider.getTimelines();
             }

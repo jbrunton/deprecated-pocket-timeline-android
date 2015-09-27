@@ -28,6 +28,7 @@ public class TimelineFragment extends BaseFragment {
     private EventsAdapter eventsAdapter;
 
     private static final String ARG_TIMELINE_ID = "timelineId";
+    private static final String TIMELINE_CACHE_KEY = "timeline";
 
     public static TimelineFragment newInstance(String timelineId) {
         TimelineFragment fragment = new TimelineFragment();
@@ -63,7 +64,7 @@ public class TimelineFragment extends BaseFragment {
         setTitle("Timeline");
         setHomeAsUp(true);
 
-        subscribeTo(cache("timeline", new Func0<Observable<Timeline>>() {
+        subscribeTo(cache(TIMELINE_CACHE_KEY, new Func0<Observable<Timeline>>() {
             @Override public Observable<Timeline> call() {
                 return getTimeline();
             }
