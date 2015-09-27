@@ -16,9 +16,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.functions.Func0;
+
 public class TimelinesFragment extends BaseFragment {
     @Inject TimelinesProvider timelinesProvider;
     private TimelinesAdapter timelinesAdapter;
+
+    private final static String TIMELINES_CACHE_KEY = "timelines";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,9 +51,9 @@ public class TimelinesFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         setTitle("Timelines");
-        subscribeTo(timelinesProvider.getTimelines(),
+
+        subscribeTo(cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines),
                 this::onTimelinesAvailable);
     }
 

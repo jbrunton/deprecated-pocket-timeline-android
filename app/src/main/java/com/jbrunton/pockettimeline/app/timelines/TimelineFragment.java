@@ -13,9 +13,12 @@ import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.models.Timeline;
 
+import java.sql.Time;
+
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.functions.Func0;
 
 import static rx.Observable.zip;
 
@@ -25,6 +28,7 @@ public class TimelineFragment extends BaseFragment {
     private EventsAdapter eventsAdapter;
 
     private static final String ARG_TIMELINE_ID = "timelineId";
+    private static final String TIMELINE_CACHE_KEY = "timeline";
 
     public static TimelineFragment newInstance(String timelineId) {
         TimelineFragment fragment = new TimelineFragment();
@@ -59,10 +63,17 @@ public class TimelineFragment extends BaseFragment {
 
         setTitle("Timeline");
         setHomeAsUp(true);
-        subscribeTo(getTimeline(getTimelineId()), this::onTimelineAvailable);
+
+        subscribeTo(cache(TIMELINE_CACHE_KEY, this::getTimeline),
+                this::onTimelineAvailable);
     }
 
-    private Observable<Timeline> getTimeline(String timelineId) {
+    @Override protected String contextId() {
+        return getTimelineId();
+    }
+
+    private Observable<Timeline> getTimeline() {
+        String timelineId = getTimelineId();
         return zip(
                 timelinesProvider.getTimeline(timelineId),
                 eventsProvider.getEvents(timelineId),
