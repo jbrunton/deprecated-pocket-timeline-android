@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.app.shared;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.jbrunton.pockettimeline.BuildConfig;
 
@@ -33,22 +34,22 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class RxCacheTest {
     private ReplaySubject<Integer> counter;
-    private Context context;
+    private Fragment owner;
 
     private final RxCache cache = new RxCache();
     private Func0<Observable<Integer>> factory;
-    private Context otherContext;
+    private Fragment otherOwner;
 
     @Before public void setUp() {
         counter = ReplaySubject.create();
-        context = RuntimeEnvironment.application;
+        owner = new TestFragment();
         factory = factoryThatReturns(counter);
-        otherContext = mock(Context.class);
+        otherOwner = mock(Fragment.class);
     }
 
     @Test public void shouldReturnObservable() {
         // act
-        Observable<Integer> cachedCounter = cache.cache(context, "1", "key", factory);
+        Observable<Integer> cachedCounter = cache.cache(owner, "1", "key", factory);
 
         // assert
         TestSubscriber<Integer> testSubscriber = new TestSubscriber<>();
@@ -63,16 +64,16 @@ public class RxCacheTest {
 
     @Test public void shouldCacheObservables() {
         factory = spy(factory);
-        Observable<Integer> firstResult = cache.cache(context, "1", "key", factory);
+        Observable<Integer> firstResult = cache.cache(owner, "1", "key", factory);
 
-        Observable<Integer> secondResult = cache.cache(context, "1", "key", factory);
+        Observable<Integer> secondResult = cache.cache(owner, "1", "key", factory);
 
         assertThat(firstResult).isSameAs(secondResult);
         verify(factory, times(1)).call();
     }
 
     @Test public void cachedObservablesShouldReplayLastValue() {
-        Observable<Integer> cachedCounter = cache.cache(context, "1", "key", factory);
+        Observable<Integer> cachedCounter = cache.cache(owner, "1", "key", factory);
 
         TestSubscriber<Integer> testSubscriber = new TestSubscriber<>();
         counter.onNext(1);
@@ -82,33 +83,33 @@ public class RxCacheTest {
     }
 
     @Test public void shouldInvalidateCacheByContext() {
-        cache.cache(context, "1", "key", factory);
-        cache.cache(otherContext, "1", "key", factory);
+        cache.cache(owner, "1", "key", factory);
+        cache.cache(otherOwner, "1", "key", factory);
 
-        cache.invalidate(context, "1");
+        cache.invalidate(owner, "1");
 
-        assertThat(cache.fetch(cache.keyFor(context, "1", "key"))).isNull();
-        assertThat(cache.fetch(cache.keyFor(otherContext, "1", "key"))).isNotNull();
+        assertThat(cache.fetch(cache.keyFor(owner, "1", "key"))).isNull();
+        assertThat(cache.fetch(cache.keyFor(otherOwner, "1", "key"))).isNotNull();
     }
 
     @Test public void shouldInvalidateCacheByContextId() {
-        cache.cache(context, "1", "key", factory);
-        cache.cache(context, "2", "key", factory);
+        cache.cache(owner, "1", "key", factory);
+        cache.cache(owner, "2", "key", factory);
 
-        cache.invalidate(context, "1");
+        cache.invalidate(owner, "1");
 
-        assertThat(cache.fetch(cache.keyFor(context, "1", "key"))).isNull();
-        assertThat(cache.fetch(cache.keyFor(context, "2", "key"))).isNotNull();
+        assertThat(cache.fetch(cache.keyFor(owner, "1", "key"))).isNull();
+        assertThat(cache.fetch(cache.keyFor(owner, "2", "key"))).isNotNull();
     }
 
     @Test public void shouldReturnCompoundKey() {
-        String compoundKey = cache.keyFor(context, null, "key");
-        assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.TestPocketTimelineApplication/key");
+        String compoundKey = cache.keyFor(owner, null, "key");
+        assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.app.shared.RxCacheTest$TestFragment/key");
     }
 
     @Test public void shouldReturnCompoundKeyWithInstanceId() {
-        String compoundKey = cache.keyFor(context, "instanceId", "key");
-        assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.TestPocketTimelineApplication:instanceId/key");
+        String compoundKey = cache.keyFor(owner, "instanceId", "key");
+        assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.app.shared.RxCacheTest$TestFragment:instanceId/key");
     }
 
     private Func0<Observable<Integer>> factoryThatReturns(Observable<Integer> observable) {
@@ -118,4 +119,6 @@ public class RxCacheTest {
             }
         };
     }
+
+    public static class TestFragment extends Fragment {}
 }
