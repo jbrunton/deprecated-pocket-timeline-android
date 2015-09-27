@@ -16,6 +16,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.functions.Func0;
+
 public class TimelinesFragment extends BaseFragment {
     @Inject TimelinesProvider timelinesProvider;
     private TimelinesAdapter timelinesAdapter;
@@ -46,10 +49,13 @@ public class TimelinesFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         setTitle("Timelines");
-        subscribeTo(timelinesProvider.getTimelines(),
-                this::onTimelinesAvailable);
+
+        subscribeTo(cache("timelines", new Func0<Observable<List<Timeline>>>() {
+            @Override public Observable<List<Timeline>> call() {
+                return timelinesProvider.getTimelines();
+            }
+        }), this::onTimelinesAvailable);
     }
 
     private void showTimeline(Timeline timeline) {
