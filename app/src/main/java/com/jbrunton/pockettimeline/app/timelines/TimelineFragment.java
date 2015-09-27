@@ -64,7 +64,7 @@ public class TimelineFragment extends BaseFragment {
         setTitle("Timeline");
         setHomeAsUp(true);
 
-        subscribeTo(cache(TIMELINE_CACHE_KEY, TimelineFragment.this::getTimeline),
+        subscribeTo(cache(TIMELINE_CACHE_KEY, this::getTimeline),
                 this::onTimelineAvailable);
     }
 
