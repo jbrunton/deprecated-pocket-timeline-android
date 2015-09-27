@@ -13,6 +13,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import rx.Observable;
+import rx.functions.Func0;
 import rx.observers.TestSubscriber;
 import rx.subjects.ReplaySubject;
 
@@ -92,9 +93,35 @@ public class RxCacheTest {
         assertThat(cache.fetch(context2, "key")).isNotNull();
     }
 
+    @Test public void shouldCreateObservableWithFactoryIfMissing() {
+        Func0<Observable<Integer>> factory = factoryThatReturns(counter);
+        Observable<Integer> cachedCounter = cache.cache("key", factory);
+
+        TestSubscriber<Integer> testSubscriber = new TestSubscriber<>();
+        cachedCounter.subscribe(testSubscriber);
+
+        counter.onNext(1);
+
+        testSubscriber.assertValues(1);
+    }
+
+    @Test public void shouldReturnSameInstanceIfCached() {
+        Func0<Observable<Integer>> factory = factoryThatReturns(counter);
+        Observable<Integer> cachedCounter = cache.cache("key", factory);
+        assertThat(cache.cache("key", factory)).isSameAs(cachedCounter);
+    }
+
     @Test public void shouldGenerateCompoundKey() {
         Context context = RuntimeEnvironment.application;
         String compoundKey = cache.keyFor(context, "key");
         assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.TestPocketTimelineApplication/key");
+    }
+
+    private Func0<Observable<Integer>> factoryThatReturns(Observable<Integer> observable) {
+        return new Func0<Observable<Integer>>() {
+            @Override public Observable<Integer> call() {
+                return observable;
+            }
+        };
     }
 }

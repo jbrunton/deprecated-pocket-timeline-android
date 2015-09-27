@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.functions.Func0;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
 
@@ -50,6 +51,20 @@ public class RxCache {
                 keyIterator.remove();
             }
         }
+    }
+
+    public <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
+        Observable<T> observable = fetch(key);
+        if (observable == null) {
+            cache(key, factory.call());
+            observable = fetch(key);
+        }
+        return observable;
+    }
+
+    public <T> Observable<T> cache(Context context, String key, Func0<Observable<T>> factory) {
+        String compoundKey = keyFor(context, key);
+        return cache(compoundKey, factory);
     }
 
     protected String keyFor(Context context, String key) {
