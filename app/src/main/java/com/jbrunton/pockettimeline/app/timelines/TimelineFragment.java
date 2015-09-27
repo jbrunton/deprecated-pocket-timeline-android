@@ -68,7 +68,7 @@ public class TimelineFragment extends BaseFragment {
                 this::onTimelineAvailable);
     }
 
-    @Override protected String contextId() {
+    @Override protected String ownerId() {
         return getTimelineId();
     }
 

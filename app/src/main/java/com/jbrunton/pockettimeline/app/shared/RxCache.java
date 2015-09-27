@@ -21,8 +21,8 @@ public class RxCache {
 
     @Inject public RxCache() {}
 
-    public <T> Observable<T> cache(Context context, String contextId, String key, Func0<Observable<T>> factory) {
-        String compoundKey = keyFor(context, contextId, key);
+    public <T> Observable<T> cache(Object owner, String ownerId, String key, Func0<Observable<T>> factory) {
+        String compoundKey = keyFor(owner, ownerId, key);
         Observable<T> observable = fetch(compoundKey);
         if (observable == null) {
             cache.put(compoundKey, makeReplayable(factory.call()));
@@ -31,8 +31,8 @@ public class RxCache {
         return observable;
     }
 
-    public void invalidate(Context context, String contextId) {
-        String scope = scopeFor(context, contextId);
+    public void invalidate(Object owner, String ownerId) {
+        String scope = scopeFor(owner, ownerId);
         Iterator<String> keyIterator = cache.keySet().iterator();
         while (keyIterator.hasNext()) {
             String key = keyIterator.next();
@@ -42,18 +42,18 @@ public class RxCache {
         }
     }
 
-    protected String keyFor(Context context, String contextId, String key) {
-        return scopeFor(context, contextId) + key;
+    protected String keyFor(Object owner, String ownerId, String key) {
+        return scopeFor(owner, ownerId) + key;
     }
 
     protected <T> Observable<T> fetch(String key) {
         return cache.get(key);
     }
 
-    private String scopeFor(Context context, String contextId) {
-        String scope = context.getClass().getName();
-        if (contextId != null) {
-            scope = scope + ":" + contextId;
+    private String scopeFor(Object owner, String ownerId) {
+        String scope = owner.getClass().getName();
+        if (ownerId != null) {
+            scope = scope + ":" + ownerId;
         }
         return scope + "/";
     }

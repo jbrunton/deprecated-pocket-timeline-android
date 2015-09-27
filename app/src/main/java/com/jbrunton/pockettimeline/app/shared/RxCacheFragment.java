@@ -14,15 +14,21 @@ public class RxCacheFragment extends RxFragment {
         super.onDestroy();
 
         if (getActivity().isFinishing()) {
-            cache.invalidate(getContext(), contextId());
+            cache.invalidate(getContext(), ownerId());
         }
     }
 
-    protected String contextId() {
+    /**
+     * Use this to distinguish between instances of the fragment if you may have multiple instances
+     * active at the same time.
+     *
+     * @return A unique identifier for the fragment.
+     */
+    protected String ownerId() {
         return null;
     }
 
     protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
-        return cache.cache(getContext(), contextId(), key, factory);
+        return cache.cache(getContext(), ownerId(), key, factory);
     }
 }
