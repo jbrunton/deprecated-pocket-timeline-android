@@ -14,15 +14,15 @@ public class RxCacheFragment extends RxFragment {
         super.onDestroy();
 
         if (getActivity().isFinishing()) {
-            cache.invalidate(getContext(), contextId());
+            cache.invalidate(getContext(), ownerId());
         }
     }
 
-    protected String contextId() {
+    protected String ownerId() {
         return null;
     }
 
     protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
-        return cache.cache(getContext(), contextId(), key, factory);
+        return cache.cache(getContext(), ownerId(), key, factory);
     }
 }
