@@ -28,7 +28,7 @@ public class BaseFragment extends RxFragment {
     @Override public void onDestroy() {
         super.onDestroy();
         if (getActivity().isFinishing()) {
-            cache.invalidate(getContext());
+            cache.invalidate(getContext(), contextId());
         }
     }
 
@@ -69,6 +69,10 @@ public class BaseFragment extends RxFragment {
     }
 
     protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
-        return cache.cache(getContext(), key, factory);
+        return cache.cache(getContext(), contextId(), key, factory);
+    }
+
+    protected String contextId() {
+        return null;
     }
 }

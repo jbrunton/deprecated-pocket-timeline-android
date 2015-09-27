@@ -40,7 +40,11 @@ public class RxCache {
     }
 
     public <T> Observable<T> fetch(Context context, String key) {
-        String compoundKey = keyFor(context, key);
+        return fetch(context, null, key);
+    }
+
+    public <T> Observable<T> fetch(Context context, String contextId, String key) {
+        String compoundKey = keyFor(context, contextId, key);
         return fetch(compoundKey);
     }
 
@@ -48,8 +52,8 @@ public class RxCache {
         cache.remove(key);
     }
 
-    public void invalidate(Context context) {
-        String scope = scopeFor(context);
+    public void invalidate(Context context, String contextId) {
+        String scope = scopeFor(context, contextId);
         Iterator<String> keyIterator = cache.keySet().iterator();
         while (keyIterator.hasNext()) {
             String key = keyIterator.next();
@@ -57,6 +61,10 @@ public class RxCache {
                 keyIterator.remove();
             }
         }
+    }
+
+    public void invalidate(Context context) {
+        invalidate(context, null);
     }
 
     public <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
@@ -73,11 +81,28 @@ public class RxCache {
         return cache(compoundKey, factory);
     }
 
+    public <T> Observable<T> cache(Context context, String contextId, String key, Func0<Observable<T>> factory) {
+        String compoundKey = keyFor(context, contextId, key);
+        return cache(compoundKey, factory);
+    }
+
     protected String keyFor(Context context, String key) {
         return scopeFor(context) + key;
     }
 
+    protected String keyFor(Context context, String contextId, String key) {
+        return scopeFor(context, contextId) + key;
+    }
+
     private String scopeFor(Context context) {
-        return context.getClass().getName() + "/";
+        return scopeFor(context, null);
+    }
+
+    private String scopeFor(Context context, String contextId) {
+        String scope = context.getClass().getName();
+        if (contextId != null) {
+            scope = scope + ":" + contextId;
+        }
+        return scope + "/";
     }
 }

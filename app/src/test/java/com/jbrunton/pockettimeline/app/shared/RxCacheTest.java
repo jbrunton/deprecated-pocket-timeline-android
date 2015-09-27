@@ -93,6 +93,19 @@ public class RxCacheTest {
         assertThat(cache.fetch(context2, "key")).isNotNull();
     }
 
+    @Test public void shouldInvalidateCacheByContextId() {
+        Context context = RuntimeEnvironment.application;
+        Func0<Observable<Integer>> factory = factoryThatReturns(counter);
+
+        cache.cache(context, "1", "key", factory);
+        cache.cache(context, "2", "key", factory);
+
+        cache.invalidate(context, "1");
+
+        assertThat(cache.fetch(context, "1", "key")).isNull();
+        assertThat(cache.fetch(context, "2", "key")).isNotNull();
+    }
+
     @Test public void shouldCreateObservableWithFactoryIfMissing() {
         Func0<Observable<Integer>> factory = factoryThatReturns(counter);
         Observable<Integer> cachedCounter = cache.cache("key", factory);
@@ -111,10 +124,16 @@ public class RxCacheTest {
         assertThat(cache.cache("key", factory)).isSameAs(cachedCounter);
     }
 
-    @Test public void shouldGenerateCompoundKey() {
+    @Test public void shouldGenerateCompoundKeyForContext() {
         Context context = RuntimeEnvironment.application;
         String compoundKey = cache.keyFor(context, "key");
         assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.TestPocketTimelineApplication/key");
+    }
+
+    @Test public void shouldGenerateCompoundKeyForInstance() {
+        Context context = RuntimeEnvironment.application;
+        String compoundKey = cache.keyFor(context, "instanceId", "key");
+        assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.TestPocketTimelineApplication:instanceId/key");
     }
 
     private Func0<Observable<Integer>> factoryThatReturns(Observable<Integer> observable) {
