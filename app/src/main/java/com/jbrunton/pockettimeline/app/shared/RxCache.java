@@ -1,8 +1,5 @@
 package com.jbrunton.pockettimeline.app.shared;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,8 +9,6 @@ import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.functions.Func0;
-import rx.subjects.ReplaySubject;
-import rx.subjects.Subject;
 
 @Singleton
 public class RxCache {
@@ -25,7 +20,7 @@ public class RxCache {
         String compoundKey = keyFor(owner, ownerId, key);
         Observable<T> observable = fetch(compoundKey);
         if (observable == null) {
-            cache.put(compoundKey, makeReplayable(factory.call()));
+            cache.put(compoundKey, factory.call().cache(1));
             observable = fetch(compoundKey);
         }
         return observable;
@@ -56,11 +51,5 @@ public class RxCache {
             scope = scope + ":" + ownerId;
         }
         return scope + "/";
-    }
-
-    private <T> Observable<T> makeReplayable(Observable<T> observable) {
-        Subject<T, T> subject = ReplaySubject.create(1);
-        observable.subscribe(subject);
-        return subject;
     }
 }
