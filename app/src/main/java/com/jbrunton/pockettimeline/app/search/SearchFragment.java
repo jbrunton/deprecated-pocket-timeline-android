@@ -74,7 +74,7 @@ public class SearchFragment extends BaseFragment {
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchMenuItem.getActionView();
-        if (query != null && !query.isEmpty()) {
+        if (query != null) {
             searchMenuItem.expandActionView();
             searchView.setQuery(query, false);
         }
@@ -83,12 +83,12 @@ public class SearchFragment extends BaseFragment {
 
     private void searchFor(String query) {
         this.query = query;
-        if (query.isEmpty()) {
-            eventsAdapter.setDataSource(Collections.<Event>emptyList());
-        } else {
-            subscribeTo(cache(SEARCH_CACHE_KEY, () -> doSearch(query)),
-                    this::searchResultsAvailable);
-        }
+
+        eventsAdapter.setDataSource(Collections.<Event>emptyList());
+
+        invalidate(SEARCH_CACHE_KEY);
+        subscribeTo(cache(SEARCH_CACHE_KEY, () -> doSearch(query)),
+                this::searchResultsAvailable);
     }
 
     private Observable<List<Event>> doSearch(String query) {
