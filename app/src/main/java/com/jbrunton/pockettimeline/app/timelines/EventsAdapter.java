@@ -9,7 +9,7 @@ import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 
 public class EventsAdapter extends BaseRecyclerAdapter<Event, EventsAdapter.ViewHolder> {
-    protected EventsAdapter() {
+    public EventsAdapter() {
         super(R.layout.item_event, new ViewHolderFactory());
     }
 

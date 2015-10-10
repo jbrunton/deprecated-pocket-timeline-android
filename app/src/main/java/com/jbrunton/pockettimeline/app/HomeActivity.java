@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
+import com.jbrunton.pockettimeline.app.search.SearchFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
@@ -23,6 +24,7 @@ public class HomeActivity extends BaseActivity {
     private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>() {{
         put(R.id.nav_timelines, new TimelinesFragment());
         put(R.id.nav_quiz, new QuizFragment());
+        put(R.id.nav_search, new SearchFragment());
     }};
 
     @Override protected void onCreate(Bundle savedInstanceState) {
