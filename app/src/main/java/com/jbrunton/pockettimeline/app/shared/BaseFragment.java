@@ -24,11 +24,13 @@ public class BaseFragment extends RxCacheFragment {
     }
 
     protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext, final Action1<Throwable> onError) {
-        observable
-                .subscribeOn(getApplication().defaultScheduler())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(onNext, onError);
+        if (observable != null) {
+            observable
+                    .subscribeOn(getApplication().defaultScheduler())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(bindToLifecycle())
+                    .subscribe(onNext, onError);
+        }
     }
 
     protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext) {

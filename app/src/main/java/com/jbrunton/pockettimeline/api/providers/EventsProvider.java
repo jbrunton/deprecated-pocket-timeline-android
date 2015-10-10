@@ -23,6 +23,10 @@ public class EventsProvider {
         return createModels(service.getEvents(timelineId));
     }
 
+    public Observable<List<Event>> searchEvents(String query) {
+        return createModels(service.searchEvents(query));
+    }
+
     public Observable<List<Event>> getEvents() {
         return createModels(service.getEvents());
     }

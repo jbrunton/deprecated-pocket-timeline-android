@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
+import retrofit.http.Query;
 import rx.Observable;
 
 public interface RestService {
@@ -19,6 +20,9 @@ public interface RestService {
 
     @GET("/events.json")
     Observable<List<EventResource>> getEvents();
+
+    @GET("/events/search.json")
+    Observable<List<EventResource>> searchEvents(@Query("query") String query);
 
     @GET("/timelines/{id}/events.json")
     Observable<List<EventResource>> getEvents(@Path("id") String timelineId);
