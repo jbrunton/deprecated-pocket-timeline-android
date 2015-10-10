@@ -82,14 +82,30 @@ public class RxCacheTest {
         testSubscriber.assertValues(1);
     }
 
+    @Test public void shouldFetchObservables() {
+        // arrange
+        cache.cache(owner, "1", "key", factory);
+
+        // act
+        Observable<Integer> cachedCounter = cache.fetch(owner, "1", "key");
+
+        // assert
+        TestSubscriber<Integer> testSubscriber = new TestSubscriber<>();
+        cachedCounter.subscribe(testSubscriber);
+
+        counter.onNext(1);
+
+        testSubscriber.assertValues(1);
+    }
+
     @Test public void shouldInvalidateCacheByContext() {
         cache.cache(owner, "1", "key", factory);
         cache.cache(otherOwner, "1", "key", factory);
 
         cache.invalidate(owner, "1");
 
-        assertThat(cache.fetch(cache.keyFor(owner, "1", "key"))).isNull();
-        assertThat(cache.fetch(cache.keyFor(otherOwner, "1", "key"))).isNotNull();
+        assertThat(cache.fetch(owner, "1", "key")).isNull();
+        assertThat(cache.fetch(otherOwner, "1", "key")).isNotNull();
     }
 
     @Test public void shouldInvalidateCacheByContextId() {
@@ -98,8 +114,8 @@ public class RxCacheTest {
 
         cache.invalidate(owner, "1");
 
-        assertThat(cache.fetch(cache.keyFor(owner, "1", "key"))).isNull();
-        assertThat(cache.fetch(cache.keyFor(owner, "2", "key"))).isNotNull();
+        assertThat(cache.fetch(owner, "1", "key")).isNull();
+        assertThat(cache.fetch(owner, "2", "key")).isNotNull();
     }
 
     @Test public void shouldReturnCompoundKey() {

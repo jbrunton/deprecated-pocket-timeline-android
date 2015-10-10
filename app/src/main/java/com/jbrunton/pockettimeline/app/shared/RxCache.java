@@ -3,6 +3,7 @@ package com.jbrunton.pockettimeline.app.shared;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,10 +19,10 @@ public class RxCache {
 
     public <T> Observable<T> cache(Object owner, String ownerId, String key, Func0<Observable<T>> factory) {
         String compoundKey = keyFor(owner, ownerId, key);
-        Observable<T> observable = fetch(compoundKey);
+        Observable<T> observable = cache.get(compoundKey);
         if (observable == null) {
             cache.put(compoundKey, factory.call().cache(1));
-            observable = fetch(compoundKey);
+            observable = cache.get(compoundKey);
         }
         return observable;
     }
@@ -37,12 +38,12 @@ public class RxCache {
         }
     }
 
-    protected String keyFor(Object owner, String ownerId, String key) {
-        return scopeFor(owner, ownerId) + key;
+    public <T> Observable<T> fetch(Object owner, String ownerId, String key) {
+        return cache.get(keyFor(owner, ownerId, key));
     }
 
-    protected <T> Observable<T> fetch(String key) {
-        return cache.get(key);
+    protected String keyFor(Object owner, String ownerId, String key) {
+        return scopeFor(owner, ownerId) + key;
     }
 
     private String scopeFor(Object owner, String ownerId) {
