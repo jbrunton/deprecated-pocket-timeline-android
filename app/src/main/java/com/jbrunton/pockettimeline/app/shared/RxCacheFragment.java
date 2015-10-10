@@ -35,4 +35,8 @@ public class RxCacheFragment extends RxFragment {
     protected <T> Observable<T> fetch(String key) {
         return cache.fetch(getContext(), ownerId(), key);
     }
+
+    protected void invalidate(String key) {
+        cache.invalidate(getContext(), ownerId(), key);
+    }
 }

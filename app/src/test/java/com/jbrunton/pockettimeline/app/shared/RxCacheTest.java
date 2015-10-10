@@ -118,6 +118,16 @@ public class RxCacheTest {
         assertThat(cache.fetch(owner, "2", "key")).isNotNull();
     }
 
+    @Test public void shouldInvalidateCacheByKey() {
+        cache.cache(owner, "1", "key1", factory);
+        cache.cache(owner, "1", "key2", factory);
+
+        cache.invalidate(owner, "1", "key1");
+
+        assertThat(cache.fetch(owner, "1", "key1")).isNull();
+        assertThat(cache.fetch(owner, "1", "key2")).isNotNull();
+    }
+
     @Test public void shouldReturnCompoundKey() {
         String compoundKey = cache.keyFor(owner, null, "key");
         assertThat(compoundKey).isEqualTo("com.jbrunton.pockettimeline.app.shared.RxCacheTest$TestFragment/key");

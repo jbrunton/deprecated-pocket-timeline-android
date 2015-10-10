@@ -38,6 +38,11 @@ public class RxCache {
         }
     }
 
+    public void invalidate(Object owner, String ownerId, String key) {
+        String compoundKey = keyFor(owner, ownerId, key);
+        cache.remove(compoundKey);
+    }
+
     public <T> Observable<T> fetch(Object owner, String ownerId, String key) {
         return cache.get(keyFor(owner, ownerId, key));
     }
