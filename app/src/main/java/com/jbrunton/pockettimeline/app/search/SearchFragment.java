@@ -19,6 +19,7 @@ import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.models.Event;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,24 +55,29 @@ public class SearchFragment extends BaseFragment {
         inflater.inflate(R.menu.menu_search, menu);
 
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override public boolean onQueryTextChange(String query) {
-                searchFor(query);
-                return true;
-            }
-        });
+        searchView.setOnQueryTextListener(onQueryTextListener);
     }
 
     private void searchFor(String query) {
-        subscribeTo(eventsProvider.searchEvents(query), this::searchResultsAvailable);
+        if (query.isEmpty()) {
+            eventsAdapter.setDataSource(Collections.<Event>emptyList());
+        } else {
+            subscribeTo(eventsProvider.searchEvents(query), this::searchResultsAvailable);
+        }
     }
 
     private void searchResultsAvailable(List<Event> events) {
         eventsAdapter.setDataSource(events);
     }
 
+    private final SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override public boolean onQueryTextChange(String query) {
+            searchFor(query);
+            return true;
+        }
+    };
 }
