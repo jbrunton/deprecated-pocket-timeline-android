@@ -31,4 +31,8 @@ public class RxCacheFragment extends RxFragment {
     protected <T> Observable<T> cache(String key, Func0<Observable<T>> factory) {
         return cache.cache(getContext(), ownerId(), key, factory);
     }
+
+    protected <T> Observable<T> fetch(String key) {
+        return cache.fetch(getContext(), ownerId(), key);
+    }
 }
