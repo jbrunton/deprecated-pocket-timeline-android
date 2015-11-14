@@ -59,8 +59,9 @@ public class SearchFragment extends BaseFragment {
         setTitle("Search");
         setHasOptionsMenu(true);
 
-        subscribeTo(fetch(SEARCH_CACHE_KEY),
-                this::searchResultsAvailable);
+        this.<List<Event>>fetch(SEARCH_CACHE_KEY)
+                .compose(applySchedulers())
+                .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {
@@ -87,8 +88,9 @@ public class SearchFragment extends BaseFragment {
         eventsAdapter.setDataSource(Collections.<Event>emptyList());
 
         invalidate(SEARCH_CACHE_KEY);
-        subscribeTo(cache(SEARCH_CACHE_KEY, () -> doSearch(query)),
-                this::searchResultsAvailable);
+        cache(SEARCH_CACHE_KEY, () -> doSearch(query))
+                .compose(applySchedulers())
+                .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
     }
 
     private Observable<List<Event>> doSearch(String query) {

@@ -8,6 +8,7 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class BaseFragment extends RxCacheFragment {
 
@@ -15,26 +16,17 @@ public class BaseFragment extends RxCacheFragment {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
 
-    protected void onError(Throwable throwable) {
-        showMessage("Error: " + throwable.getMessage());
-    }
-
     protected void setTitle(String title) {
         getActivity().setTitle(title);
     }
 
-    protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext, final Action1<Throwable> onError) {
-        if (observable != null) {
-            observable
-                    .subscribeOn(getApplication().defaultScheduler())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(bindToLifecycle())
-                    .subscribe(onNext, onError);
-        }
+    protected <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    protected <T> void subscribeTo(Observable<T> observable, final Action1<? super T> onNext) {
-        subscribeTo(observable, onNext, this::onError);
+    protected void defaultErrorHandler(Throwable throwable) {
+        showMessage("Error: " + throwable.getMessage());
     }
 
     protected PocketTimelineApplication getApplication() {

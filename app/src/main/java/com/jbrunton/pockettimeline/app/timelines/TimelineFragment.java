@@ -64,8 +64,9 @@ public class TimelineFragment extends BaseFragment {
         setTitle("Timeline");
         setHomeAsUp(true);
 
-        subscribeTo(cache(TIMELINE_CACHE_KEY, this::getTimeline),
-                this::onTimelineAvailable);
+        cache(TIMELINE_CACHE_KEY, this::getTimeline)
+                .compose(applySchedulers())
+                .subscribe(this::onTimelineAvailable, this::defaultErrorHandler);
     }
 
     @Override protected String ownerId() {

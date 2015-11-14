@@ -7,8 +7,6 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.jbrunton.pockettimeline.app.quiz.DaggerQuizFragmentTest_TestApplicationComponent;
-import com.jbrunton.pockettimeline.app.quiz.QuizFragmentTest;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
