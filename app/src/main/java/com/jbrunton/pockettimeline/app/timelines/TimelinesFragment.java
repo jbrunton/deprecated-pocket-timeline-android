@@ -53,8 +53,9 @@ public class TimelinesFragment extends BaseFragment {
         super.onResume();
         setTitle("Timelines");
 
-        subscribeTo(cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines),
-                this::onTimelinesAvailable);
+        cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
+                .compose(applySchedulers())
+                .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);
     }
 
     private void showTimeline(Timeline timeline) {

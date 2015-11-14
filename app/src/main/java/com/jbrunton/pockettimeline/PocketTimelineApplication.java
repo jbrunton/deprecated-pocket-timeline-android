@@ -26,6 +26,6 @@ public class PocketTimelineApplication extends Application {
     }
 
     public Scheduler defaultScheduler() {
-        return Schedulers.newThread();
+        return Schedulers.io();
     }
 }

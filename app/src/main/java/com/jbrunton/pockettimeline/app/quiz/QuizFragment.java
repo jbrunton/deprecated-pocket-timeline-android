@@ -48,8 +48,9 @@ public class QuizFragment extends BaseFragment {
         setTitle("Quiz");
         applicationComponent().inject(this);
 
-        subscribeTo(eventsProvider.getEvents(),
-                this::onEventsAvailable);
+        eventsProvider.getEvents()
+                .compose(applySchedulers())
+                .subscribe(this::onEventsAvailable, this::defaultErrorHandler);
     }
 
     private void onEventsAvailable(List<Event> events) {
