@@ -3,13 +3,13 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.jbrunton.pockettimeline"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -23,24 +23,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-}
-
-String java8 = getJavaVersion(8)
-String java6 = getJavaVersion(6)
-retrolambda {
-    jdk java8 //have tried with JAVA8_HOME
-    oldJdk java6 //have tried with JAVA6_HOME
-    javaVersion JavaVersion.VERSION_1_6 //have matched the above with VERSION_1_6
-}
-
-// AS doesn't seem to pick up environment variables. See:
-// https://github.com/evant/gradle-retrolambda/issues/61#issuecomment-66581029
-String getJavaVersion(Integer v) {
-    def sout = new StringBuffer()
-    def proc = "/usr/libexec/java_home -v 1.$v".execute()
-    proc.consumeProcessOutput(sout, new StringBuffer())
-    proc.waitForOrKill(1000)
-    return sout.toString().replace("\n", "").replace("\r", "")
 }
 
 dependencies {
