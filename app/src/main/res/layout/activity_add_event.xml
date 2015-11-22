@@ -24,21 +24,62 @@
             />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <android.support.percent.PercentRelativeLayout
+        xmlns:auto="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content">
 
-        <EditText
-            style="@android:style/Widget.Material.Spinner.Underlined"
-            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/day_of_month_wrapper"
+            auto:layout_widthPercent="30%"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Date"
-            tools:text="1 Sept, 1939"
-            />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/day_of_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Day"
+                android:inputType="number"
+                tools:text="1"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/month_of_year_wrapper"
+            auto:layout_widthPercent="40%"
+            android:layout_toRightOf="@+id/day_of_month_wrapper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/month_of_year"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:hint="Month"
+                tools:text="September"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/year_wrapper"
+            android:layout_toRightOf="@+id/month_of_year_wrapper"
+            auto:layout_widthPercent="30%"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/year"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Year"
+                tools:text="1939"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+    </android.support.percent.PercentRelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

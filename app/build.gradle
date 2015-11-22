@@ -31,9 +31,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:percent:23.1.0'
 
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'io.reactivex:rxandroid:1.0.1'
@@ -45,6 +46,8 @@ dependencies {
     testCompile 'com.google.dagger:dagger-compiler:2.0.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'joda-time:joda-time:2.8.2'
+
+    compile 'com.jakewharton:butterknife:7.0.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
