@@ -1,11 +1,10 @@
 package com.jbrunton.pockettimeline.app.shared;
 
-import android.app.Dialog;
+import android.support.design.widget.TextInputLayout;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.jbrunton.pockettimeline.app.timelines.DaggerTimelinesFragmentTest_TestApplicationComponent;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 
@@ -15,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowDialog;
 
 import javax.inject.Singleton;
 
@@ -24,7 +22,6 @@ import dagger.Component;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.isNull;
@@ -53,22 +50,37 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
 
     @Test public void shouldValidateDayOfMonth() {
         enterDay("200");
-        assertNotNull(fragment().dayPickerWrapper.getError());
+        assertErrorOn(fragment().dayPickerWrapper);
+    }
+
+    @Test public void shouldNotShowErrorsOnValidInput() {
+        enterDate("1", 9, "1939");
+
+        assertValid(fragment().dayPickerWrapper);
+        assertValid(fragment().yearPickerWrapper);
     }
 
     @Test public void shouldValidateYear() {
         enterYear("3000");
-        assertNotNull(fragment().yearPickerWrapper.getError());
+        assertErrorOn(fragment().yearPickerWrapper);
     }
 
     @Test public void shouldValidateDayOnceMonthAndYearGiven() {
         enterDay("31");
-        assertNull(fragment().dayPickerWrapper.getError());
+        assertValid(fragment().dayPickerWrapper);
 
         enterMonth(9);
         enterYear("1939");
 
-        assertNotNull(fragment().dayPickerWrapper.getError());
+        assertErrorOn(fragment().dayPickerWrapper);
+    }
+
+    private void assertErrorOn(TextInputLayout layout) {
+        assertNotNull(layout.getError());
+    }
+
+    private void assertValid(TextInputLayout layout) {
+        assertNull(layout.getError());
     }
 
     private void enterDate(String dayOfMonth, int monthOfYear, String year) {
