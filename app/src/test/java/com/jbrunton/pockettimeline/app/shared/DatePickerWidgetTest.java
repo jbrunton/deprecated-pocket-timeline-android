@@ -27,6 +27,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -73,6 +74,15 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
         enterYear("1939");
 
         assertErrorOn(fragment().dayPickerWrapper);
+    }
+
+    @Test public void shouldNotifyWhenDateBecomesInvalid() {
+        enterDate("1", 9, "1939");
+        reset(listener);
+
+        enterDay("31");
+
+        verify(listener).onDateChanged(null);
     }
 
     private void assertErrorOn(TextInputLayout layout) {

@@ -68,6 +68,7 @@ public class DatePickerWidget extends Fragment {
             validateDate();
         } else {
             dayPickerWrapper.setError("Invalid day");
+            invalidate();
         }
     }
 
@@ -85,6 +86,7 @@ public class DatePickerWidget extends Fragment {
             validateDate();
         } else {
             yearPickerWrapper.setError("Invalid year");
+            invalidate();
         }
 
     }
@@ -97,8 +99,15 @@ public class DatePickerWidget extends Fragment {
                     onDateChangedListener.onDateChanged(selectedDate);
                 }
             } catch (IllegalFieldValueException e) {
+                invalidate();
                 dayPickerWrapper.setError("Invalid day");
             }
+        }
+    }
+
+    private void invalidate() {
+        if (selectedDate != null) {
+            onDateChangedListener.onDateChanged(null);
         }
     }
 
