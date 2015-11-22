@@ -2,7 +2,9 @@ package com.jbrunton.pockettimeline.models;
 
 import org.joda.time.LocalDate;
 
-public class Event extends Resource {
+import java.io.Serializable;
+
+public class Event extends Resource implements Serializable {
     private final LocalDate date;
     private final String title;
     private final String description;

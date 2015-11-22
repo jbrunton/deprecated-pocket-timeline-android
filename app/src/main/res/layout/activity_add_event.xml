@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin"
+    tools:context=".app.timelines.AddEventActivity"
+    >
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:singleLine="true"
+            tools:text="Germany invades Poland"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <fragment android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:name="com.jbrunton.pockettimeline.app.shared.DatePickerWidget"
+              android:id="@+id/date_picker"
+              tools:layout="@layout/widget_date_picker"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/event_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:hint="Description"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+    </android.support.design.widget.TextInputLayout>
+
+
+</LinearLayout>
