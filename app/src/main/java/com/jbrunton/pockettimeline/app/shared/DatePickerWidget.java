@@ -107,6 +107,7 @@ public class DatePickerWidget extends Fragment {
 
     private void invalidate() {
         if (selectedDate != null) {
+            selectedDate = null;
             onDateChangedListener.onDateChanged(null);
         }
     }

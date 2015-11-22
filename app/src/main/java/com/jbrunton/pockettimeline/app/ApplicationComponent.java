@@ -16,6 +16,7 @@ import dagger.Component;
 @Component(modules = {RestServiceModule.class, ProvidersModule.class})
 public interface ApplicationComponent {
     void inject(TimelineActivity activity);
+    void inject(AddEventActivity activity);
 
     void inject(TimelinesFragment fragment);
     void inject(QuizFragment fragment);
