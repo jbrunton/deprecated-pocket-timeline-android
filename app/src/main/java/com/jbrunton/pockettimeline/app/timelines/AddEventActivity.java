@@ -36,7 +36,8 @@ public class AddEventActivity extends BaseActivity {
     @Bind(R.id.event_title) EditText eventTitleText;
     @Inject EventsProvider eventsProvider;
 
-    private final static String ARG_TIMELINE_ID = "timelineId";
+    public final static String ARG_TIMELINE_ID = "timelineId";
+    public final static int RESULT_CREATED_EVENT = 1;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +77,7 @@ public class AddEventActivity extends BaseActivity {
     }
 
     private void eventCreated(Event event) {
-        setResult(0, new Intent().putExtra(ARG_TIMELINE_ID, event.getId()));
+        setResult(RESULT_CREATED_EVENT, new Intent().putExtra(ARG_TIMELINE_ID, event.getId()));
         finish();
     }
 

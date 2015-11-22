@@ -97,14 +97,16 @@ public class TimelineActivity extends BaseActivity {
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final String eventId = data.getStringExtra("timelineId");
-        showMessage("Added event", view -> {
-            eventsProvider.deleteEvent(eventId)
-                    .compose(applySchedulers())
-                    .subscribe(x -> fetchTimeline(true));
-        });
+        if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
+            final String eventId = data.getStringExtra("timelineId");
+            showMessage("Added event", view -> {
+                eventsProvider.deleteEvent(eventId)
+                        .compose(applySchedulers())
+                        .subscribe(x -> fetchTimeline(true));
+            });
 
-        invalidate(TIMELINE_CACHE_KEY);
+            invalidate(TIMELINE_CACHE_KEY);
+        }
     }
 
     private String getTimelineId() {
