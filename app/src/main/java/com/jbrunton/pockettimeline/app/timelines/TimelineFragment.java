@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,12 +43,20 @@ public class TimelineFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        FloatingActionButton addEvent = (FloatingActionButton) view.findViewById(R.id.add_event);
+        addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                showMessage("Hey");
+            }
+        });
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         eventsAdapter = new EventsAdapter();
-        view.setAdapter(eventsAdapter);
+        recyclerView.setAdapter(eventsAdapter);
 
         return view;
     }
