@@ -4,6 +4,7 @@ import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.search.SearchFragment;
+import com.jbrunton.pockettimeline.app.timelines.AddEventActivity;
 import com.jbrunton.pockettimeline.app.timelines.TimelineActivity;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 

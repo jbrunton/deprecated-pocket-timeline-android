@@ -13,7 +13,7 @@ public class RxCacheActivity extends AppCompatActivity {
     @Override public void onDestroy() {
         super.onDestroy();
 
-        if (isFinishing()) {
+        if (isFinishing() && cache != null) {
             cache.invalidate(this, ownerId());
         }
     }

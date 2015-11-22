@@ -35,7 +35,7 @@ public class TimelineActivity extends BaseActivity {
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                showMessage("Hey");
+                AddEventActivity.start(TimelineActivity.this, getTimelineId());
             }
         });
 
