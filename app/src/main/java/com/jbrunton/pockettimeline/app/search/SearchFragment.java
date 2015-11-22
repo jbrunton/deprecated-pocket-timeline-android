@@ -59,9 +59,11 @@ public class SearchFragment extends BaseFragment {
         setTitle("Search");
         setHasOptionsMenu(true);
 
-        this.<List<Event>>fetch(SEARCH_CACHE_KEY)
-                .compose(applySchedulers())
-                .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
+        Observable<List<Event>> search = fetch(SEARCH_CACHE_KEY);
+        if (search != null) {
+            search.compose(applySchedulers())
+                    .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
+        }
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {
