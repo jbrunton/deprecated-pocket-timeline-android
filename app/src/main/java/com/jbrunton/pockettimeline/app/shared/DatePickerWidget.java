@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import rx.functions.Func1;
 
 public class DatePickerWidget extends Fragment {
     public interface OnDateChangedListener {
@@ -62,13 +63,9 @@ public class DatePickerWidget extends Fragment {
 
     @OnTextChanged(R.id.day_of_month) void onDayChanged(CharSequence text) {
         dayPickerWrapper.setError(null);
-        if (text.toString().matches("\\d+")) {
+        if (validNumber(text, dayOfMonth -> dayOfMonth <= 31)) {
             dayOfMonth = Integer.valueOf(text.toString());
-            if (dayOfMonth <= 31) {
-                validateDate();
-            } else {
-                dayPickerWrapper.setError("Invalid day");
-            }
+            validateDate();
         } else {
             dayPickerWrapper.setError("Invalid day");
         }
@@ -83,16 +80,13 @@ public class DatePickerWidget extends Fragment {
     @OnTextChanged(R.id.year) void onYearChanged(CharSequence text) {
         dayPickerWrapper.setError(null);
         yearPickerWrapper.setError(null);
-        if (text.toString().matches("\\d+")) {
+        if (validNumber(text, year -> year <= LocalDate.now().getYear())) {
             year = Integer.valueOf(text.toString());
-            if (year <= LocalDate.now().getYear()) {
-                validateDate();
-            } else {
-                yearPickerWrapper.setError("Invalid year");
-            }
+            validateDate();
         } else {
             yearPickerWrapper.setError("Invalid year");
         }
+
     }
 
     private void validateDate() {
@@ -106,5 +100,10 @@ public class DatePickerWidget extends Fragment {
                 dayPickerWrapper.setError("Invalid day");
             }
         }
+    }
+
+    private boolean validNumber(CharSequence text, Func1<Integer, Boolean> predicate) {
+        return text.toString().matches("\\d+")
+                && predicate.call(Integer.valueOf(text.toString()));
     }
 }
