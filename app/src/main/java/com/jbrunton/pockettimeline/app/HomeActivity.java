@@ -62,7 +62,7 @@ public class HomeActivity extends BaseActivity {
 
     private void configureDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView view = (NavigationView) findViewById(R.id.nav_view);
         view.setNavigationItemSelectedListener(this::onDrawerItemSelected);
 
         drawerToggle = new ActionBarDrawerToggle(
