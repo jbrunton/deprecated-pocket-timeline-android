@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import org.junit.Before;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.sql.Time;
 import java.util.List;
 
 import rx.Observable;
@@ -25,6 +25,7 @@ public class TimelinesPresenterTest {
     private TimelinesPresenter presenter;
     private TimelinesView view;
     private TimelinesProvider provider;
+
     private final List<Timeline> TIMELINES = asList(
             new Timeline("1", "Some Timeline", "Some description")
     );
@@ -33,7 +34,7 @@ public class TimelinesPresenterTest {
         view = mock(TimelinesView.class);
         provider = mock(TimelinesProvider.class);
 
-        presenter = new TimelinesPresenter(provider);
+        presenter = new TimelinesPresenter(provider, new TestSchedulerManager());
         presenter.bind(view);
     }
 
