@@ -13,6 +13,8 @@ public class BasePresenter<ViewType> {
         return view;
     }
 
+    public void onResume() {}
+
     public void detach() {
         this.view = null;
     }

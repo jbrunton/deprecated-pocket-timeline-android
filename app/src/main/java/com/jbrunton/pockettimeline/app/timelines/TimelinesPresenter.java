@@ -22,7 +22,7 @@ public class TimelinesPresenter extends BasePresenter<TimelinesView> {
         this.schedulerManager = schedulerManager;
     }
 
-    public void onResume() {
+    @Override public void onResume() {
         getView().showLoadingIndicator();
         provider.getTimelines()
                 .compose(schedulerManager.applySchedulers())

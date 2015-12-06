@@ -48,20 +48,13 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         super.onCreate(savedInstanceState);
         applicationComponent().inject(this);
 
-        presenter.bind(this);
+        bind(presenter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setTitle("Timelines");
-
-        presenter.onResume();
-    }
-
-    @Override public void onDestroy() {
-        super.onDestroy();
-        presenter.detach();
     }
 
     private void showTimeline(Timeline timeline) {
