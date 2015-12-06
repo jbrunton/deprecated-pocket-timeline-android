@@ -44,13 +44,19 @@ public class TimelinesPresenterTest {
         verify(view).showLoadingIndicator();
     }
 
-    @Test public void shouldRequestTimelines() {
+    @Test public void shouldRequestAndPresentTimelines() {
         stubProviderToReturn(TIMELINES);
 
         presenter.onResume();
 
         verify(view).showTimelines(TIMELINES);
         verify(view).hideLoadingIndicator();
+    }
+
+    @Test public void shouldPresentMessageOnError() {
+        when(provider.getTimelines()).thenReturn(Observable.error(new Throwable("Message")));
+        presenter.onResume();
+        verify(view).showMessage("Error: Message");
     }
 
     private void stubProviderWithEmptySequence() {

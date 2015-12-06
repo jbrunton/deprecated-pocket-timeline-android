@@ -26,11 +26,15 @@ public class TimelinesPresenter extends BasePresenter<TimelinesView> {
         getView().showLoadingIndicator();
         provider.getTimelines()
                 .compose(schedulerManager.applySchedulers())
-                .subscribe(this::onTimelinesAvailable);
+                .subscribe(this::onTimelinesAvailable, this::onError);
     }
 
     private void onTimelinesAvailable(List<Timeline> timelines) {
         getView().showTimelines(timelines);
         getView().hideLoadingIndicator();
+    }
+
+    private void onError(Throwable throwable) {
+        getView().showMessage("Error: " + throwable.getMessage());
     }
 }

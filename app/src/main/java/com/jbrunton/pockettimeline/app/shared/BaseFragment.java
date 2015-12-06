@@ -10,11 +10,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class BaseFragment extends RxCacheFragment {
+public class BaseFragment extends RxCacheFragment implements DisplayErrorView {
 
     private BasePresenter presenter;
 
-    protected void showMessage(String text) {
+    @Override public void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
 
