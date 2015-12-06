@@ -47,7 +47,6 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         applicationComponent().inject(this);
-
         bind(presenter);
     }
 
