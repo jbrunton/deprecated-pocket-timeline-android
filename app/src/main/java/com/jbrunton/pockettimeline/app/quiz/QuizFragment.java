@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
+import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 import com.jbrunton.pockettimeline.models.Event;
 
@@ -21,13 +22,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class QuizFragment extends BaseFragment {
+public class QuizFragment extends BaseFragment implements QuizView {
     @Inject RandomHelper randomHelper;
     @Inject EventsProvider eventsProvider;
+    @Inject QuizPresenter presenter;
 
     private TextView answerField;
-    private Event event;
-    private List<Event> events;
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        applicationComponent().inject(this);
+        bind(presenter);
+    }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
@@ -44,45 +50,32 @@ public class QuizFragment extends BaseFragment {
 
     @Override public void onResume() {
         super.onResume();
-
         setTitle("Quiz");
-        applicationComponent().inject(this);
-
-        eventsProvider.getEvents()
-                .compose(applySchedulers())
-                .subscribe(this::onEventsAvailable, this::defaultErrorHandler);
     }
 
-    private void onEventsAvailable(List<Event> events) {
-        this.events = events;
-        selectEvent();
-    }
-
-    private void selectEvent() {
-        event = events.get(randomHelper.getNext(events.size()));
-        updateView(event);
-    }
-
-    private void updateView(Event event) {
+    @Override public void displayEvent(Event event) {
         TextView eventTitle = (TextView) getView().findViewById(R.id.event_title);
         eventTitle.setText(event.getTitle());
         answerField.setText("");
     }
 
+    @Override public void showCorrectDialog() {
+        showAlert(getString(R.string.correct_answer));
+    }
+
+    @Override public void showIncorrectDialog(String correctAnswer) {
+        showAlert(getString(R.string.incorrect_answer, correctAnswer));
+    }
+
     private void submitAnswer() {
         String submittedAnswer = answerField.getText().toString();
-        String correctAnswer = Integer.toString(event.getDate().getYear());
-        if (correctAnswer.equals(submittedAnswer)) {
-            showAlert(getString(R.string.correct_answer));
-        } else {
-            showAlert(getString(R.string.incorrect_answer, correctAnswer));
-        }
+        presenter.submitAnswer(submittedAnswer);
     }
 
     private void showAlert(String message) {
         new AlertDialog.Builder(getActivity())
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> selectEvent())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
                 .create()
                 .show();
     }
