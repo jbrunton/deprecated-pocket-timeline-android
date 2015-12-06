@@ -22,6 +22,7 @@ import rx.functions.Func0;
 
 public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
     @Inject TimelinesProvider timelinesProvider;
+    @Inject TimelinesPresenter presenter;
     private TimelinesAdapter timelinesAdapter;
 
     private final static String TIMELINES_CACHE_KEY = "timelines";
@@ -46,6 +47,8 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         applicationComponent().inject(this);
+
+        presenter.bind(this);
     }
 
     @Override
@@ -57,6 +60,11 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
                 .compose(applySchedulers())
                 .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
     }
 
     private void showTimeline(Timeline timeline) {
