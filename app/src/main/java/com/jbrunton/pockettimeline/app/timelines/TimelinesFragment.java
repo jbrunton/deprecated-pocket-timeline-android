@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Func0;
 
-public class TimelinesFragment extends LoadingIndicatorFragment {
+public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
     @Inject TimelinesProvider timelinesProvider;
     private TimelinesAdapter timelinesAdapter;
 
@@ -65,7 +65,10 @@ public class TimelinesFragment extends LoadingIndicatorFragment {
 
     private void onTimelinesAvailable(List<Timeline> timelines) {
         hideLoadingIndicator();
-        timelinesAdapter.setDataSource(timelines);
+        showTimelines(timelines);
     }
 
+    @Override public void showTimelines(List<Timeline> timelines) {
+        timelinesAdapter.setDataSource(timelines);
+    }
 }
