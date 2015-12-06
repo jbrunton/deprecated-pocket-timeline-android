@@ -57,9 +57,6 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         setTitle("Timelines");
 
         presenter.onResume();
-        cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
-                .compose(applySchedulers())
-                .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);
     }
 
     @Override public void onDestroy() {
@@ -69,11 +66,6 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
 
     private void showTimeline(Timeline timeline) {
         TimelineActivity.start(getActivity(), timeline.getId());
-    }
-
-    private void onTimelinesAvailable(List<Timeline> timelines) {
-        hideLoadingIndicator();
-        showTimelines(timelines);
     }
 
     @Override public void showTimelines(List<Timeline> timelines) {

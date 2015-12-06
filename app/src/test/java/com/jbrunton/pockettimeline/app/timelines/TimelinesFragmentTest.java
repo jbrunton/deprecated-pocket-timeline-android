@@ -1,17 +1,14 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
-import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
-import com.jbrunton.pockettimeline.models.Event;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import org.junit.Before;
