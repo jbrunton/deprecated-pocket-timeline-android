@@ -20,8 +20,9 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Func0;
 
-public class TimelinesFragment extends LoadingIndicatorFragment {
+public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
     @Inject TimelinesProvider timelinesProvider;
+    @Inject TimelinesPresenter presenter;
     private TimelinesAdapter timelinesAdapter;
 
     private final static String TIMELINES_CACHE_KEY = "timelines";
@@ -46,26 +47,20 @@ public class TimelinesFragment extends LoadingIndicatorFragment {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         applicationComponent().inject(this);
+        bind(presenter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setTitle("Timelines");
-
-        showLoadingIndicator();
-        cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
-                .compose(applySchedulers())
-                .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);
     }
 
     private void showTimeline(Timeline timeline) {
         TimelineActivity.start(getActivity(), timeline.getId());
     }
 
-    private void onTimelinesAvailable(List<Timeline> timelines) {
-        hideLoadingIndicator();
+    @Override public void showTimelines(List<Timeline> timelines) {
         timelinesAdapter.setDataSource(timelines);
     }
-
 }

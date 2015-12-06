@@ -10,9 +10,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class BaseFragment extends RxCacheFragment {
+public class BaseFragment extends RxCacheFragment implements DisplayErrorView {
 
-    protected void showMessage(String text) {
+    private BasePresenter presenter;
+
+    @Override public void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
 
@@ -39,5 +41,24 @@ public class BaseFragment extends RxCacheFragment {
 
     protected void setHomeAsUp(boolean showHomeAsUp) {
         ((BaseActivity) getActivity()).setHomeAsUp(showHomeAsUp);
+    }
+
+    protected <ViewType> void bind(BasePresenter<ViewType> presenter) {
+        this.presenter = presenter;
+        presenter.bind((ViewType) this);
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (presenter != null) {
+            presenter.onResume();
+        }
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.detach();
+        }
     }
 }
