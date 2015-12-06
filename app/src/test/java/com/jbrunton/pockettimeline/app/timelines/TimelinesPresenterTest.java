@@ -1,7 +1,5 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,25 +17,19 @@ public class TimelinesPresenterTest {
     @Before public void setUp() {
         presenter = new TimelinesPresenter();
         view = mock(TimelinesView.class);
+        presenter.bind(view);
     }
 
     @Test public void shouldBindToView() {
-        presenter.bind(view);
         assertThat(presenter.getView()).isSameAs(view);
     }
 
     @Test public void shouldDetachFromView() {
-        presenter.bind(view);
-        assertThat(presenter.getView()).isNotNull();
-
         presenter.detach();
-
         assertThat(presenter.getView()).isNull();
     }
 
-
     @Test public void shouldShowLoadingIndicator() {
-        presenter.bind(view);
         presenter.onResume();
         verify(view).showLoadingIndicator();
     }
