@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.jbrunton.pockettimeline.R;
 
-public abstract class LoadingIndicatorFragment extends BaseFragment {
+public abstract class LoadingIndicatorFragment extends BaseFragment implements LoadingIndicatorView {
     private ViewGroup contentHolder;
     private View loadingIndicator;
 
@@ -25,12 +25,12 @@ public abstract class LoadingIndicatorFragment extends BaseFragment {
 
     protected abstract View createContentView(LayoutInflater inflater, ViewGroup container);
 
-    public void showLoadingIndicator() {
+    @Override public void showLoadingIndicator() {
         loadingIndicator.setVisibility(View.VISIBLE);
         contentHolder.setVisibility(View.GONE);
     }
 
-    public void hideLoadingIndicator() {
+    @Override public void hideLoadingIndicator() {
         loadingIndicator.setVisibility(View.GONE);
         contentHolder.setVisibility(View.VISIBLE);
     }
