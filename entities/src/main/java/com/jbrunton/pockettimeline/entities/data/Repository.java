@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.entities.data;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.jbrunton.pockettimeline.entities.models.Resource;
 
@@ -26,12 +27,10 @@ public class Repository<T extends Resource> {
         subject.onNext(Collections.unmodifiableList(resources));
     }
 
-    public Observable<T> find(String id) {
+    public Observable<Optional<T>> find(String id) {
         return all().map(resources -> {
-            T resource = FluentIterable.from(resources)
-                    .firstMatch(r -> r.getId().equals(id))
-                    .get();
-            return resource;
+            return FluentIterable.from(resources)
+                    .firstMatch(r -> r.getId().equals(id));
         });
     }
 }

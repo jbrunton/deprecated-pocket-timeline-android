@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.entities.data;
 
 
+import com.google.common.base.Optional;
 import com.jbrunton.pockettimeline.entities.models.Resource;
 
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class RepositoryTest {
     @Before public void setUp() {
         repository = new Repository<>();
     }
-    
+
     @Test public void shouldReturnEmptyListByDefault() {
         assertThat(all().latest()).isEmpty();
     }
@@ -44,9 +45,9 @@ public class RepositoryTest {
     }
 
     @Test public void shouldFindResourceById() {
+        FindDsl query = find("1");
         repository.set(RESOURCES);
-        Resource found = find("1").latest();
-        assertThat(found).isSameAs(RESOURCE_ONE);
+        assertThat(query.latest().get()).isSameAs(RESOURCE_ONE);
     }
 
     @Test public void shouldNotifySubscribersOfChanges() {
@@ -73,14 +74,14 @@ public class RepositoryTest {
     }
 
     private class FindDsl {
-        private final TestSubscriber<Resource> testSubscriber = TestSubscriber.create();
+        private final TestSubscriber<Optional<Resource>> testSubscriber = TestSubscriber.create();
 
         public FindDsl(String id) {
             repository.find(id).subscribe(testSubscriber);
         }
 
-        public Resource latest() {
-            List<Resource> events = testSubscriber.getOnNextEvents();
+        public Optional<Resource> latest() {
+            List<Optional<Resource>> events = testSubscriber.getOnNextEvents();
             return events.get(events.size() - 1);
         }
     }
