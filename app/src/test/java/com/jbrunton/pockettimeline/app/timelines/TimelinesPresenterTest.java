@@ -38,15 +38,6 @@ public class TimelinesPresenterTest {
         presenter.bind(view);
     }
 
-    @Test public void shouldBindToView() {
-        assertThat(presenter.getView()).isSameAs(view);
-    }
-
-    @Test public void shouldDetachFromView() {
-        presenter.detach();
-        assertThat(presenter.getView()).isNull();
-    }
-
     @Test public void shouldShowLoadingIndicator() {
         stubProviderWithEmptySequence();
         presenter.onResume();
