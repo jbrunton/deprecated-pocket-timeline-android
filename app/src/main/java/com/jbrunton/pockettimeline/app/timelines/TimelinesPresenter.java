@@ -2,6 +2,7 @@ package com.jbrunton.pockettimeline.app.timelines;
 
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 import com.jbrunton.pockettimeline.models.Timeline;
 
@@ -23,18 +24,18 @@ public class TimelinesPresenter extends BasePresenter<TimelinesView> {
     }
 
     @Override public void onResume() {
-        getView().showLoadingIndicator();
+        withView(LoadingIndicatorView::showLoadingIndicator);
         provider.getTimelines()
                 .compose(schedulerManager.applySchedulers())
                 .subscribe(this::onTimelinesAvailable, this::onError);
     }
 
     private void onTimelinesAvailable(List<Timeline> timelines) {
-        getView().showTimelines(timelines);
-        getView().hideLoadingIndicator();
+        withView(view -> view.showTimelines(timelines));
+        withView(LoadingIndicatorView::hideLoadingIndicator);
     }
 
     private void onError(Throwable throwable) {
-        getView().showMessage("Error: " + throwable.getMessage());
+        withView(view -> view.showMessage("Error: " + throwable.getMessage()));
     }
 }

@@ -13,6 +13,7 @@ import org.junit.runners.JUnit4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class BasePresenterTest {
@@ -27,11 +28,21 @@ public class BasePresenterTest {
     }
 
     @Test public void shouldBindToView() {
-        assertThat(presenter.getView()).isSameAs(view);
+        assertThat(presenter.getView().get()).isSameAs(view);
     }
 
     @Test public void shouldDetachFromView() {
         presenter.detach();
-        assertThat(presenter.getView()).isNull();
+        assertThat(presenter.getView().isPresent()).isFalse();
+    }
+
+    @Test public void shouldCallMethodOnView() {
+        presenter.withView(LoadingIndicatorView::showLoadingIndicator);
+        verify(view).showLoadingIndicator();
+    }
+
+    @Test public void shouldNotCallMethodIfViewIsNull() {
+        presenter.detach();
+        presenter.withView(LoadingIndicatorView::showLoadingIndicator);
     }
 }

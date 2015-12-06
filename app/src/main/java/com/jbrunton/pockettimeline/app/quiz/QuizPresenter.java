@@ -39,14 +39,14 @@ public class QuizPresenter extends BasePresenter<QuizView> {
     public void submitAnswer(String submittedAnswer) {
         String correctAnswer = Integer.toString(event.getDate().getYear());
         if (correctAnswer.equals(submittedAnswer)) {
-            getView().showCorrectDialog();
+            withView(QuizView::showCorrectDialog);
         } else {
-            getView().showIncorrectDialog(correctAnswer);
+            withView(view -> view.showIncorrectDialog(correctAnswer));
         }
     }
 
     public void nextQuestion() {
         event = events.get(randomHelper.getNext(events.size()));
-        getView().displayEvent(event);
+        withView(view -> view.displayEvent(event));
     }
 }
