@@ -54,9 +54,13 @@ public class TimelinesPresenterTest {
     }
 
     @Test public void shouldPresentMessageOnError() {
-        when(provider.getTimelines()).thenReturn(Observable.error(new Throwable("Message")));
+        stubProviderToErrorWith(new Throwable("Message"));
         presenter.onResume();
         verify(view).showMessage("Error: Message");
+    }
+
+    private void stubProviderToErrorWith(Throwable throwable) {
+        when(provider.getTimelines()).thenReturn(Observable.error(throwable));
     }
 
     private void stubProviderWithEmptySequence() {
