@@ -5,9 +5,9 @@ import android.app.Dialog;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
-import com.jbrunton.pockettimeline.models.Event;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;

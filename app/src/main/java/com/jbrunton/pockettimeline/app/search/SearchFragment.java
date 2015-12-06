@@ -1,12 +1,9 @@
 package com.jbrunton.pockettimeline.app.search;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +15,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
-import com.jbrunton.pockettimeline.models.Event;
+import com.jbrunton.pockettimeline.entities.models.Event;
 
 import java.util.Collections;
 import java.util.List;

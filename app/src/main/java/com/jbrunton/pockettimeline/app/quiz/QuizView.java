@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
-import com.jbrunton.pockettimeline.models.Event;
+import com.jbrunton.pockettimeline.entities.models.Event;
 
 public interface QuizView {
     void displayEvent(Event event);

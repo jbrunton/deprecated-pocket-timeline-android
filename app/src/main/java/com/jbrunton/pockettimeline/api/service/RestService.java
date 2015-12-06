@@ -3,7 +3,6 @@ package com.jbrunton.pockettimeline.api.service;
 import com.jbrunton.pockettimeline.api.resources.EventRequest;
 import com.jbrunton.pockettimeline.api.resources.EventResource;
 import com.jbrunton.pockettimeline.api.resources.TimelineResource;
-import com.jbrunton.pockettimeline.models.Event;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.jbrunton.pockettimeline.models;
+package com.jbrunton.pockettimeline.entities.models;
 
 public class Resource {
     private final String id;

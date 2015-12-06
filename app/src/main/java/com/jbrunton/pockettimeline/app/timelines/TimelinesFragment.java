@@ -9,16 +9,12 @@ import android.view.ViewGroup;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
-import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import rx.Observable;
-import rx.functions.Func0;
 
 public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
     @Inject TimelinesProvider timelinesProvider;

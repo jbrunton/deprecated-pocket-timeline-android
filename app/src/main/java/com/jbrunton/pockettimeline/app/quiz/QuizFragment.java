@@ -2,7 +2,6 @@ package com.jbrunton.pockettimeline.app.quiz;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,8 @@ import android.widget.TextView;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
-import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
+import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
-import com.jbrunton.pockettimeline.models.Event;
-
-import org.joda.time.LocalDate;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 

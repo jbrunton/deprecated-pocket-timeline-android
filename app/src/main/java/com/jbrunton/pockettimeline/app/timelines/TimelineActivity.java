@@ -12,8 +12,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
-import com.jbrunton.pockettimeline.models.Event;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import javax.inject.Inject;
 

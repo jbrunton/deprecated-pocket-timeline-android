@@ -2,7 +2,7 @@ package com.jbrunton.pockettimeline.api.providers;
 
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.resources.TimelineResource;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.List;
 
