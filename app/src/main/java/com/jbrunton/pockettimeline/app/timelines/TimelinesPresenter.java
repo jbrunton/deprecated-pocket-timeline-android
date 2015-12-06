@@ -13,6 +13,10 @@ public class TimelinesPresenter {
         this.view = view;
     }
 
+    public void onResume() {
+        view.showLoadingIndicator();
+    }
+
     public void detach() {
         this.view = null;
     }

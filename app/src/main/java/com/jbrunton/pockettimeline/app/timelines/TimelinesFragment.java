@@ -56,7 +56,7 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         super.onResume();
         setTitle("Timelines");
 
-        showLoadingIndicator();
+        presenter.onResume();
         cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
                 .compose(applySchedulers())
                 .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);

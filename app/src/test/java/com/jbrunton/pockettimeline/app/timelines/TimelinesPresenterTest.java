@@ -9,6 +9,7 @@ import org.junit.runners.JUnit4;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class TimelinesPresenterTest {
@@ -32,5 +33,12 @@ public class TimelinesPresenterTest {
         presenter.detach();
 
         assertThat(presenter.getView()).isNull();
+    }
+
+
+    @Test public void shouldShowLoadingIndicator() {
+        presenter.bind(view);
+        presenter.onResume();
+        verify(view).showLoadingIndicator();
     }
 }
