@@ -7,22 +7,31 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.subjects.PublishSubject;
+import rx.subjects.ReplaySubject;
+import rx.subjects.Subject;
 
 public class Repository<T extends Resource> {
-    private List<T> resources = Collections.emptyList();
+    private ReplaySubject<List<T>> subject = ReplaySubject.createWithSize(1);
+
+    public Repository() {
+        set(Collections.<T>emptyList());
+    }
 
     public Observable<List<T>> all() {
-        return Observable.just(resources);
+        return subject.asObservable();
     }
 
     public void set(List<T> resources) {
-        this.resources = Collections.unmodifiableList(resources);
+        subject.onNext(Collections.unmodifiableList(resources));
     }
 
-    public Observable<Resource> find(String id) {
-        T resource = FluentIterable.from(resources)
-                .firstMatch(r -> r.getId().equals(id))
-                .get();
-        return Observable.just(resource);
+    public Observable<T> find(String id) {
+        return all().map(resources -> {
+            T resource = FluentIterable.from(resources)
+                    .firstMatch(r -> r.getId().equals(id))
+                    .get();
+            return resource;
+        });
     }
 }
