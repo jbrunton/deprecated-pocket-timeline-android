@@ -12,6 +12,7 @@ import org.junit.runners.JUnit4;
 import java.lang.instrument.UnmodifiableClassException;
 import java.util.List;
 
+import rx.Observable;
 import rx.observers.TestSubscriber;
 import rx.subjects.ReplaySubject;
 
@@ -31,67 +32,44 @@ public class RepositoryTest {
     }
 
     @Test public void shouldReturnEmptyListByDefault() {
-        assertThat(all().latest()).isEmpty();
+        Observable<List<Resource>> all = repository.all();
+        assertThat(latest(all)).isEmpty();
     }
 
     @Test public void shouldSetData() {
         repository.set(RESOURCES);
-        assertThat(all().latest()).contains(RESOURCE_ONE, RESOURCE_TWO);
+        Observable<List<Resource>> all = repository.all();
+        assertThat(latest(all)).contains(RESOURCE_ONE, RESOURCE_TWO);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldReturnImmutableCollection() {
-        all().latest().add(RESOURCE_ONE);
+        Observable<List<Resource>> all = repository.all();
+        latest(all).add(RESOURCE_ONE);
     }
 
     @Test public void shouldFindResourceById() {
-        FindDsl query = find("1");
         repository.set(RESOURCES);
-        assertThat(query.latest().get()).isSameAs(RESOURCE_ONE);
+        Observable<Optional<Resource>> resourceOne = repository.find("1");
+        assertThat(latest(resourceOne).get()).isSameAs(RESOURCE_ONE);
     }
 
     @Test public void shouldNotifySubscribersOfChanges() {
-        assertThat(all().latest()).isEmpty();
+        Observable<List<Resource>> all = repository.all();
+        Observable<Optional<Resource>> resourceOne = repository.find("1");
+        assertThat(latest(all)).isEmpty();
+        assertThat(latest(resourceOne).isPresent()).isFalse();
+
         repository.set(RESOURCES);
-        assertThat(all().latest()).contains(RESOURCE_ONE, RESOURCE_TWO);
+
+        assertThat(latest(all)).contains(RESOURCE_ONE, RESOURCE_TWO);
+        assertThat(latest(resourceOne).get()).isSameAs(RESOURCE_ONE);
     }
 
-    private class AllDsl {
-        private final TestSubscriber<List<Resource>> testSubscriber = TestSubscriber.create();
-
-        public AllDsl() {
-            repository.all().subscribe(testSubscriber);
-        }
-
-        public List<Resource> latest() {
-            List<List<Resource>> events = testSubscriber.getOnNextEvents();
-            return events.get(events.size() - 1);
-        }
+    private <T> T latest(Observable<T> observable) {
+        TestSubscriber<T> testSubscriber = TestSubscriber.create();
+        observable.subscribe(testSubscriber);
+        List<T> events = testSubscriber.getOnNextEvents();
+        return events.get(events.size() - 1);
     }
-
-    private AllDsl all() {
-        return new AllDsl();
-    }
-
-    private class FindDsl {
-        private final TestSubscriber<Optional<Resource>> testSubscriber = TestSubscriber.create();
-
-        public FindDsl(String id) {
-            repository.find(id).subscribe(testSubscriber);
-        }
-
-        public Optional<Resource> latest() {
-            List<Optional<Resource>> events = testSubscriber.getOnNextEvents();
-            return events.get(events.size() - 1);
-        }
-    }
-
-    private FindDsl find(String id) {
-        return new FindDsl(id);
-    }
-
-
-//    private List<Resource> all() {
-//        return repository.all().toBlocking().single();
-//    }
 }
