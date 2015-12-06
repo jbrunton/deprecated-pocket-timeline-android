@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.api.resources;
 
-import com.jbrunton.pockettimeline.models.Event;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.entities.models.Event;
 
 import org.joda.time.LocalDate;
 

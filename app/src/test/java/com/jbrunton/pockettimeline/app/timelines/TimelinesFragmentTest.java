@@ -3,13 +3,12 @@ package com.jbrunton.pockettimeline.app.timelines;
 import android.support.v7.widget.RecyclerView;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
-import com.jbrunton.pockettimeline.models.Timeline;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,27 +16,20 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
-import rx.Observable;
 
 import static com.jbrunton.pockettimeline.fixtures.ViewFixtures.getText;
-import static com.jbrunton.pockettimeline.fixtures.matchers.LoadingIndicatorMatcher.isDisplayingLoadingIndicator;
-import static com.jbrunton.pockettimeline.fixtures.matchers.LoadingIndicatorMatcher.isNotDisplayingLoadingIndicator;
 import static com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView.shadowOf;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @Config(shadows={ShadowRecyclerView.class})
 @RunWith(RobolectricGradleTestRunner.class)

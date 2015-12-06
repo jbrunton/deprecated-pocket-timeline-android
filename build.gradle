@@ -19,3 +19,8 @@ allprojects {
         jcenter()
     }
 }
+
+task testAll(dependsOn: [
+        'entities:test',
+        'app:testDebugUnitTest'
+])

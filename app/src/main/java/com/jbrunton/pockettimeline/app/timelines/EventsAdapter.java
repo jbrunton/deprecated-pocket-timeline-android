@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.shared.BaseRecyclerAdapter;
-import com.jbrunton.pockettimeline.models.Event;
+import com.jbrunton.pockettimeline.entities.models.Event;
 
 public class EventsAdapter extends BaseRecyclerAdapter<Event, EventsAdapter.ViewHolder> {
     public EventsAdapter() {

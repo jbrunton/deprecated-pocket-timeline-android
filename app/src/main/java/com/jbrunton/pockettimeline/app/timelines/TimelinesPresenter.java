@@ -4,15 +4,11 @@ import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
-import com.jbrunton.pockettimeline.models.Timeline;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class TimelinesPresenter extends BasePresenter<TimelinesView> {
     private final TimelinesProvider provider;

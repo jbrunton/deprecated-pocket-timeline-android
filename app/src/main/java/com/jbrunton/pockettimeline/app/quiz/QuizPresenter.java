@@ -3,8 +3,8 @@ package com.jbrunton.pockettimeline.app.quiz;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
+import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
-import com.jbrunton.pockettimeline.models.Event;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
-import com.jbrunton.pockettimeline.models.Timeline;
 
 import org.junit.Before;
 import org.junit.Test;

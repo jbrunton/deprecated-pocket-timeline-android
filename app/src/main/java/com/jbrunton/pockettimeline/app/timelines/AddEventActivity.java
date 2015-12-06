@@ -1,34 +1,27 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.DatePickerWidget;
-import com.jbrunton.pockettimeline.models.Event;
+import com.jbrunton.pockettimeline.entities.models.Event;
 
-import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-import static android.support.v7.app.AlertDialog.*;
 import static com.jbrunton.pockettimeline.helpers.StringUtils.nullOrEmpty;
 
 public class AddEventActivity extends BaseActivity {
