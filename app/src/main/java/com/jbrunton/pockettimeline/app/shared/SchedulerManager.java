@@ -8,20 +8,18 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class SchedulerManager {
-    private final Scheduler mainThread;
-    private final Scheduler backgroundThread;
+    @Inject public SchedulerManager() {}
 
-    public SchedulerManager(Scheduler mainThread, Scheduler backgroundThread) {
-        this.mainThread = mainThread;
-        this.backgroundThread = backgroundThread;
+    protected Scheduler mainThread() {
+        return AndroidSchedulers.mainThread();
     }
 
-    @Inject public SchedulerManager() {
-        this(AndroidSchedulers.mainThread(), Schedulers.io());
+    protected Scheduler backgroundThread() {
+        return Schedulers.io();
     }
 
     public <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable.subscribeOn(backgroundThread)
-                .observeOn(mainThread);
+        return observable -> observable.subscribeOn(backgroundThread())
+                .observeOn(mainThread());
     }
 }

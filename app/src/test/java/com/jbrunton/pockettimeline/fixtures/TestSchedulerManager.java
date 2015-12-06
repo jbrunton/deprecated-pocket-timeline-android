@@ -10,7 +10,11 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 
 public class TestSchedulerManager extends SchedulerManager {
-    public TestSchedulerManager() {
-        super(Schedulers.immediate(), Schedulers.immediate());
+    @Override protected Scheduler mainThread() {
+        return Schedulers.immediate();
+    }
+
+    @Override protected Scheduler backgroundThread() {
+        return Schedulers.immediate();
     }
 }
