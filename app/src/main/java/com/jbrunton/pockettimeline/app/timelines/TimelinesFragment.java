@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.models.Timeline;
 
 import java.util.List;
@@ -19,14 +20,13 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Func0;
 
-public class TimelinesFragment extends BaseFragment {
+public class TimelinesFragment extends LoadingIndicatorFragment {
     @Inject TimelinesProvider timelinesProvider;
     private TimelinesAdapter timelinesAdapter;
 
     private final static String TIMELINES_CACHE_KEY = "timelines";
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override protected View createContentView(LayoutInflater inflater, ViewGroup container) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
 
         view.setHasFixedSize(true);
@@ -53,6 +53,7 @@ public class TimelinesFragment extends BaseFragment {
         super.onResume();
         setTitle("Timelines");
 
+        showLoadingIndicator();
         cache(TIMELINES_CACHE_KEY, timelinesProvider::getTimelines)
                 .compose(applySchedulers())
                 .subscribe(this::onTimelinesAvailable, this::defaultErrorHandler);
@@ -63,6 +64,7 @@ public class TimelinesFragment extends BaseFragment {
     }
 
     private void onTimelinesAvailable(List<Timeline> timelines) {
+        hideLoadingIndicator();
         timelinesAdapter.setDataSource(timelines);
     }
 
