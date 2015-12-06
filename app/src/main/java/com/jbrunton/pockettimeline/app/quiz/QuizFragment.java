@@ -53,19 +53,6 @@ public class QuizFragment extends BaseFragment implements QuizView {
         setTitle("Quiz");
     }
 
-    private void submitAnswer() {
-        String submittedAnswer = answerField.getText().toString();
-        presenter.submitAnswer(submittedAnswer);
-    }
-
-    private void showAlert(String message) {
-        new AlertDialog.Builder(getActivity())
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
-                .create()
-                .show();
-    }
-
     @Override public void displayEvent(Event event) {
         TextView eventTitle = (TextView) getView().findViewById(R.id.event_title);
         eventTitle.setText(event.getTitle());
@@ -78,5 +65,18 @@ public class QuizFragment extends BaseFragment implements QuizView {
 
     @Override public void showIncorrectDialog(String correctAnswer) {
         showAlert(getString(R.string.incorrect_answer, correctAnswer));
+    }
+
+    private void submitAnswer() {
+        String submittedAnswer = answerField.getText().toString();
+        presenter.submitAnswer(submittedAnswer);
+    }
+
+    private void showAlert(String message) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
+                .create()
+                .show();
     }
 }
