@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Observer;
 import rx.subjects.PublishSubject;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
@@ -16,7 +17,7 @@ public class Repository<T extends Resource> {
     private ReplaySubject<List<T>> subject = ReplaySubject.createWithSize(1);
 
     public Repository() {
-        set(Collections.<T>emptyList());
+        set(defaultValues());
     }
 
     public Observable<List<T>> all() {
@@ -24,7 +25,22 @@ public class Repository<T extends Resource> {
     }
 
     public void set(List<T> resources) {
-        subject.onNext(Collections.unmodifiableList(resources));
+        set(Observable.just(resources));
+    }
+
+    public void set(Observable<List<T>> observable) {
+        observable.subscribe(new Observer<List<T>>() {
+            @Override public void onCompleted() {
+            }
+
+            @Override public void onError(Throwable e) {
+                subject.onError(e);
+            }
+
+            @Override public void onNext(List<T> resources) {
+                subject.onNext(Collections.unmodifiableList((resources)));
+            }
+        });
     }
 
     public Observable<Optional<T>> find(String id) {
@@ -32,5 +48,9 @@ public class Repository<T extends Resource> {
             return FluentIterable.from(resources)
                     .firstMatch(r -> r.getId().equals(id));
         });
+    }
+
+    protected Observable<List<T>> defaultValues() {
+        return Observable.just(Collections.<T>emptyList());
     }
 }

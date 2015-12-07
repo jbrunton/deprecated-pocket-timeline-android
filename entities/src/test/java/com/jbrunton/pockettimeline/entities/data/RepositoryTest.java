@@ -39,7 +39,13 @@ public class RepositoryTest {
     @Test public void shouldSetData() {
         repository.set(RESOURCES);
         Observable<List<Resource>> all = repository.all();
-        assertThat(latest(all)).contains(RESOURCE_ONE, RESOURCE_TWO);
+        assertThat(latest(all)).containsAll(RESOURCES);
+    }
+
+    @Test public void shouldSetDataWithObservable() {
+        repository.set(Observable.just(RESOURCES));
+        Observable<List<Resource>> all = repository.all();
+        assertThat(latest(all)).containsAll(RESOURCES);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -62,8 +68,18 @@ public class RepositoryTest {
 
         repository.set(RESOURCES);
 
-        assertThat(latest(all)).contains(RESOURCE_ONE, RESOURCE_TWO);
+        assertThat(latest(all)).containsAll(RESOURCES);
         assertThat(latest(resourceOne).get()).isSameAs(RESOURCE_ONE);
+    }
+
+    @Test public void shouldInitWithDefaultValues() {
+        Repository<Resource> repository = new Repository<Resource>() {
+            @Override protected Observable<List<Resource>> defaultValues() {
+                return Observable.just(RESOURCES);
+            }
+        };
+        Observable<List<Resource>> all = repository.all();
+        assertThat(latest(all)).containsAll(RESOURCES);
     }
 
     private <T> T latest(Observable<T> observable) {
