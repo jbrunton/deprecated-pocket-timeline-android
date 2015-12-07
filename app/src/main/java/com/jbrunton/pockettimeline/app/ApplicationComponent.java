@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app;
 
+import com.jbrunton.pockettimeline.api.RepositoriesModule;
 import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
@@ -13,7 +14,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {RestServiceModule.class, ProvidersModule.class})
+@Component(modules = {RestServiceModule.class, ProvidersModule.class, RepositoriesModule.class})
 public interface ApplicationComponent {
     void inject(TimelineActivity activity);
     void inject(AddEventActivity activity);

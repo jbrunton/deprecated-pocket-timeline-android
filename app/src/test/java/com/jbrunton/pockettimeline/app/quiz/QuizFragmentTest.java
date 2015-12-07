@@ -8,6 +8,7 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
+import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -93,7 +94,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         return textView(R.id.answer).getText().toString();
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestPresentersModule.class})
+    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }

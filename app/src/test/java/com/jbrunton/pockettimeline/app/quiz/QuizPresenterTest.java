@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
+import com.jbrunton.pockettimeline.api.EventsRepository;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
     private QuizPresenter presenter;
-    private EventsProvider provider;
+    private EventsRepository repository;
     private QuizView view;
 
     private RandomHelper randomHelper;
@@ -34,10 +35,10 @@ public class QuizPresenterTest {
     @Before public void setUp() {
         randomHelper = new DeterministicRandomHelper(asList(1, 0));
 
-        provider = mock(EventsProvider.class);
+        repository = mock(EventsRepository.class);
         view = mock(QuizView.class);
 
-        presenter = new QuizPresenter(provider, new TestSchedulerManager(), randomHelper);
+        presenter = new QuizPresenter(repository, new TestSchedulerManager(), randomHelper);
         presenter.bind(view);
 
         stubProviderToReturn(EVENTS);
@@ -74,6 +75,6 @@ public class QuizPresenterTest {
     }
 
     private void stubProviderToReturn(List<Event> events) {
-        when(provider.getEvents()).thenReturn(Observable.just(events));
+        when(repository.all()).thenReturn(Observable.just(events));
     }
 }

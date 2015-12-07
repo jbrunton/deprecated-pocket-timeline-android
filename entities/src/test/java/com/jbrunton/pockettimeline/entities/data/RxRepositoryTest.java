@@ -9,26 +9,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.lang.instrument.UnmodifiableClassException;
 import java.util.List;
 
 import rx.Observable;
 import rx.observers.TestSubscriber;
-import rx.subjects.ReplaySubject;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnit4.class)
-public class RepositoryTest {
-    private Repository<Resource> repository;
+public class RxRepositoryTest {
+    private RxRepository<Resource> repository;
 
     private final Resource RESOURCE_ONE = new Resource("1");
     private final Resource RESOURCE_TWO = new Resource("2");
     private final List<Resource> RESOURCES = asList(RESOURCE_ONE, RESOURCE_TWO);
 
     @Before public void setUp() {
-        repository = new Repository<>();
+        repository = new RxRepository<>();
     }
 
     @Test public void shouldReturnEmptyListByDefault() {
@@ -73,7 +71,7 @@ public class RepositoryTest {
     }
 
     @Test public void shouldInitWithDefaultValues() {
-        Repository<Resource> repository = new Repository<Resource>() {
+        RxRepository<Resource> repository = new RxRepository<Resource>() {
             @Override protected Observable<List<Resource>> defaultValues() {
                 return Observable.just(RESOURCES);
             }

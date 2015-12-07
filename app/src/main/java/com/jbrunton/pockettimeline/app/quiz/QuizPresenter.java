@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
+import com.jbrunton.pockettimeline.api.EventsRepository;
 import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
@@ -11,22 +12,22 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class QuizPresenter extends BasePresenter<QuizView> {
-    private final EventsProvider provider;
+    private final EventsRepository repository;
     private final SchedulerManager schedulerManager;
     private final RandomHelper randomHelper;
 
     private Event event;
     private List<Event> events;
 
-    @Inject public QuizPresenter(EventsProvider provider, SchedulerManager schedulerManager, RandomHelper randomHelper) {
-        this.provider = provider;
+    @Inject public QuizPresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {
+        this.repository = repository;
         this.schedulerManager = schedulerManager;
         this.randomHelper = randomHelper;
     }
 
     @Override public void onResume() {
         super.onResume();
-        provider.getEvents()
+        repository.all()
                 .compose(schedulerManager.applySchedulers())
                 .subscribe(this::onEventsAvailable);
     }
