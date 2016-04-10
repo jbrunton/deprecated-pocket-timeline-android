@@ -62,3 +62,9 @@ dependencies {
     }
 
 }
+
+sonarqube {
+    properties {
+        property 'sonar.sources', 'src'
+    }
+}
