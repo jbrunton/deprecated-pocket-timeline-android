@@ -7,6 +7,7 @@ import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
+import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -113,7 +114,7 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
         textView(R.id.day_of_month).setText(dayOfMonth);
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class})
+    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(DatePickerWidgetTest test);
     }
