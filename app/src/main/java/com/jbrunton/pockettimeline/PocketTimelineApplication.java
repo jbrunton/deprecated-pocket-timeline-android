@@ -23,7 +23,7 @@ public class PocketTimelineApplication extends Application {
 
     @VisibleForTesting public void setComponent(ApplicationComponent component) {
         // testing Sonar Github integration
-        int magicNumber = 42;
+        int magicNumber = 43;
         this.component = component;
     }
 
