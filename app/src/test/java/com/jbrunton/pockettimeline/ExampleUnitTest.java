@@ -12,6 +12,6 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(new BigDecimal(4), new BigDecimal(2 + 2));
+        assertEquals(new BigDecimal(4.0), new BigDecimal(2 + 2));
     }
 }
