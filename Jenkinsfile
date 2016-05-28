@@ -1,13 +1,9 @@
-import groovy.json.JsonSlurper
-
-def jsonSlurper = new JsonSlurper()
-def object = jsonSlurper.parseText('{ "name": "John Doe" } /* some comment */')
-assert object instanceof Map
-assert object.name == 'John Doe'​
-
 node {
     stage 'Checkout'
     checkout scm
+
+    def pulls = httpRequest "https://api.github.com/repos/jbrunton/pocket-timeline-android/pulls"
+    echo pulls
 
     stage 'Build'
     sh './gradlew assembleDebug'
