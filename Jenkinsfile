@@ -7,7 +7,7 @@ node {
     def targetBranch = prProperties['targetBranch'];
     def sourceBranchSha = prProperties['sourceBranchSha'];
     def targetBranchSha = prProperties['targetBranchSha'];
-    get commitSha = prProperties['commitSha'];
+    def commitSha = prProperties['commitSha'];
     echo "sourceBranch: $sourceBranch, sha: $sourceBranchSha"
     echo "targetBranch: $targetBranch, sha: $targetBranchSha"
     echo "commitSha: $commitSha"
