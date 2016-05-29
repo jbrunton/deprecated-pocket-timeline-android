@@ -3,35 +3,21 @@ node {
     checkout scm
 
     def prProperties = pullRequestProperties();
-    def sourceBranch = prProperties['sourceBranch'];
-    def targetBranch = prProperties['targetBranch'];
-    def sourceBranchSha = prProperties['sourceBranchSha'];
-    def targetBranchSha = prProperties['targetBranchSha'];
+    def targetBranch = prProperties['targetBranch']
     def commitSha = prProperties['commitSha'];
-    echo "sourceBranch: $sourceBranch, sha: $sourceBranchSha"
-    echo "targetBranch: $targetBranch, sha: $targetBranchSha"
-    echo "commitSha: $commitSha"
-//
-//    // trying out making a plugin
-//    def workspace = pwd();
-//    def propertiesFilePath = "$workspace/pr_env.props"
-//    echo "propertiesFilePath: $propertiesFilePath"
-//    step([$class: 'HelloWorldBuilder', propertiesFilePath: propertiesFilePath])
-//    step([$class: 'org.jenkinsci.plugins.envinject.EnvInjectBuilder', propertiesFilePath: propertiesFilePath, propertiesContent: readFile('pr_env.props')])
-//
-//    echo "BRANCH_NAME: $env.BRANCH_NAME"
-//    echo "PR_BASE_REF: $env.PR_BASE_REF"
 
-//    def pulls = httpRequest "https://api.github.com/repos/jbrunton/pocket-timeline-android/pulls"
-//    echo pulls
-//
-//    stage 'Build'
-//    sh './gradlew assembleDebug'
-//    step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
-//
-//    stage 'Sonar'
-//    sh "./gradlew sonarqube -Dsonar.branch=$env.BRANCH_NAME"
-//
-//    stage 'Test'
-//    sh './gradlew testAll'
+    stage 'Build'
+    sh './gradlew assembleDebug'
+    step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
+
+    stage 'Sonar'
+    // first run sonar against the target branch...
+    sh "git checkout $targetBranch"
+    sh "./gradlew sonarqube -Dsonar.buildbreaker.skip=true -Dsonar.branch=$env.BRANCH_NAME"
+    // ...then run against with our PR merged to compare
+    sh "git checkout $commitSha"
+    sh "./gradlew sonarqube -Dsonar.branch=$env.BRANCH_NAME"
+
+    stage 'Test'
+    sh './gradlew testAll'
 }
