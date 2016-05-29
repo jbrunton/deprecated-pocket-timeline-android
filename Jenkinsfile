@@ -5,6 +5,7 @@ node {
     // trying out making a plugin
     def workspace = pwd();
     def propertiesFilePath = "$workspace/pr_env.props"
+    echo "propertiesFilePath: $propertiesFilePath"
     step([$class: 'HelloWorldBuilder', propertiesFilePath: propertiesFilePath])
     step([$class: 'EnvInjectBuilder', propertiesFilePath: propertiesFilePath, propertiesContent: readFile('pr_env.props')])
 
