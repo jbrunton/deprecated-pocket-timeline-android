@@ -3,7 +3,7 @@ node {
     checkout scm
 
     // trying out making a plugin
-    step([$class: 'HelloWorldBuilder'])
+    step([$class: 'HelloWorldBuilder', name: 'John'])
 
 //    def pulls = httpRequest "https://api.github.com/repos/jbrunton/pocket-timeline-android/pulls"
 //    echo pulls
