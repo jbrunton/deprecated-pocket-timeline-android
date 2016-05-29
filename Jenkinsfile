@@ -2,6 +2,9 @@ node {
     stage 'Checkout'
     checkout scm
 
+    def prProps = prProperties();
+    echo "prProps: $prProps"
+
     // trying out making a plugin
     def workspace = pwd();
     def propertiesFilePath = "$workspace/pr_env.props"
