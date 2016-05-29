@@ -7,8 +7,10 @@ node {
     def targetBranch = prProperties['targetBranch'];
     def sourceBranchSha = prProperties['sourceBranchSha'];
     def targetBranchSha = prProperties['targetBranchSha'];
+    get commitSha = prProperties['commitSha'];
     echo "sourceBranch: $sourceBranch, sha: $sourceBranchSha"
     echo "targetBranch: $targetBranch, sha: $targetBranchSha"
+    echo "commitSha: $commitSha"
 //
 //    // trying out making a plugin
 //    def workspace = pwd();
