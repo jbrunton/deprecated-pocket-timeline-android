@@ -5,6 +5,6 @@ import rx.schedulers.Schedulers;
 
 public class TestPocketTimelineApplication extends PocketTimelineApplication {
     @Override public Scheduler defaultScheduler() {
-        return Schedulers.immediate();
+        return (Schedulers.immediate());
     }
 }
