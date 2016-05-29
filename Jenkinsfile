@@ -4,6 +4,7 @@ node {
 
     // trying out making a plugin
     step([$class: 'HelloWorldBuilder', name: 'John'])
+    step([$class: 'EnvInjectBuilder', propertiesFilePath: 'pr_env.props', propertiesContent: readFile('pr_env.props')])
 
     echo "BRANCH_NAME: $env.BRANCH_NAME"
     echo "PR_BASE_REF: $env.PR_BASE_REF"
