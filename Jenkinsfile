@@ -3,8 +3,10 @@ node {
     checkout scm
 
     // trying out making a plugin
-    step([$class: 'HelloWorldBuilder', name: 'John'])
-    step([$class: 'EnvInjectBuilder', propertiesFilePath: 'pr_env.props', propertiesContent: readFile('pr_env.props')])
+    def workspace = pwd();
+    def propertiesFilePath = "$workspace/pr_env.props"
+    step([$class: 'HelloWorldBuilder', propertiesFilePath: propertiesFilePath])
+    step([$class: 'EnvInjectBuilder', propertiesFilePath: propertiesFilePath, propertiesContent: readFile('pr_env.props')])
 
     echo "BRANCH_NAME: $env.BRANCH_NAME"
     echo "PR_BASE_REF: $env.PR_BASE_REF"
