@@ -2,7 +2,7 @@ node {
     stage 'Checkout'
     checkout scm
 
-    def prProps = prProperties();
+    def prProps = pullRequestProperties();
     echo "prProps: $prProps"
 
     // trying out making a plugin
