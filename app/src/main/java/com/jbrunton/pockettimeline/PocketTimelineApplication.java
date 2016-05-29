@@ -18,7 +18,7 @@ public class PocketTimelineApplication extends Application {
     }
 
     public ApplicationComponent component() {
-        return (component);
+        return component;
     }
 
     @VisibleForTesting public void setComponent(ApplicationComponent component) {
@@ -26,6 +26,6 @@ public class PocketTimelineApplication extends Application {
     }
 
     public Scheduler defaultScheduler() {
-        return (Schedulers.io());
+        return Schedulers.io();
     }
 }
