@@ -3,7 +3,8 @@ node {
     checkout scm
 
     def prProps = pullRequestProperties();
-    echo "prProps: $prProps"
+    def baseRef = prProps['baseRef'];
+    echo "baseRef: $baseRef"
 
     // trying out making a plugin
     def workspace = pwd();
