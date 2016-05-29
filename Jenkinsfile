@@ -4,7 +4,9 @@ node {
 
     def prProps = pullRequestProperties();
     def baseRef = prProps['baseRef'];
+    def headRef = prProps['headRef'];
     echo "baseRef: $baseRef"
+    echo "headRef: $headRef"
 
     // trying out making a plugin
     def workspace = pwd();
