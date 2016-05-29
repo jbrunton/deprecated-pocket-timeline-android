@@ -7,7 +7,7 @@ node {
     def propertiesFilePath = "$workspace/pr_env.props"
     echo "propertiesFilePath: $propertiesFilePath"
     step([$class: 'HelloWorldBuilder', propertiesFilePath: propertiesFilePath])
-    step([$class: 'EnvInjectBuilder', propertiesFilePath: propertiesFilePath, propertiesContent: readFile('pr_env.props')])
+    step([$class: 'org.jenkinsci.plugins.envinject.EnvInjectBuilder', propertiesFilePath: propertiesFilePath, propertiesContent: readFile('pr_env.props')])
 
     echo "BRANCH_NAME: $env.BRANCH_NAME"
     echo "PR_BASE_REF: $env.PR_BASE_REF"
