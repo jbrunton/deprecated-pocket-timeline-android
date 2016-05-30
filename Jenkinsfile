@@ -6,7 +6,7 @@ node {
 
     def pr = pullRequestProperties(
             branchName: env.BRANCH_NAME,
-            repositoryUrl: 'https://github.com/jbrunton/pocket-timeline-android.git'
+            repository: 'jbrunton/pocket-timeline-android'
     );
     def targetBranch = pr.targetBranch
     def commitSha = pr.commitSha
