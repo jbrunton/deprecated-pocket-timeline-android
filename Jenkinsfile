@@ -1,8 +1,8 @@
 node {
-    stage 'Checkout (branch)'
+    stage 'Checkout'
     checkout scm
 
-    stage 'Build (branch)'
+    stage 'Build'
     sh './gradlew assembleDebug'
     step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
@@ -11,7 +11,7 @@ node {
         sh './gradlew sonarqube -Dsonar.buildbreaker.skip=false'
     }
 
-    stage 'Test (branch)'
+    stage 'Test'
     sh './gradlew testAll'
 
     if (env.BRANCH_NAME != 'master') {
@@ -23,7 +23,7 @@ node {
         echo "Found pull request from $pr.sourceBranch to $pr.targetBranch. Checking out $pr.mergeRef"
         sh "git checkout $pr.mergeRef"
 
-        stage 'Build'
+        stage 'Build (merge)'
         sh './gradlew assembleDebug'
         step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
