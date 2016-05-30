@@ -8,7 +8,7 @@ node {
 
     if (env.BRANCH_NAME == 'master') {
         stage 'Sonar'
-        sh './gradlew sonarqube -Dsonar.buildbreaker.skip=false'
+        sh './gradlew sonarqube -Dsonar.buildbreaker.skip=true'
     }
 
     stage 'Test'
