@@ -4,7 +4,7 @@ node {
 
 //    sh 'env'
 
-    def prProperties = pullRequestProperties(env.BRANCH_NAME);
+    def prProperties = pullRequestProperties(branchName: env.BRANCH_NAME);
     def targetBranch = prProperties['targetBranch']
     def commitSha = prProperties['commitSha'];
 
