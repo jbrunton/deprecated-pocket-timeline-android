@@ -4,9 +4,12 @@ node {
 
 //    sh 'env'
 
-    def prProperties = pullRequestProperties(branchName: env.BRANCH_NAME);
-    def targetBranch = prProperties['targetBranch']
-    def commitSha = prProperties['commitSha'];
+    def pr = pullRequestProperties(
+            branchName: env.BRANCH_NAME,
+            repositoryUrl: 'https://github.com/jbrunton/pocket-timeline-android.git'
+    );
+    def targetBranch = pr.targetBranch
+    def commitSha = pr.commitSha
 
     echo "commitSha: $commitSha"
 
