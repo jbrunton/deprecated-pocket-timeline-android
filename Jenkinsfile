@@ -2,6 +2,8 @@ node {
     stage 'Checkout'
     checkout scm
 
+    sh 'env'
+
     def prProperties = pullRequestProperties();
     def targetBranch = prProperties['targetBranch']
     def commitSha = prProperties['commitSha'];
