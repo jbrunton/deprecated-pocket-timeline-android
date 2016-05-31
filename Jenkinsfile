@@ -5,6 +5,7 @@ node {
     stage 'Environment'
     sh 'env'
 
+    
 //    stage 'Build'
 //    sh './gradlew assembleDebug'
 //    step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
