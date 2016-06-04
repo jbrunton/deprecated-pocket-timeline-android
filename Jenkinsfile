@@ -27,9 +27,9 @@ node {
         stage 'Sonar (merge)'
         // first run sonar against the target branch...
         sh "git checkout $env.CHANGE_TARGET"
-        sh "./gradlew sonarqube -Dsonar.analysis.mode=preview \
+        sh "./gradlew sonarqube \
             -Dsonar.buildbreaker.skip=true \
-            -Dsonar.branch=$env.BRANCH_NAME"
+            -Dsonar.branch=$env.CHANGE_TARGET"
         // ...then run against with our PR merged to compare
         sh "git checkout $mergeRef"
 
@@ -41,7 +41,7 @@ node {
                 -Dsonar.github.pullRequest=$env.CHANGE_ID \
                 -Dsonar.github.oath=bb7b8321b8297faf3227583b2f803014e378d172 \
                 -Dsonar.analysis.mode=preview \
-                -Dsonar.branch=$env.BRANCH_NAME"
+                -Dsonar.branch=$env.CHANGE_TARGET"
         }
 
         stage 'Test (merge)'
