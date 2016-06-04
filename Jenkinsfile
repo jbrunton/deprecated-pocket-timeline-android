@@ -3,8 +3,8 @@ node {
     checkout scm
 
     stage 'Build'
-    //sh './gradlew assembleDebug'
-    //step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
+    sh './gradlew assembleDebug'
+    step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
     if (env.BRANCH_NAME == 'master') {
         stage 'Sonar'
@@ -12,7 +12,7 @@ node {
     }
 
     stage 'Test'
-    //sh './gradlew testAll'
+    sh './gradlew testAll'
 
     if (env.CHANGE_ID != null) {
         def mergeRef = "origin/pr/$env.CHANGE_ID"
@@ -21,8 +21,8 @@ node {
         sh "git checkout $mergeRef"
 
         stage 'Build (merge)'
-        //sh './gradlew assembleDebug'
-        //step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
+        sh './gradlew assembleDebug'
+        step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
         stage 'Sonar Minion (merge)'
         // first run sonar against the target branch...
@@ -44,6 +44,8 @@ node {
                 -Dsonar.branch=$env.CHANGE_TARGET"
         }
 
+        // The sonar github plugin only fails in the case of major issues, not the quality gate, so
+        // we have to run sonar again and rely on the build breaker plugin to fail if need be.
         stage 'Sonar Check (merge)'
         sh "git checkout $env.CHANGE_TARGET"
         sh "./gradlew sonarqube \
@@ -55,6 +57,6 @@ node {
             -Dsonar.branch=$env.BRANCH_NAME"
 
         stage 'Test (merge)'
-        //sh './gradlew testAll'
+        sh './gradlew testAll'
     }
 }
