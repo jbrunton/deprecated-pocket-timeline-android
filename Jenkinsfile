@@ -2,11 +2,10 @@ node {
     stage 'Checkout'
     checkout scm
 
-    withCredentials([[$class: 'UsernamePasswordMultiBinding',
+    withCredentials([[$class: 'StringBinding',
                       credentialsId: 'jbrunton-minion-ci-access-token',
-                      usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-        echo 'USERNAME: $USERNAME'
-        echo 'PASSWORD: $PASSWORD'
+                      variable: 'ACCESS_TOKEN']]) {
+        echo 'ACCESS_TOKEN: ACCESS_TOKEN'
     }
 
 //    stage 'Build'
