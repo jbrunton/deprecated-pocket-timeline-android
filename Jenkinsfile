@@ -24,7 +24,7 @@ node {
         //sh './gradlew assembleDebug'
         //step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
-        stage 'Sonar (merge)'
+        stage 'Sonar Minion (merge)'
         // first run sonar against the target branch...
         sh "git checkout $env.CHANGE_TARGET"
         sh "./gradlew sonarqube \
@@ -43,6 +43,16 @@ node {
                 -Dsonar.analysis.mode=preview \
                 -Dsonar.branch=$env.CHANGE_TARGET"
         }
+
+        stage 'Sonar Check (merge)'
+        sh "git checkout $env.CHANGE_TARGET"
+        sh "./gradlew sonarqube \
+            -Dsonar.buildbreaker.skip=true \
+            -Dsonar.branch=$env.BRANCH_NAME"
+
+        sh "git checkout $mergeRef"
+        sh "./gradlew sonarqube \
+            -Dsonar.branch=$env.BRANCH_NAME"
 
         stage 'Test (merge)'
         //sh './gradlew testAll'
