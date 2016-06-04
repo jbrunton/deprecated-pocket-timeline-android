@@ -14,27 +14,47 @@ node {
     stage 'Test'
     sh './gradlew testAll'
 
-    if (env.BRANCH_NAME != 'master') {
+    if (env.CHANGE_ID != null) {
+        def mergeRef = "origin/pr/$env.CHANGE_ID"
+
         stage 'Checkout (merge)'
-        def pr = pullRequestProperties(
-                branchName: env.BRANCH_NAME,
-                repository: 'jbrunton/pocket-timeline-android'
-        )
-        echo "Found pull request from $pr.sourceBranch to $pr.targetBranch. Checking out $pr.mergeRef"
-        sh "git checkout $pr.mergeRef"
+        sh "git checkout $mergeRef"
 
         stage 'Build (merge)'
         sh './gradlew assembleDebug'
         step([$class: 'ArtifactArchiver', artifacts: '**/apk/app-debug.apk', fingerprint: true])
 
-        stage 'Sonar (merge)'
-        echo "Comparing $pr.sourceBranch with $pr.targetBranch"
+        stage 'Sonar Minion (merge)'
         // first run sonar against the target branch...
-        sh "git checkout $pr.targetBranchRef"
-        sh "./gradlew sonarqube -Dsonar.buildbreaker.skip=true -Dsonar.branch=$pr.sourceBranch"
+        sh "git checkout $env.CHANGE_TARGET"
+        sh "./gradlew sonarqube \
+            -Dsonar.buildbreaker.skip=true \
+            -Dsonar.branch=$env.CHANGE_TARGET"
         // ...then run against with our PR merged to compare
-        sh "git checkout $pr.mergeRef"
-        sh "./gradlew sonarqube -Dsonar.branch=$pr.sourceBranch"
+        sh "git checkout $mergeRef"
+
+        withCredentials([[$class: 'StringBinding',
+                          credentialsId: 'jbrunton-minion-ci-access-token',
+                          variable: 'ACCESS_TOKEN']]) {
+            sh "./gradlew sonarqube \
+                -Dsonar.github.repository=jbrunton/pocket-timeline-android \
+                -Dsonar.github.pullRequest=$env.CHANGE_ID \
+                -Dsonar.github.oauth=$env.ACCESS_TOKEN \
+                -Dsonar.analysis.mode=preview \
+                -Dsonar.branch=$env.CHANGE_TARGET"
+        }
+
+        // The sonar github plugin only fails in the case of major issues, not the quality gate, so
+        // we have to run sonar again and rely on the build breaker plugin to fail if need be.
+        stage 'Sonar Check (merge)'
+        sh "git checkout $env.CHANGE_TARGET"
+        sh "./gradlew sonarqube \
+            -Dsonar.buildbreaker.skip=true \
+            -Dsonar.branch=$env.BRANCH_NAME"
+
+        sh "git checkout $mergeRef"
+        sh "./gradlew sonarqube \
+            -Dsonar.branch=$env.BRANCH_NAME"
 
         stage 'Test (merge)'
         sh './gradlew testAll'
