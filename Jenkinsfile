@@ -27,7 +27,9 @@ node {
         stage 'Sonar (merge)'
         // first run sonar against the target branch...
         sh "git checkout $env.CHANGE_TARGET"
-        sh "./gradlew sonarqube -Dsonar.buildbreaker.skip=true -Dsonar.branch=$env.BRANCH_NAME"
+        sh "./gradlew sonarqube -Dsonar.analysis.mode=preview \
+            -Dsonar.buildbreaker.skip=true \
+            -Dsonar.branch=$env.BRANCH_NAME"
         // ...then run against with our PR merged to compare
         sh "git checkout $mergeRef"
 
@@ -38,6 +40,7 @@ node {
                 -Dsonar.github.repository=jbrunton/pocket-timeline-android \
                 -Dsonar.github.pullRequest=$env.CHANGE_ID \
                 -Dsonar.github.oath=$env.ACCESS_TOKEN \
+                -Dsonar.analysis.mode=preview \
                 -Dsonar.branch=$env.BRANCH_NAME"
         }
 
