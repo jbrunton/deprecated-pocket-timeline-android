@@ -5,7 +5,7 @@ node {
     withCredentials([[$class: 'StringBinding',
                       credentialsId: 'jbrunton-minion-ci-access-token',
                       variable: 'ACCESS_TOKEN']]) {
-        echo 'ACCESS_TOKEN: $ACCESS_TOKEN'
+        sh 'echo $ACCESS_TOKEN'
     }
 
 //    stage 'Build'
