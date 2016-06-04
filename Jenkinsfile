@@ -39,7 +39,7 @@ node {
             sh "./gradlew sonarqube \
                 -Dsonar.github.repository=jbrunton/pocket-timeline-android \
                 -Dsonar.github.pullRequest=$env.CHANGE_ID \
-                -Dsonar.github.oath=bb7b8321b8297faf3227583b2f803014e378d172 \
+                -Dsonar.github.oauth=$env.ACCESS_TOKEN \
                 -Dsonar.analysis.mode=preview \
                 -Dsonar.branch=$env.CHANGE_TARGET"
         }
