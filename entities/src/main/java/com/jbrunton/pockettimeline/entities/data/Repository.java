@@ -12,5 +12,5 @@ import rx.Observer;
 
 public interface Repository<T extends Resource> {
     Observable<List<T>> all();
-    Observable<Optional<T>> find(String id);
+    Observable<T> find(String id);
 }

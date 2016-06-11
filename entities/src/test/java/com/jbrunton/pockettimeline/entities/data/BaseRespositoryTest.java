@@ -15,6 +15,7 @@ import rx.observers.TestSubscriber;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static br.ufs.github.rxassertions.RxAssertions.assertThat;
 import static rx.Observable.just;
 
 @RunWith(JUnit4.class)
@@ -30,13 +31,15 @@ public class BaseRespositoryTest {
     }
 
     @Test public void shouldFindRepositoryById() {
-        Observable<Optional<Resource>> resourceOne = repository.find("1");
-        assertThat(latest(resourceOne).get()).isSameAs(RESOURCE_ONE);
+        assertThat(repository.find("1"))
+                .completes()
+                .withoutErrors()
+                .expectedSingleValue(RESOURCE_ONE);
     }
 
-    @Test public void shouldReturnNoneIfResourceDoesNotExist() {
-        Observable<Optional<Resource>> resourceThree = repository.find("3");
-        assertThat(latest(resourceThree).isPresent()).isFalse();
+    @Test public void shouldErrorIfResourceDoesNotExist() {
+        assertThat(repository.find("3"))
+                .failsWithThrowable(IllegalStateException.class);
     }
 
     private Repository<Resource> createTestRepository() {
@@ -45,12 +48,5 @@ public class BaseRespositoryTest {
                 return just(RESOURCES);
             }
         };
-    }
-
-    private static <T> T latest(Observable<T> observable) {
-        TestSubscriber<T> testSubscriber = TestSubscriber.create();
-        observable.subscribe(testSubscriber);
-        List<T> events = testSubscriber.getOnNextEvents();
-        return events.get(events.size() - 1);
     }
 }

@@ -9,10 +9,11 @@ import java.util.List;
 import rx.Observable;
 
 public abstract class BaseRepository<T extends Resource> implements Repository<T> {
-    @Override public Observable<Optional<T>> find(String id) {
+    @Override public Observable<T> find(String id) {
         return all().map(resources -> {
             return FluentIterable.from(resources)
-                    .firstMatch(r -> r.getId().equals(id));
+                    .firstMatch(r -> r.getId().equals(id))
+                    .get();
         });
     }
 }
