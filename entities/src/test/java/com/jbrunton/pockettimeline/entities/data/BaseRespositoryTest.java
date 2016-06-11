@@ -15,7 +15,7 @@ import rx.observers.TestSubscriber;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static br.ufs.github.rxassertions.RxAssertions.assertThat;
+import static com.jbrunton.pockettimeline.fixtures.RxAssertions.assertThat;
 import static rx.Observable.just;
 
 @RunWith(JUnit4.class)

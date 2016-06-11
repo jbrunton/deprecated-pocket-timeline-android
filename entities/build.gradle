@@ -21,5 +21,4 @@ dependencies {
     testCompile ('com.squareup.assertj:assertj-android:1.1.0') {
         exclude module: 'support-annotations'
     }
-    testCompile 'com.github.ubiratansoares:rxassertions:0.2.1'
 }
