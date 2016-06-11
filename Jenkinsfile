@@ -16,6 +16,7 @@ node {
 
     if (env.CHANGE_ID != null) {
         def mergeRef = "origin/pr/$env.CHANGE_ID"
+        def targetRef = "origin/$env.CHANGE_TARGET"
 
         stage 'Checkout (merge)'
         sh "git checkout $mergeRef"
@@ -47,7 +48,7 @@ node {
         // The sonar github plugin only fails in the case of major issues, not the quality gate, so
         // we have to run sonar again and rely on the build breaker plugin to fail if need be.
         stage 'Sonar Check (merge)'
-        sh "git checkout $env.CHANGE_TARGET"
+        sh "git checkout $targetRef"
         sh "./gradlew sonarqube \
             -Dsonar.buildbreaker.skip=true \
             -Dsonar.branch=$env.BRANCH_NAME"
