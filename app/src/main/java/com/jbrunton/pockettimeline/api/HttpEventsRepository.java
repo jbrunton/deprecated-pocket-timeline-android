@@ -7,9 +7,6 @@ import com.jbrunton.pockettimeline.entities.models.Event;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import rx.Observable;
 
 public class HttpEventsRepository extends BaseRepository<Event> implements EventsRepository {
