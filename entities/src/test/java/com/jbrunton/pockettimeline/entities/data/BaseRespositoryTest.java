@@ -1,6 +1,5 @@
 package com.jbrunton.pockettimeline.entities.data;
 
-import com.google.common.base.Optional;
 import com.jbrunton.pockettimeline.entities.models.Resource;
 
 import org.junit.Before;
@@ -11,11 +10,9 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 
 import rx.Observable;
-import rx.observers.TestSubscriber;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static com.jbrunton.pockettimeline.fixtures.RxAssertions.assertThat;
+import static br.ufs.github.rxassertions.RxAssertions.assertThat;
 import static rx.Observable.just;
 
 @RunWith(JUnit4.class)
