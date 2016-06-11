@@ -3,7 +3,6 @@ package com.jbrunton.pockettimeline.app.quiz;
 import android.app.Dialog;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
