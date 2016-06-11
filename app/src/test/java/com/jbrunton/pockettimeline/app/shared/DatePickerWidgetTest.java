@@ -3,7 +3,6 @@ package com.jbrunton.pockettimeline.app.shared;
 import android.support.design.widget.TextInputLayout;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
@@ -22,11 +21,6 @@ import dagger.Component;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -114,7 +108,7 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
         textView(R.id.day_of_month).setText(dayOfMonth);
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestProvidersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(DatePickerWidgetTest test);
     }

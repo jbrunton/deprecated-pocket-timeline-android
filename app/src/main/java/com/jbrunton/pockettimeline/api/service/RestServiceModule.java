@@ -1,50 +1,50 @@
 package com.jbrunton.pockettimeline.api.service;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.jbrunton.pockettimeline.PocketTimelineApplication;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-
-import java.lang.reflect.Type;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class RestServiceModule {
-    @Provides RestService provideRestService() {
+    private final String baseUrl;
+    private static final int TEN_MEGABYTES = 10 * 1024 * 1024;
+
+    public RestServiceModule(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    @Provides RestService provideRestService(PocketTimelineApplication application) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("https://timeline-pocketlearningapps.herokuapp.com/")
-                .setConverter(new GsonConverter(gson))
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(createClient(application))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-        return restAdapter.create(RestService.class);
+        return retrofit.create(RestService.class);
     }
 
-    private static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
-        @Override
-        public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.toString());
-        }
-
-        @Override
-        public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return new LocalDate(json.getAsJsonPrimitive().getAsString());
-        }
+    @NonNull private OkHttpClient createClient(final PocketTimelineApplication application) {
+        return new OkHttpClient.Builder()
+                .cache(new Cache(application.getCacheDir(), TEN_MEGABYTES))
+                .addInterceptor(new CachingInterceptor(application))
+                .build();
     }
+
 }

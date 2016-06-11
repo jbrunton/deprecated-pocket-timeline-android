@@ -14,7 +14,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {RestServiceModule.class, ProvidersModule.class, RepositoriesModule.class})
+@Component(modules = {
+        RestServiceModule.class,
+        ProvidersModule.class,
+        RepositoriesModule.class,
+        ApplicationModule.class
+})
 public interface ApplicationComponent {
     void inject(TimelineActivity activity);
     void inject(AddEventActivity activity);
