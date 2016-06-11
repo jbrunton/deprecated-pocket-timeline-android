@@ -114,7 +114,7 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
         textView(R.id.day_of_month).setText(dayOfMonth);
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestProvidersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(DatePickerWidgetTest test);
     }

@@ -58,7 +58,7 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment, 
         assertThat(getText(timelines.getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(TimelinesFragmentTest test);
     }

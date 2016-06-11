@@ -94,7 +94,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         return textView(R.id.answer).getText().toString();
     }
 
-    @Singleton @Component(modules = {RestServiceModule.class, TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }

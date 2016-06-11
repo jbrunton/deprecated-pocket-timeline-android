@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.VisibleForTesting;
 
+import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.ApplicationModule;
 import com.jbrunton.pockettimeline.app.DaggerApplicationComponent;
@@ -20,6 +21,7 @@ public class PocketTimelineApplication extends Application {
         super.onCreate();
         component = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
+                .restServiceModule(new RestServiceModule(getString(R.string.base_url)))
                 .build();
     }
 
