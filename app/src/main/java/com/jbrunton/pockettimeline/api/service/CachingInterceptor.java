@@ -10,8 +10,8 @@ import okhttp3.Response;
 
 class CachingInterceptor implements Interceptor {
     private final PocketTimelineApplication application;
-    private final int ONE_MINUTE = 60;
-    private final int ONE_WEEK = ONE_MINUTE * 60 * 24 * 7;
+    private static final int ONE_MINUTE = 60;
+    private static final int ONE_WEEK = ONE_MINUTE * 60 * 24 * 7;
 
     CachingInterceptor(PocketTimelineApplication application) {
         this.application = application;

@@ -1,7 +1,5 @@
 package com.jbrunton.pockettimeline.app;
 
-import android.app.Application;
-
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 
 import javax.inject.Singleton;

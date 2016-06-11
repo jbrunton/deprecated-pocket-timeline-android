@@ -11,9 +11,6 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.ApplicationModule;
 import com.jbrunton.pockettimeline.app.DaggerApplicationComponent;
 
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
-
 public class PocketTimelineApplication extends Application {
     private ApplicationComponent component;
 

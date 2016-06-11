@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class RestServiceModule {
     private final String baseUrl;
-    private final int TEN_MEGABYTES = 10 * 1024 * 1024;
+    private static final int TEN_MEGABYTES = 10 * 1024 * 1024;
 
     public RestServiceModule(String baseUrl) {
         this.baseUrl = baseUrl;
