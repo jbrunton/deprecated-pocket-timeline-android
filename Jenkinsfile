@@ -27,7 +27,7 @@ node {
 
         stage 'Sonar Minion (merge)'
         // first run sonar against the target branch...
-        sh "git checkout $env.CHANGE_TARGET"
+        sh "git checkout $targetRef"
         sh "./gradlew sonarqube \
             -Dsonar.buildbreaker.skip=true \
             -Dsonar.branch=$env.CHANGE_TARGET"
