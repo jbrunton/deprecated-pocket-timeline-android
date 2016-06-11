@@ -12,6 +12,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.jbrunton.pockettimeline.PocketTimelineApplication;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -34,18 +35,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestServiceModule {
     private final int TEN_MEGABYTES = 10 * 1024 * 1024;
 
-    @Provides RestService provideRestService() {
+    @Provides RestService provideRestService(PocketTimelineApplication application) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
 
         OkHttpClient client = new OkHttpClient.Builder()
-                //.cache(new Cache(app.getCacheDir(), TEN_MEGABYTES))
+                .cache(new Cache(application.getCacheDir(), TEN_MEGABYTES))
                 .addInterceptor(new Interceptor() {
                     @Override public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
-                        request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-                        return chain.proceed(request);
+                        if (application.isNetworkAvailable()) {
+                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                        } else {
+                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                        }return chain.proceed(request);
                     }
                 })
                 .build();
