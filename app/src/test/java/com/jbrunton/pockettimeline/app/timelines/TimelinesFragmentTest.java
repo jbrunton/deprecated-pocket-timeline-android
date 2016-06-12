@@ -21,14 +21,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.Module;
-import dagger.Provides;
 
 import static com.jbrunton.pockettimeline.fixtures.ViewFixtures.getText;
 import static com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView.shadowOf;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @Config(shadows={ShadowRecyclerView.class})
@@ -57,19 +54,12 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment, 
         assertThat(getText(timelines.getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
     }
 
-    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
+    @Singleton @Component(modules = {TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(TimelinesFragmentTest test);
     }
 
     @Override protected TestApplicationComponent createComponent() {
         return DaggerTimelinesFragmentTest_TestApplicationComponent.create();
-    }
-
-    @Module
-    public static class TestPresentersModule {
-        @Provides @Singleton public TimelinesPresenter provideTimelinesPresenter() {
-            return mock(TimelinesPresenter.class);
-        }
     }
 }

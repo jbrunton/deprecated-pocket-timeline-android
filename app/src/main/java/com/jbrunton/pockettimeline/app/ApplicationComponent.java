@@ -7,6 +7,7 @@ import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.search.SearchFragment;
+import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
 
 import javax.inject.Singleton;
 
@@ -25,4 +26,5 @@ public interface ApplicationComponent {
     RestService restService();
     EventsRepository eventsRepository();
     TimelinesRepository timelinesRepository();
+    TimelinesPresenter timelinesPresenter();
 }
