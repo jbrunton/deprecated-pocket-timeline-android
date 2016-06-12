@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
@@ -45,8 +44,6 @@ public class TimelineActivity extends BaseActivity {
                 navigator.startAddEventActivityForResult(TimelineActivity.this, timelineId, ADD_EVENT_REQUEST_CODE);
             }
         });
-
-        Dart.inject(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

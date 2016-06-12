@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
@@ -42,7 +41,6 @@ public class AddEventActivity extends BaseActivity {
         setTitle("Add Event");
 
         ButterKnife.bind(this);
-        Dart.inject(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
