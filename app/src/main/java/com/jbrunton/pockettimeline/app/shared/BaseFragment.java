@@ -1,5 +1,8 @@
 package com.jbrunton.pockettimeline.app.shared;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
@@ -10,13 +13,20 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class BaseFragment extends RxCacheFragment implements DisplayErrorView {
+public abstract class BaseFragment extends RxCacheFragment implements DisplayErrorView {
 
     private BasePresenter presenter;
 
     @Override public void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
     }
+
+    @Override public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setupActivityComponent();
+    }
+
+    protected abstract void setupActivityComponent();
 
     protected void setTitle(String title) {
         getActivity().setTitle(title);

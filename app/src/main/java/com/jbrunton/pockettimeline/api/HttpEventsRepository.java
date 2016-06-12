@@ -1,15 +1,17 @@
 package com.jbrunton.pockettimeline.api;
 
+import com.jbrunton.pockettimeline.api.resources.EventRequest;
 import com.jbrunton.pockettimeline.api.resources.EventResource;
 import com.jbrunton.pockettimeline.api.service.RestService;
-import com.jbrunton.pockettimeline.entities.data.BaseRepository;
+import com.jbrunton.pockettimeline.entities.data.BaseReadableRepository;
+import com.jbrunton.pockettimeline.entities.data.BaseWritableRepository;
 import com.jbrunton.pockettimeline.entities.models.Event;
 
 import java.util.List;
 
 import rx.Observable;
 
-public class HttpEventsRepository extends BaseRepository<Event> implements EventsRepository {
+public class HttpEventsRepository extends BaseReadableRepository<Event> implements EventsRepository {
     private final RestService service;
 
     public HttpEventsRepository(RestService service) {
@@ -17,7 +19,15 @@ public class HttpEventsRepository extends BaseRepository<Event> implements Event
     }
 
     @Override public Observable<List<Event>> all() {
-        return service.getEvents().flatMap(Observable::from)
+        return createModels(service.getEvents());
+    }
+
+    @Override public Observable<List<Event>> search(String query) {
+        return createModels(service.searchEvents(query));
+    }
+
+    private Observable<List<Event>> createModels(Observable<List<EventResource>> resources) {
+        return resources.flatMap(Observable::from)
                 .map(EventResource::toModel)
                 .toList();
     }

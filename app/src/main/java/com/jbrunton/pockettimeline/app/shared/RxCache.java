@@ -11,7 +11,6 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.functions.Func0;
 
-@Singleton
 public class RxCache {
     private Map<String, Observable> cache = new HashMap<>();
 

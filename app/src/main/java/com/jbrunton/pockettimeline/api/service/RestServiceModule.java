@@ -8,6 +8,8 @@ import com.jbrunton.pockettimeline.PocketTimelineApplication;
 
 import org.joda.time.LocalDate;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -25,7 +27,7 @@ public class RestServiceModule {
         this.baseUrl = baseUrl;
     }
 
-    @Provides RestService provideRestService(PocketTimelineApplication application) {
+    @Provides @Singleton RestService provideRestService(PocketTimelineApplication application) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();

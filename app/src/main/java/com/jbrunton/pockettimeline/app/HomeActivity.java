@@ -39,6 +39,10 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    @Override protected void setupActivityComponent() {
+
+    }
+
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;

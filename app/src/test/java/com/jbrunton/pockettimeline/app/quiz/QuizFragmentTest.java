@@ -34,7 +34,12 @@ import static org.mockito.Mockito.verify;
 public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragmentTest.TestApplicationComponent> {
     @Inject QuizPresenter presenter;
 
-    final Event EVENT = new Event("1", new LocalDate(2014, DateTimeConstants.JUNE, 3), "Event One", null);
+    final Event EVENT = new Event.Builder()
+            .id("1")
+            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
+            .title("Event One")
+            .description("Event One Description")
+            .build();
 
     @Before public void setUp() {
         configureTestSuite(new QuizFragment());

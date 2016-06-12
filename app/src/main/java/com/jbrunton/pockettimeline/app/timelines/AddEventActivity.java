@@ -8,8 +8,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.api.TimelineEventsRepository;
+import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.DatePickerWidget;
 import com.jbrunton.pockettimeline.entities.models.Event;
@@ -21,13 +23,15 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
+import dagger.Component;
 
 import static com.jbrunton.pockettimeline.helpers.StringUtils.nullOrEmpty;
 
 public class AddEventActivity extends BaseActivity {
     private LocalDate eventDate;
     @Bind(R.id.event_title) EditText eventTitleText;
-    @Inject EventsProvider eventsProvider;
+    @Bind(R.id.event_description) EditText eventDescription;
+    @Inject @PerActivity TimelineEventsRepository eventsRepository;
 
     public final static String ARG_TIMELINE_ID = "timelineId";
     public final static int RESULT_CREATED_EVENT = 1;
@@ -39,13 +43,19 @@ public class AddEventActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        applicationComponent().inject(this);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         DatePickerWidget datePickerWidget = (DatePickerWidget) getSupportFragmentManager().findFragmentById(R.id.date_picker);
         datePickerWidget.setOnDateChangedListener(this::onDateChanged);
+    }
+
+    @Override protected void setupActivityComponent() {
+        DaggerAddEventActivityComponent.builder()
+                .applicationComponent(applicationComponent())
+                .addEventActivityModule(new AddEventActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     public static void startForResult(AppCompatActivity activity, String timelineId, int requestCode) {
@@ -62,7 +72,14 @@ public class AddEventActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            eventsProvider.createEvent(getIntent().getStringExtra(ARG_TIMELINE_ID), eventTitleText.getText().toString(), eventDate)
+            Event event = new Event.Builder()
+                    .asNewResource()
+                    .title(eventTitleText.getText().toString())
+                    .date(eventDate)
+                    .description(eventDescription.getText().toString())
+                    .build();
+
+            eventsRepository.save(event)
                     .compose(applySchedulers())
                     .subscribe(this::eventCreated, this::defaultErrorHandler);
         }
@@ -88,4 +105,9 @@ public class AddEventActivity extends BaseActivity {
         eventDate = date;
         invalidateOptionsMenu();
     }
+
+    protected String getTimelineId() {
+        return getIntent().getStringExtra(ARG_TIMELINE_ID);
+    }
+
 }

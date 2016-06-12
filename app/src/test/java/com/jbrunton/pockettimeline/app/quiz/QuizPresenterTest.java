@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
 import com.jbrunton.pockettimeline.api.EventsRepository;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
@@ -28,8 +27,18 @@ public class QuizPresenterTest {
 
     private RandomHelper randomHelper;
 
-    final Event EVENT_ONE = new Event("1", new LocalDate(2014, DateTimeConstants.JUNE, 3), "Event One", null);
-    final Event EVENT_TWO = new Event("2", new LocalDate(2015, DateTimeConstants.JUNE, 4), "Event Two", null);
+    final Event EVENT_ONE = new Event.Builder()
+            .id("1")
+            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
+            .title("Event One")
+            .description("Event One Description")
+            .build();
+    final Event EVENT_TWO = new Event.Builder()
+            .id("1")
+            .date(new LocalDate(2015, DateTimeConstants.JUNE, 3))
+            .title("Event Two")
+            .description("Event Two Description")
+            .build();
     final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
 
     @Before public void setUp() {

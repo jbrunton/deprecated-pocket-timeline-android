@@ -8,12 +8,12 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class CachingInterceptor implements Interceptor {
+public class CachingInterceptor implements Interceptor {
     private final PocketTimelineApplication application;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_WEEK = ONE_MINUTE * 60 * 24 * 7;
 
-    CachingInterceptor(PocketTimelineApplication application) {
+    public CachingInterceptor(PocketTimelineApplication application) {
         this.application = application;
     }
 

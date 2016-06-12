@@ -7,7 +7,7 @@ import java.util.List;
 
 import rx.Observable;
 
-public abstract class BaseRepository<T extends Resource> implements Repository<T> {
+public abstract class BaseReadableRepository<T extends Resource> implements ReadableRepository<T> {
     @Override public Observable<T> find(String id) {
         return all().map(finderFor(id)::find);
     }

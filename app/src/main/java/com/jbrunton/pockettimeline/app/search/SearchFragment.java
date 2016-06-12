@@ -11,8 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.api.EventsRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.entities.models.Event;
@@ -22,10 +23,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Subcomponent;
 import rx.Observable;
 
 public class SearchFragment extends BaseFragment {
-    @Inject EventsProvider eventsProvider;
+    @Inject EventsRepository eventsRepository;
     private EventsAdapter eventsAdapter;
     private final String SEARCH_CACHE_KEY = "search";
     private String query;
@@ -44,11 +46,14 @@ public class SearchFragment extends BaseFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationComponent().inject(this);
 
         if (savedInstanceState != null) {
             query = savedInstanceState.getString("query");
         }
+    }
+
+    @Override protected void setupActivityComponent() {
+        applicationComponent().inject(this);
     }
 
     @Override public void onResume() {
@@ -93,7 +98,7 @@ public class SearchFragment extends BaseFragment {
     }
 
     private Observable<List<Event>> doSearch(String query) {
-        return eventsProvider.searchEvents(query);
+        return eventsRepository.search(query);
     }
 
     private void searchResultsAvailable(List<Event> events) {
@@ -110,4 +115,10 @@ public class SearchFragment extends BaseFragment {
             return true;
         }
     };
+
+    @PerActivity
+    @Subcomponent
+    public static interface SearchFragmentComponent {
+        void inject(SearchFragment fragment);
+    }
 }

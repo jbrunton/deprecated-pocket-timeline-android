@@ -7,25 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
+import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
 import javax.inject.Inject;
 
+import dagger.Component;
+import dagger.Subcomponent;
+
 public class QuizFragment extends BaseFragment implements QuizView {
-    @Inject RandomHelper randomHelper;
-    @Inject EventsProvider eventsProvider;
-    @Inject QuizPresenter presenter;
+    //@Inject RandomHelper randomHelper;
+    //@Inject QuizPresenter presenter;
 
     private TextView answerField;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applicationComponent().inject(this);
-        bind(presenter);
+        //bind(presenter);
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +41,10 @@ public class QuizFragment extends BaseFragment implements QuizView {
         view.findViewById(R.id.submit).setOnClickListener(v -> submitAnswer());
 
         return view;
+    }
+
+    @Override protected void setupActivityComponent() {
+        applicationComponent().inject(this);
     }
 
     @Override public void onResume() {
@@ -62,14 +68,15 @@ public class QuizFragment extends BaseFragment implements QuizView {
 
     private void submitAnswer() {
         String submittedAnswer = answerField.getText().toString();
-        presenter.submitAnswer(submittedAnswer);
+        //presenter.submitAnswer(submittedAnswer);
     }
 
     private void showAlert(String message) {
-        new AlertDialog.Builder(getActivity())
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
-                .create()
-                .show();
+//        new AlertDialog.Builder(getActivity())
+//                .setMessage(message)
+//                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
+//                .create()
+//                .show();
     }
+
 }

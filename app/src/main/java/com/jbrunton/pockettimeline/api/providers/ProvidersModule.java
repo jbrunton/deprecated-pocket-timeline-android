@@ -7,12 +7,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+@Singleton
 @Module
 public class ProvidersModule {
-    @Singleton @Provides EventsProvider eventsProvider(RestService service) {
-        return new EventsProvider(service);
-    }
-
     @Singleton @Provides TimelinesProvider timelinesProvider(RestService service) {
         return new TimelinesProvider(service);
     }

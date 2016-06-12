@@ -18,7 +18,7 @@ public class PocketTimelineApplication extends Application {
         super.onCreate();
         component = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                .restServiceModule(new RestServiceModule(getString(R.string.base_url)))
+//                .restServiceModule(new RestServiceModule(getString(R.string.base_url)))
                 .build();
     }
 
