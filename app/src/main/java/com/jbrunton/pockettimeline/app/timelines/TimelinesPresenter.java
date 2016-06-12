@@ -8,13 +8,11 @@ import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class TimelinesPresenter extends BasePresenter<TimelinesView> {
     private final TimelinesRepository repository;
     private final SchedulerManager schedulerManager;
 
-    @Inject public TimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
+    public TimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
         this.repository = repository;
         this.schedulerManager = schedulerManager;
     }

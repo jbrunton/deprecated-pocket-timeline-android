@@ -6,6 +6,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
+import com.jbrunton.pockettimeline.fixtures.TestApplicationModule;
 import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
 import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
 
@@ -98,7 +99,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         return textView(R.id.answer).getText().toString();
     }
 
-    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class})
+    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }

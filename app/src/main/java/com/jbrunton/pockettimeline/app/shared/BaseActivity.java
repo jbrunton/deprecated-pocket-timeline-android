@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.f2prateek.dart.Dart;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
@@ -28,6 +29,7 @@ public abstract class BaseActivity extends RxCacheActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Dart.inject(this);
         setupActivityComponent();
     }
 

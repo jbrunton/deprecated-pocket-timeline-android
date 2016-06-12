@@ -45,14 +45,21 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
+
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'com.trello:rxlifecycle:0.3.0'
     compile 'com.trello:rxlifecycle-components:0.3.0'
+
     compile 'com.google.dagger:dagger:2.2'
     apt 'com.google.dagger:dagger-compiler:2.2'
     testCompile 'com.google.dagger:dagger-compiler:2.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile 'com.f2prateek.dart:dart:2.0.0'
+    provided 'com.f2prateek.dart:dart-processor:2.0.0'
+    compile 'com.f2prateek.dart:henson:2.0.0'
+    provided 'com.f2prateek.dart:henson-processor:2.0.0'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 

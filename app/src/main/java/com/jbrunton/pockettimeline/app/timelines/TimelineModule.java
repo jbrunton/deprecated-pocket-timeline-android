@@ -10,14 +10,14 @@ import dagger.Provides;
 
 @PerActivity
 @Module
-public class AddEventActivityModule {
-    private final AddEventActivity activity;
+public class TimelineModule {
+    private final String timelineId;
 
-    public AddEventActivityModule(AddEventActivity activity) {
-        this.activity = activity;
+    public TimelineModule(String timelineId) {
+        this.timelineId = timelineId;
     }
 
     @Provides @PerActivity TimelineEventsRepository provideRepository(RestService service) {
-        return new HttpTimelineEventsRepository(activity.getTimelineId(), service);
+        return new HttpTimelineEventsRepository(timelineId, service);
     }
 }
