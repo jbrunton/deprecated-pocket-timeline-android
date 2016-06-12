@@ -20,7 +20,8 @@ import dagger.Component;
 @Component(modules = {
         ProvidersModule.class,
         RepositoriesModule.class,
-        ApplicationModule.class
+        ApplicationModule.class,
+        RestServiceModule.class
 })
 public interface ApplicationComponent {
     void inject(TimelinesFragment fragment);

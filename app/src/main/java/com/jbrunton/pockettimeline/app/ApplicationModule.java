@@ -38,29 +38,4 @@ public class ApplicationModule {
     @Provides @Singleton PocketTimelineApplication providesApplication() {
         return application;
     }
-
-    private static final int TEN_MEGABYTES = 10 * 1024 * 1024;
-
-    @Provides @Singleton RestService provideRestService(PocketTimelineApplication application) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(application.getString(R.string.base_url))
-                .client(createClient(application))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-
-        return retrofit.create(RestService.class);
-    }
-
-    @NonNull private OkHttpClient createClient(final PocketTimelineApplication application) {
-        return new OkHttpClient.Builder()
-                .cache(new Cache(application.getCacheDir(), TEN_MEGABYTES))
-                .addInterceptor(new CachingInterceptor(application))
-                .build();
-    }
-
 }
