@@ -7,6 +7,10 @@ public class Resource {
 
     private static final String NEW_RESOURCE_ID = "0";
 
+    protected Resource(AbstractBuilder builder) {
+        this.id = builder.id;
+    }
+
     public Resource(String id) {
         this.id = id;
     }
@@ -19,6 +23,12 @@ public class Resource {
         return NEW_RESOURCE_ID.equals(id);
     }
 
+    protected void validate() {
+        if (this.id == null) {
+            throw new IllegalStateException("id is null");
+        }
+    }
+
     public static abstract class AbstractBuilder<T extends Resource, B extends AbstractBuilder> implements Builder<T> {
         private String id;
 
@@ -26,20 +36,10 @@ public class Resource {
             this.id = id;
             return (B) this;
         }
-
+        
         public B asNewResource() {
             this.id = NEW_RESOURCE_ID;
             return (B) this;
-        }
-    }
-
-    protected Resource(AbstractBuilder builder) {
-        this.id = builder.id;
-    }
-
-    protected void validate() {
-        if (this.id == null) {
-            throw new IllegalStateException("id is null");
         }
     }
 }
