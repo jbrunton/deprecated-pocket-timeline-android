@@ -27,4 +27,5 @@ public interface ApplicationComponent {
     RestService restService();
     EventsRepository eventsRepository();
     TimelinesRepository timelinesRepository();
+    Navigator navigator();
 }

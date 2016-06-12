@@ -1,6 +1,5 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +13,7 @@ import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
+import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
@@ -24,12 +24,12 @@ import rx.Observable;
 import static rx.Observable.zip;
 
 public class TimelineActivity extends BaseActivity {
-    private static final String ARG_TIMELINE_ID = "timelineId";
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
     @Inject TimelinesRepository timelinesRepository;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
+    @Inject Navigator navigator;
 
     @InjectExtra String timelineId;
 
@@ -42,7 +42,7 @@ public class TimelineActivity extends BaseActivity {
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AddEventActivity.startForResult(TimelineActivity.this, timelineId, ADD_EVENT_REQUEST_CODE);
+                navigator.startAddEventActivityForResult(TimelineActivity.this, timelineId, ADD_EVENT_REQUEST_CODE);
             }
         });
 
@@ -61,14 +61,6 @@ public class TimelineActivity extends BaseActivity {
                 .timelineActivityModule(new TimelineActivityModule(this))
                 .build()
                 .inject(this);
-    }
-
-    public static void start(Context context, String timelineId) {
-        Intent intent = Henson.with(context)
-                .gotoTimelineActivity()
-                .timelineId(timelineId)
-                .build();
-        context.startActivity(intent);
     }
 
     @Override
@@ -112,7 +104,7 @@ public class TimelineActivity extends BaseActivity {
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
-            final String eventId = data.getStringExtra("timelineId");
+            final String eventId = data.getStringExtra(AddEventActivity.ARG_TIMELINE_ID);
             showMessage("Added event", view -> {
                 eventsRepository.delete(eventId)
                         .compose(applySchedulers())

@@ -2,12 +2,13 @@ package com.jbrunton.pockettimeline.app.timelines;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.f2prateek.dart.Dart;
+import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
@@ -30,9 +31,10 @@ public class AddEventActivity extends BaseActivity {
     @Bind(R.id.event_title) EditText eventTitleText;
     @Bind(R.id.event_description) EditText eventDescription;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
+    @InjectExtra String timelineId;
 
-    public final static String ARG_TIMELINE_ID = "timelineId";
     public final static int RESULT_CREATED_EVENT = 1;
+    public final static String ARG_TIMELINE_ID = "timelineId";
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class AddEventActivity extends BaseActivity {
         setTitle("Add Event");
 
         ButterKnife.bind(this);
+        Dart.inject(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
@@ -54,12 +57,6 @@ public class AddEventActivity extends BaseActivity {
                 .addEventActivityModule(new AddEventActivityModule(this))
                 .build()
                 .inject(this);
-    }
-
-    public static void startForResult(AppCompatActivity activity, String timelineId, int requestCode) {
-        Intent intent = new Intent(activity, AddEventActivity.class);
-        intent.putExtra(ARG_TIMELINE_ID, timelineId);
-        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
