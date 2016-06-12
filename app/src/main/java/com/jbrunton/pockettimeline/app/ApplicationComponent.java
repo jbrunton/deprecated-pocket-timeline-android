@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.app;
 
+import com.jbrunton.pockettimeline.api.EventsRepository;
 import com.jbrunton.pockettimeline.api.RepositoriesModule;
 import com.jbrunton.pockettimeline.api.providers.ProvidersModule;
 import com.jbrunton.pockettimeline.api.service.RestService;
@@ -27,5 +28,5 @@ public interface ApplicationComponent {
     void inject(SearchFragment fragment);
 
     RestService restService();
-
+    EventsRepository eventsRepository();
 }

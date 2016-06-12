@@ -20,14 +20,14 @@ import dagger.Component;
 import dagger.Subcomponent;
 
 public class QuizFragment extends BaseFragment implements QuizView {
-    //@Inject RandomHelper randomHelper;
-    //@Inject QuizPresenter presenter;
+    @Inject RandomHelper randomHelper;
+    @Inject QuizPresenter presenter;
 
     private TextView answerField;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //bind(presenter);
+        bind(presenter);
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,15 +68,15 @@ public class QuizFragment extends BaseFragment implements QuizView {
 
     private void submitAnswer() {
         String submittedAnswer = answerField.getText().toString();
-        //presenter.submitAnswer(submittedAnswer);
+        presenter.submitAnswer(submittedAnswer);
     }
 
     private void showAlert(String message) {
-//        new AlertDialog.Builder(getActivity())
-//                .setMessage(message)
-//                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
-//                .create()
-//                .show();
+        new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.nextQuestion())
+                .create()
+                .show();
     }
 
 }
