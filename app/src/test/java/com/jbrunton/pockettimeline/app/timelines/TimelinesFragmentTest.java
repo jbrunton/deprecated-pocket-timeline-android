@@ -6,6 +6,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
+import com.jbrunton.pockettimeline.fixtures.TestApplicationModule;
 import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
 import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
@@ -56,7 +57,7 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment, 
         assertThat(getText(timelines.getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
     }
 
-    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class})
+    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(TimelinesFragmentTest test);
     }

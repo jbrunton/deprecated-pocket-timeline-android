@@ -23,4 +23,8 @@ public class ApplicationModule {
     @Provides @Singleton PocketTimelineApplication providesApplication() {
         return application;
     }
+
+    @Provides @Singleton Navigator provideNavigator() {
+        return new Navigator();
+    }
 }

@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.f2prateek.dart.Dart;
+import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
@@ -28,6 +30,9 @@ public class TimelineActivity extends BaseActivity {
 
     @Inject TimelinesRepository timelinesRepository;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
+
+    @InjectExtra String timelineId;
+
     private EventsAdapter eventsAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,11 @@ public class TimelineActivity extends BaseActivity {
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AddEventActivity.startForResult(TimelineActivity.this, getTimelineId(), ADD_EVENT_REQUEST_CODE);
+                AddEventActivity.startForResult(TimelineActivity.this, timelineId, ADD_EVENT_REQUEST_CODE);
             }
         });
+
+        Dart.inject(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,8 +64,10 @@ public class TimelineActivity extends BaseActivity {
     }
 
     public static void start(Context context, String timelineId) {
-        Intent intent = new Intent(context, TimelineActivity.class);
-        intent.putExtra(ARG_TIMELINE_ID, timelineId);
+        Intent intent = Henson.with(context)
+                .gotoTimelineActivity()
+                .timelineId(timelineId)
+                .build();
         context.startActivity(intent);
     }
 
@@ -73,11 +82,10 @@ public class TimelineActivity extends BaseActivity {
     }
 
     @Override protected String ownerId() {
-        return getTimelineId();
+        return timelineId;
     }
 
     private Observable<Timeline> getTimeline() {
-        String timelineId = getTimelineId();
         return zip(
                 timelinesRepository.find(timelineId),
                 eventsRepository.all(),
@@ -116,7 +124,6 @@ public class TimelineActivity extends BaseActivity {
     }
 
     protected String getTimelineId() {
-        return getIntent().getStringExtra(ARG_TIMELINE_ID);
+        return timelineId;
     }
-
 }
