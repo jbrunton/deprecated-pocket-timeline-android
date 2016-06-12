@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
-import com.jbrunton.pockettimeline.api.EventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;

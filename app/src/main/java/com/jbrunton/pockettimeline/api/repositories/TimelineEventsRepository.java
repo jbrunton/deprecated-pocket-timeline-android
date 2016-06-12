@@ -1,4 +1,4 @@
-package com.jbrunton.pockettimeline.api;
+package com.jbrunton.pockettimeline.api.repositories;
 
 import com.jbrunton.pockettimeline.entities.data.ReadableRepository;
 import com.jbrunton.pockettimeline.entities.data.WritableRepository;

@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.fixtures;
 
-import com.jbrunton.pockettimeline.api.EventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 
 import javax.inject.Singleton;
 

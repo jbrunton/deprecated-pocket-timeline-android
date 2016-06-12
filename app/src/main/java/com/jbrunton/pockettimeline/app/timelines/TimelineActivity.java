@@ -10,15 +10,13 @@ import android.view.View;
 
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.TimelineEventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import javax.inject.Inject;
 
-import dagger.Component;
 import rx.Observable;
 
 import static rx.Observable.zip;

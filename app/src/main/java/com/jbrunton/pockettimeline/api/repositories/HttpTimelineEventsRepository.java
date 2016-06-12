@@ -1,4 +1,4 @@
-package com.jbrunton.pockettimeline.api;
+package com.jbrunton.pockettimeline.api.repositories;
 
 import com.jbrunton.pockettimeline.api.resources.EventRequest;
 import com.jbrunton.pockettimeline.api.resources.EventResource;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.EventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.entities.models.Event;

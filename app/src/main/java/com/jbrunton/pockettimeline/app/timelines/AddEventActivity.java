@@ -10,8 +10,7 @@ import android.widget.EditText;
 
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.TimelineEventsRepository;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.DatePickerWidget;
 import com.jbrunton.pockettimeline.entities.models.Event;
@@ -23,7 +22,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
-import dagger.Component;
 
 import static com.jbrunton.pockettimeline.helpers.StringUtils.nullOrEmpty;
 

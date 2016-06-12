@@ -1,7 +1,7 @@
 package com.jbrunton.pockettimeline.app.quiz;
 
 import com.jbrunton.pockettimeline.PerActivity;
-import com.jbrunton.pockettimeline.api.EventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
