@@ -27,19 +27,19 @@ public class QuizPresenterTest {
 
     private RandomHelper randomHelper;
 
-    final Event EVENT_ONE = new Event.Builder()
+    final static Event EVENT_ONE = new Event.Builder()
             .id("1")
             .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
             .title("Event One")
             .description("Event One Description")
             .build();
-    final Event EVENT_TWO = new Event.Builder()
+    final static Event EVENT_TWO = new Event.Builder()
             .id("1")
             .date(new LocalDate(2015, DateTimeConstants.JUNE, 3))
             .title("Event Two")
             .description("Event Two Description")
             .build();
-    final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
+    final static List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
 
     @Before public void setUp() {
         randomHelper = new DeterministicRandomHelper(asList(1, 0));
