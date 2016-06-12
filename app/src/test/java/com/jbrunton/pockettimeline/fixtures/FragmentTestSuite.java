@@ -18,8 +18,8 @@ import org.robolectric.util.ActivityController;
 @Config(constants = BuildConfig.class, sdk = 21)
 public abstract class FragmentTestSuite<T extends Fragment, C extends ApplicationComponent> {
     private T fragment;
-    private BaseActivity activity;
-    private ActivityController<? extends BaseActivity> controller;
+    private TestActivity activity;
+    private ActivityController<TestActivity> controller;
     private C component;
 
     protected T fragment() {
@@ -30,7 +30,7 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
         return activity;
     }
 
-    protected ActivityController<? extends BaseActivity> controller() {
+    protected ActivityController<TestActivity> controller() {
         return controller;
     }
 
@@ -83,7 +83,6 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
 
     public static class TestActivity extends BaseActivity {
         @Override protected void setupActivityComponent() {
-
         }
     }
 }

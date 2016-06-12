@@ -29,14 +29,14 @@ public class Resource {
         }
     }
 
-    public static abstract class AbstractBuilder<T extends Resource, B extends AbstractBuilder> implements Builder<T> {
+    public abstract static class AbstractBuilder<T extends Resource, B extends AbstractBuilder> implements Builder<T> {
         private String id;
 
         public B id(String id) {
             this.id = id;
             return (B) this;
         }
-        
+
         public B asNewResource() {
             this.id = NEW_RESOURCE_ID;
             return (B) this;

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
@@ -23,7 +22,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Subcomponent;
 import rx.Observable;
 
 public class SearchFragment extends BaseFragment {
@@ -115,10 +113,4 @@ public class SearchFragment extends BaseFragment {
             return true;
         }
     };
-
-    @PerActivity
-    @Subcomponent
-    public static interface SearchFragmentComponent {
-        void inject(SearchFragment fragment);
-    }
 }

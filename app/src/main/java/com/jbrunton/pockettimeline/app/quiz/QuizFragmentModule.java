@@ -11,12 +11,6 @@ import dagger.Provides;
 @PerActivity
 @Module
 public class QuizFragmentModule {
-    private final QuizFragment fragment;
-
-    public QuizFragmentModule(QuizFragment fragment) {
-        this.fragment = fragment;
-    }
-
     @Provides @PerActivity QuizPresenter providePresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {
         return new QuizPresenter(repository, schedulerManager, randomHelper);
     }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import rx.Observable;
 
+@FunctionalInterface
 public interface SearchableRepository<T extends Resource> {
     Observable<List<T>> search(String query);
 }
