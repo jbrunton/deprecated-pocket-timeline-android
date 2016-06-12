@@ -3,11 +3,13 @@ package com.jbrunton.pockettimeline.app.quiz;
 import android.app.Dialog;
 
 import com.jbrunton.pockettimeline.R;
+import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
+import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -98,7 +100,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         return textView(R.id.answer).getText().toString();
     }
 
-    @Singleton @Component(modules = {TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }
