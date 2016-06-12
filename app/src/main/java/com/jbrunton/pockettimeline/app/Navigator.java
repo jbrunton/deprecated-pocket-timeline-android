@@ -1,12 +1,18 @@
 package com.jbrunton.pockettimeline.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 import com.jbrunton.pockettimeline.app.timelines.Henson;
 
 public class Navigator {
+    private final Activity activity;
+
+    public Navigator(Activity activity) {
+        this.activity = activity;
+    }
+
     public static Intent buildTimelineActivityIntent(Context context, String timelineId) {
         return Henson.with(context)
                 .gotoTimelineActivity()
@@ -21,12 +27,12 @@ public class Navigator {
                 .build();
     }
 
-    public void startTimelineActivity(Context context, String timelineId) {
-        Intent intent = buildTimelineActivityIntent(context, timelineId);
-        context.startActivity(intent);
+    public void startTimelineActivity(String timelineId) {
+        Intent intent = buildTimelineActivityIntent(activity, timelineId);
+        activity.startActivity(intent);
     }
 
-    public void startAddEventActivityForResult(AppCompatActivity activity, String timelineId, int requestCode) {
+    public void startAddEventActivityForResult(String timelineId, int requestCode) {
         Intent intent = buildAddEventActivityIntent(activity, timelineId);
         activity.startActivityForResult(intent, requestCode);
     }

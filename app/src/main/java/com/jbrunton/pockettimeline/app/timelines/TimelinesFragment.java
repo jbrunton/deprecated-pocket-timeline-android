@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
+import com.jbrunton.pockettimeline.app.ActivityModule;
+import com.jbrunton.pockettimeline.app.DaggerActivityComponent;
 import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
@@ -18,7 +21,7 @@ import javax.inject.Inject;
 
 public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
     @Inject TimelinesPresenter presenter;
-    @Inject Navigator navigator;
+    @Inject @PerActivity Navigator navigator;
     private TimelinesAdapter timelinesAdapter;
 
     private final static String TIMELINES_CACHE_KEY = "timelines";
@@ -46,7 +49,11 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     }
 
     @Override protected void setupActivityComponent() {
-        applicationComponent().inject(this);
+        DaggerActivityComponent.builder()
+                .applicationComponent(applicationComponent())
+                .activityModule(new ActivityModule(getActivity()))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -56,7 +63,7 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     }
 
     private void showTimeline(Timeline timeline) {
-        navigator.startTimelineActivity(getContext(), timeline.getId());
+        navigator.startTimelineActivity(timeline.getId());
     }
 
     @Override public void showTimelines(List<Timeline> timelines) {

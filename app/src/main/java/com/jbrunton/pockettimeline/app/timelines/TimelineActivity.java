@@ -12,6 +12,7 @@ import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
+import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
@@ -41,7 +42,7 @@ public class TimelineActivity extends BaseActivity {
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                navigator.startAddEventActivityForResult(TimelineActivity.this, timelineId, ADD_EVENT_REQUEST_CODE);
+                navigator.startAddEventActivityForResult(timelineId, ADD_EVENT_REQUEST_CODE);
             }
         });
 
@@ -55,6 +56,7 @@ public class TimelineActivity extends BaseActivity {
     @Override protected void setupActivityComponent() {
         DaggerTimelineActivityComponent.builder()
                 .applicationComponent(applicationComponent())
+                .activityModule(new ActivityModule(this))
                 .timelineActivityModule(new TimelineActivityModule(this))
                 .build()
                 .inject(this);
