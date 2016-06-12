@@ -1,5 +1,6 @@
-package com.jbrunton.pockettimeline.api.repositories;
+package com.jbrunton.pockettimeline.api.repositories.http;
 
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.api.resources.EventResource;
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.entities.data.BaseReadableRepository;

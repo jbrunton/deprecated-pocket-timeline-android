@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
@@ -17,10 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Subcomponent;
-
 public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
-    @Inject TimelinesProvider timelinesProvider;
     @Inject TimelinesPresenter presenter;
     private TimelinesAdapter timelinesAdapter;
 

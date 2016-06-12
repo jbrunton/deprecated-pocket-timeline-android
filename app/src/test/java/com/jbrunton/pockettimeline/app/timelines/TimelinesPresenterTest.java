@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
 
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class TimelinesPresenterTest {
     private TimelinesPresenter presenter;
     private TimelinesView view;
-    private TimelinesProvider provider;
+    private TimelinesRepository repository;
 
     private final List<Timeline> TIMELINES = asList(
             new Timeline("1", "Some Timeline", "Some description")
@@ -32,9 +32,9 @@ public class TimelinesPresenterTest {
 
     @Before public void setUp() {
         view = mock(TimelinesView.class);
-        provider = mock(TimelinesProvider.class);
+        repository = mock(TimelinesRepository.class);
 
-        presenter = new TimelinesPresenter(provider, new TestSchedulerManager());
+        presenter = new TimelinesPresenter(repository, new TestSchedulerManager());
         presenter.bind(view);
     }
 
@@ -60,14 +60,14 @@ public class TimelinesPresenterTest {
     }
 
     private void stubProviderToErrorWith(Throwable throwable) {
-        when(provider.getTimelines()).thenReturn(Observable.error(throwable));
+        when(repository.all()).thenReturn(Observable.error(throwable));
     }
 
     private void stubProviderWithEmptySequence() {
-        when(provider.getTimelines()).thenReturn(Observable.from(emptyList()));
+        when(repository.all()).thenReturn(Observable.from(emptyList()));
     }
 
     private void stubProviderToReturn(List<Timeline> timelines) {
-        when(provider.getTimelines()).thenReturn(Observable.just(timelines));
+        when(repository.all()).thenReturn(Observable.just(timelines));
     }
 }

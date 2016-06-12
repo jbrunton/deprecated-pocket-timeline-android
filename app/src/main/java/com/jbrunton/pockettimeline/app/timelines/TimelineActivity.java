@@ -11,7 +11,7 @@ import android.view.View;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
@@ -26,7 +26,7 @@ public class TimelineActivity extends BaseActivity {
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
-    @Inject TimelinesProvider timelinesProvider;
+    @Inject TimelinesRepository timelinesRepository;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
     private EventsAdapter eventsAdapter;
 
@@ -79,7 +79,7 @@ public class TimelineActivity extends BaseActivity {
     private Observable<Timeline> getTimeline() {
         String timelineId = getTimelineId();
         return zip(
-                timelinesProvider.getTimeline(timelineId),
+                timelinesRepository.find(timelineId),
                 eventsRepository.all(),
                 Timeline::withEvents
         );
