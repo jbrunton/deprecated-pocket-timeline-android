@@ -3,10 +3,8 @@ package com.jbrunton.pockettimeline.app.shared;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.functions.Func0;

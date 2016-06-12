@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.app.shared;
 
 import com.google.common.base.Optional;
-import com.jbrunton.pockettimeline.app.timelines.TimelinesView;
 
 import rx.functions.Action1;
 

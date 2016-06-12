@@ -7,17 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
 import javax.inject.Inject;
-
-import dagger.Component;
-import dagger.Subcomponent;
 
 public class QuizFragment extends BaseFragment implements QuizView {
     @Inject RandomHelper randomHelper;

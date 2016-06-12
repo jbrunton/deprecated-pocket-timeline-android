@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 

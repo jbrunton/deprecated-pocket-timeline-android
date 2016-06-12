@@ -1,8 +1,8 @@
 package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.PerActivity;
-import com.jbrunton.pockettimeline.api.repositories.http.HttpTimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.http.HttpTimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.service.RestService;
 
 import dagger.Module;

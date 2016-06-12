@@ -1,21 +1,14 @@
 package com.jbrunton.pockettimeline.app.shared;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.jbrunton.pockettimeline.BuildConfig;
 
-import org.assertj.core.api.AbstractAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-
-import javax.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Func0;
@@ -23,12 +16,10 @@ import rx.observers.TestSubscriber;
 import rx.subjects.ReplaySubject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)

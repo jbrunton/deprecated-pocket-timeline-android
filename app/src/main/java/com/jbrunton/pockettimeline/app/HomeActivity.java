@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.search.SearchFragment;
-import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
+import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 
 public class HomeActivity extends BaseActivity {
 

@@ -2,7 +2,6 @@ package com.jbrunton.pockettimeline.fixtures;
 
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 

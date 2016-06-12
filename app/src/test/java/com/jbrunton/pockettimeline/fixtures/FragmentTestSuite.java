@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.fixtures;
 
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,8 +14,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
-
-import static org.mockito.Mockito.mock;
 
 @Config(constants = BuildConfig.class, sdk = 21)
 public abstract class FragmentTestSuite<T extends Fragment, C extends ApplicationComponent> {

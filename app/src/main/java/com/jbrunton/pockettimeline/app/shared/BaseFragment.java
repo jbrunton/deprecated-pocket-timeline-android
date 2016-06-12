@@ -1,8 +1,6 @@
 package com.jbrunton.pockettimeline.app.shared;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
@@ -10,7 +8,6 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public abstract class BaseFragment extends RxCacheFragment implements DisplayErrorView {
