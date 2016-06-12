@@ -6,8 +6,8 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
-import com.jbrunton.pockettimeline.fixtures.TestProvidersModule;
 import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
+import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -34,7 +34,12 @@ import static org.mockito.Mockito.verify;
 public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragmentTest.TestApplicationComponent> {
     @Inject QuizPresenter presenter;
 
-    final Event EVENT = new Event("1", new LocalDate(2014, DateTimeConstants.JUNE, 3), "Event One", null);
+    final Event EVENT = new Event.Builder()
+            .id("1")
+            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
+            .title("Event One")
+            .description("Event One Description")
+            .build();
 
     @Before public void setUp() {
         configureTestSuite(new QuizFragment());
@@ -93,7 +98,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
         return textView(R.id.answer).getText().toString();
     }
 
-    @Singleton @Component(modules = {TestProvidersModule.class, TestPresentersModule.class, TestRepositoriesModule.class})
+    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class})
     public static interface TestApplicationComponent extends ApplicationComponent {
         void inject(QuizFragmentTest test);
     }

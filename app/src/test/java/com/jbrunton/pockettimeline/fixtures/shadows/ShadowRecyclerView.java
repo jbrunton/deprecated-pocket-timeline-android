@@ -1,7 +1,6 @@
 package com.jbrunton.pockettimeline.fixtures.shadows;
 
 import android.support.v7.widget.RecyclerView;
-import android.widget.Adapter;
 
 import org.robolectric.annotation.Implements;
 import org.robolectric.internal.ShadowExtractor;

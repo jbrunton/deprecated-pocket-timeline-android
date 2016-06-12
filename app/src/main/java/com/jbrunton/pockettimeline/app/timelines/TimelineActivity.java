@@ -8,9 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.providers.EventsProvider;
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
@@ -25,8 +26,8 @@ public class TimelineActivity extends BaseActivity {
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
-    @Inject TimelinesProvider timelinesProvider;
-    @Inject EventsProvider eventsProvider;
+    @Inject TimelinesRepository timelinesRepository;
+    @Inject @PerActivity TimelineEventsRepository eventsRepository;
     private EventsAdapter eventsAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,14 @@ public class TimelineActivity extends BaseActivity {
 
         eventsAdapter = new EventsAdapter();
         recyclerView.setAdapter(eventsAdapter);
+    }
 
-        applicationComponent().inject(this);
+    @Override protected void setupActivityComponent() {
+        DaggerTimelineActivityComponent.builder()
+                .applicationComponent(applicationComponent())
+                .timelineActivityModule(new TimelineActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     public static void start(Context context, String timelineId) {
@@ -72,8 +79,8 @@ public class TimelineActivity extends BaseActivity {
     private Observable<Timeline> getTimeline() {
         String timelineId = getTimelineId();
         return zip(
-                timelinesProvider.getTimeline(timelineId),
-                eventsProvider.getEvents(timelineId),
+                timelinesRepository.find(timelineId),
+                eventsRepository.all(),
                 Timeline::withEvents
         );
     }
@@ -99,7 +106,7 @@ public class TimelineActivity extends BaseActivity {
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
             final String eventId = data.getStringExtra("timelineId");
             showMessage("Added event", view -> {
-                eventsProvider.deleteEvent(eventId)
+                eventsRepository.delete(eventId)
                         .compose(applySchedulers())
                         .subscribe(x -> fetchTimeline(true));
             });
@@ -108,7 +115,8 @@ public class TimelineActivity extends BaseActivity {
         }
     }
 
-    private String getTimelineId() {
+    protected String getTimelineId() {
         return getIntent().getStringExtra(ARG_TIMELINE_ID);
     }
+
 }

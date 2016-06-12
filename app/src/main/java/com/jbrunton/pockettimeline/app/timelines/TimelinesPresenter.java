@@ -1,6 +1,6 @@
 package com.jbrunton.pockettimeline.app.timelines;
 
-import com.jbrunton.pockettimeline.api.providers.TimelinesProvider;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
@@ -11,17 +11,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class TimelinesPresenter extends BasePresenter<TimelinesView> {
-    private final TimelinesProvider provider;
+    private final TimelinesRepository repository;
     private final SchedulerManager schedulerManager;
 
-    @Inject public TimelinesPresenter(TimelinesProvider provider, SchedulerManager schedulerManager) {
-        this.provider = provider;
+    @Inject public TimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
+        this.repository = repository;
         this.schedulerManager = schedulerManager;
     }
 
     @Override public void onResume() {
         withView(LoadingIndicatorView::showLoadingIndicator);
-        provider.getTimelines()
+        repository.all()
                 .compose(schedulerManager.applySchedulers())
                 .subscribe(this::onTimelinesAvailable, this::onError);
     }

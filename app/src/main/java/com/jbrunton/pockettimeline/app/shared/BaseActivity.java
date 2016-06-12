@@ -1,8 +1,9 @@
 package com.jbrunton.pockettimeline.app.shared;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -11,10 +12,9 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
-public class BaseActivity extends RxCacheActivity {
+public abstract class BaseActivity extends RxCacheActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -26,11 +26,18 @@ public class BaseActivity extends RxCacheActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupActivityComponent();
+    }
+
     public void setHomeAsUp(boolean showHomeAsUp) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
         actionBar.setDisplayShowHomeEnabled(showHomeAsUp);
     }
+
+    protected abstract void setupActivityComponent();
 
     protected void onUpPressed() {
         finish();

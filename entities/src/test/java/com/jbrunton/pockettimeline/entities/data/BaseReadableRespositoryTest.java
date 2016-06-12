@@ -16,8 +16,8 @@ import static br.ufs.github.rxassertions.RxAssertions.assertThat;
 import static rx.Observable.just;
 
 @RunWith(JUnit4.class)
-public class BaseRespositoryTest {
-    private Repository<Resource> repository;
+public class BaseReadableRespositoryTest {
+    private ReadableRepository<Resource> repository;
 
     private final Resource RESOURCE_ONE = new Resource("1");
     private final Resource RESOURCE_TWO = new Resource("2");
@@ -39,8 +39,8 @@ public class BaseRespositoryTest {
                 .failsWithThrowable(IllegalStateException.class);
     }
 
-    private Repository<Resource> createTestRepository() {
-        return new BaseRepository<Resource>() {
+    private ReadableRepository<Resource> createTestRepository() {
+        return new BaseReadableRepository<Resource>() {
             @Override public Observable<List<Resource>> all() {
                 return just(RESOURCES);
             }

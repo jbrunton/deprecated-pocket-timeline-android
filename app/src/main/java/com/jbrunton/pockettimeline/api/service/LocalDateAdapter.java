@@ -12,7 +12,7 @@ import org.joda.time.LocalDate;
 
 import java.lang.reflect.Type;
 
-class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
     @Override
     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(src.toString());

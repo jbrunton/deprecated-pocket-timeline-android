@@ -6,7 +6,7 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface Repository<T extends Resource> {
-    Observable<List<T>> all();
-    Observable<T> find(String id);
+@FunctionalInterface
+public interface SearchableRepository<T extends Resource> {
+    Observable<List<T>> search(String query);
 }

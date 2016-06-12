@@ -15,13 +15,11 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
-import static org.mockito.Mockito.mock;
-
 @Config(constants = BuildConfig.class, sdk = 21)
 public abstract class FragmentTestSuite<T extends Fragment, C extends ApplicationComponent> {
     private T fragment;
-    private BaseActivity activity;
-    private ActivityController<BaseActivity> controller;
+    private TestActivity activity;
+    private ActivityController<TestActivity> controller;
     private C component;
 
     protected T fragment() {
@@ -32,7 +30,7 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
         return activity;
     }
 
-    protected ActivityController<BaseActivity> controller() {
+    protected ActivityController<TestActivity> controller() {
         return controller;
     }
 
@@ -73,7 +71,7 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
     private void configureFragment(T fragment) {
         this.fragment = fragment;
 
-        controller = Robolectric.buildActivity(BaseActivity.class);
+        controller = Robolectric.buildActivity(TestActivity.class);
         activity = controller.create().get();
 
         activity.getSupportFragmentManager().beginTransaction()
@@ -82,4 +80,9 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
     }
 
     protected abstract C createComponent();
+
+    public static class TestActivity extends BaseActivity {
+        @Override protected void setupActivityComponent() {
+        }
+    }
 }
