@@ -57,7 +57,7 @@ public class TimelineActivity extends BaseActivity {
         DaggerTimelineActivityComponent.builder()
                 .applicationComponent(applicationComponent())
                 .activityModule(new ActivityModule(this))
-                .timelineActivityModule(new TimelineActivityModule(this))
+                .timelineModule(new TimelineModule(timelineId))
                 .build()
                 .inject(this);
     }

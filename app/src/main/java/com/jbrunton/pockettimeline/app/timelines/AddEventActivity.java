@@ -11,6 +11,7 @@ import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
+import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.DatePickerWidget;
 import com.jbrunton.pockettimeline.entities.models.Event;
@@ -50,9 +51,10 @@ public class AddEventActivity extends BaseActivity {
     }
 
     @Override protected void setupActivityComponent() {
-        DaggerAddEventActivityComponent.builder()
+        DaggerTimelineActivityComponent.builder()
                 .applicationComponent(applicationComponent())
-                .addEventActivityModule(new AddEventActivityModule(this))
+                .activityModule(new ActivityModule(this))
+                .timelineModule(new TimelineModule(timelineId))
                 .build()
                 .inject(this);
     }
