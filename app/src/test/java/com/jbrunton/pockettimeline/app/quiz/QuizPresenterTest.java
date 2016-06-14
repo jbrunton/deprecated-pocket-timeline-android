@@ -9,23 +9,27 @@ import com.jbrunton.pockettimeline.helpers.RandomHelper;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
 import rx.Observable;
 
 import static java.util.Arrays.asList;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
-    private QuizPresenter presenter;
-    private EventsRepository repository;
-    private QuizView view;
+   public @Rule MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private RandomHelper randomHelper;
+    @Mock EventsRepository repository;
+    @Mock QuizView view;
+    RandomHelper randomHelper;
+    QuizPresenter presenter;
 
     private static final Event EVENT_ONE = new Event.Builder()
             .id("1")
@@ -43,14 +47,10 @@ public class QuizPresenterTest {
 
     @Before public void setUp() {
         randomHelper = new DeterministicRandomHelper(asList(1, 0));
-
-        repository = mock(EventsRepository.class);
-        view = mock(QuizView.class);
-
         presenter = new QuizPresenter(repository, new TestSchedulerManager(), randomHelper);
-        presenter.bind(view);
+        stubRepositoryToReturn(EVENTS);
 
-        stubProviderToReturn(EVENTS);
+        presenter.bind(view);
     }
 
     @Test public void shouldRequestEvents() {
@@ -83,7 +83,7 @@ public class QuizPresenterTest {
         presenter.submitAnswer(Integer.toString(event.getDate().getYear()));
     }
 
-    private void stubProviderToReturn(List<Event> events) {
+    private void stubRepositoryToReturn(List<Event> events) {
         when(repository.all()).thenReturn(Observable.just(events));
     }
 }
