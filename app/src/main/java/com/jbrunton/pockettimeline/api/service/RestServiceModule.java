@@ -27,7 +27,7 @@ public class RestServiceModule {
         this.baseUrl = baseUrl;
     }
 
-    @Provides @Singleton RestService provideRestService(PocketTimelineApplication application) {
+    @Provides @Singleton protected RestService provideRestService(PocketTimelineApplication application) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();

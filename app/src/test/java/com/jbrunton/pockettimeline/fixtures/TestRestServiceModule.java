@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 
 @Module
 public class TestRestServiceModule {
-    @Singleton @Provides RestService provideRestService() {
+    @Singleton @Provides protected RestService provideRestService() {
         return mock(RestService.class);
     }
 }

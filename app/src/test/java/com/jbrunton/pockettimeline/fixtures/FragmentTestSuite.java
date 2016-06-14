@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.jbrunton.pockettimeline.BuildConfig;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 
 import org.robolectric.Robolectric;
@@ -16,11 +15,10 @@ import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 @Config(constants = BuildConfig.class, sdk = 21)
-public abstract class FragmentTestSuite<T extends Fragment, C extends ApplicationComponent> {
+public abstract class FragmentTestSuite<T extends Fragment> {
     private T fragment;
     private TestActivity activity;
     private ActivityController<TestActivity> controller;
-    private C component;
 
     protected T fragment() {
         return fragment;
@@ -55,20 +53,6 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
     }
 
     protected void configureTestSuite(T fragment) {
-        configureComponent(createComponent());
-        configureFragment(fragment);
-    }
-
-    protected C component() {
-        return component;
-    }
-
-    private void configureComponent(C component) {
-        this.component = component;
-        application().setComponent(component);
-    }
-
-    private void configureFragment(T fragment) {
         this.fragment = fragment;
 
         controller = Robolectric.buildActivity(TestActivity.class);
@@ -78,8 +62,6 @@ public abstract class FragmentTestSuite<T extends Fragment, C extends Applicatio
                 .add(fragment, null)
                 .commit();
     }
-
-    protected abstract C createComponent();
 
     public static class TestActivity extends BaseActivity {
         @Override protected void setupActivityComponent() {

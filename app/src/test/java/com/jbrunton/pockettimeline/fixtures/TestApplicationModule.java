@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.fixtures;
 
 import com.jbrunton.pockettimeline.app.Navigator;
+import com.jbrunton.pockettimeline.app.quiz.QuizPresenter;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
 
 import javax.inject.Singleton;
@@ -19,5 +20,9 @@ public class TestApplicationModule {
 
     @Provides @Singleton TimelinesPresenter provideTimelinesPresenter() {
         return mock(TimelinesPresenter.class);
+    }
+
+    @Provides @Singleton QuizPresenter provideQuizPresenter() {
+        return mock(QuizPresenter.class);
     }
 }
