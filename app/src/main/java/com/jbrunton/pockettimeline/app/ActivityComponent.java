@@ -11,6 +11,4 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
     void inject(TimelinesFragment fragment);
     void inject(QuizFragment fragment);
-
-    Navigator navigator();
 }
