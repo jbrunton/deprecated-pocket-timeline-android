@@ -42,13 +42,13 @@ public class TimelinesPresenterTest {
     }
 
     @Test public void shouldShowLoadingIndicator() {
-        stubProviderWithEmptySequence();
+        stubRepositoryWithEmptySequence();
         presenter.onResume();
         verify(view).showLoadingIndicator();
     }
 
     @Test public void shouldRequestAndPresentTimelines() {
-        stubProviderToReturn(TIMELINES);
+        stubRepositoryToReturn(TIMELINES);
 
         presenter.onResume();
 
@@ -57,7 +57,7 @@ public class TimelinesPresenterTest {
     }
 
     @Test public void shouldPresentMessageOnError() {
-        stubProviderToErrorWith(new Throwable("Message"));
+        stubRepositoryToErrorWith(new Throwable("Message"));
         presenter.onResume();
         verify(view).showMessage("Error: Message");
     }
@@ -67,15 +67,15 @@ public class TimelinesPresenterTest {
         verify(navigator).startTimelineActivity(TIMELINE.getId());
     }
 
-    private void stubProviderToErrorWith(Throwable throwable) {
+    private void stubRepositoryToErrorWith(Throwable throwable) {
         when(repository.all()).thenReturn(Observable.error(throwable));
     }
 
-    private void stubProviderWithEmptySequence() {
-        when(repository.all()).thenReturn(Observable.from(emptyList()));
+    private void stubRepositoryWithEmptySequence() {
+        when(repository.all()).thenReturn(Observable.just(emptyList()));
     }
 
-    private void stubProviderToReturn(List<Timeline> timelines) {
+    private void stubRepositoryToReturn(List<Timeline> timelines) {
         when(repository.all()).thenReturn(Observable.just(timelines));
     }
 }
