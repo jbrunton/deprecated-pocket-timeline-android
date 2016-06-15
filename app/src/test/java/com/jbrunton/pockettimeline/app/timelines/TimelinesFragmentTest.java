@@ -49,4 +49,15 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
         assertThat(getText(timelines.getChildAt(0), R.id.timeline_title)).isEqualTo(TIMELINE_ONE.getTitle());
         assertThat(getText(timelines.getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
     }
+
+    @Test public void shouldShowTimelineDetails() {
+        fragment().showTimelines(asList(TIMELINE_ONE));
+        RecyclerView timelines = (RecyclerView) fragment().getView().findViewById(R.id.recycler_view);
+        shadowOf(timelines).populateItems();
+
+        TimelinesAdapter.ViewHolder viewHolder = (TimelinesAdapter.ViewHolder) timelines.findViewHolderForAdapterPosition(0);
+        viewHolder.itemView.performClick();
+
+        verify(presenter).showTimelineDetails(TIMELINE_ONE);
+    }
 }
