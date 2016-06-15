@@ -4,6 +4,7 @@ import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
 import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
@@ -26,7 +27,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
     @Override public void onResume() {
         super.onResume();
-        // withView(LoadingIndicatorView::showLoadingIndicator);
+        withView(LoadingIndicatorView::showLoadingIndicator);
         getTimeline().compose(schedulerManager.applySchedulers())
                 .subscribe(this::onTimelineAvailable, this::onError);
     }
@@ -41,7 +42,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
     private void onTimelineAvailable(Timeline timeline) {
         withView(view -> view.showTimeline(timeline));
-        // withView(LoadingIndicatorView::hideLoadingIndicator);
+        withView(LoadingIndicatorView::hideLoadingIndicator);
     }
 
     private void onError(Throwable throwable) {

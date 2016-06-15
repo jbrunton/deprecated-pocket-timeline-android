@@ -16,6 +16,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public abstract class BaseActivity extends RxCacheActivity {
+    private BasePresenter presenter;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -33,6 +35,20 @@ public abstract class BaseActivity extends RxCacheActivity {
         setupActivityComponent();
     }
 
+    @Override public void onResume() {
+        super.onResume();
+        if (presenter != null) {
+            presenter.onResume();
+        }
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.detach();
+        }
+    }
+
     public void setHomeAsUp(boolean showHomeAsUp) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
@@ -40,6 +56,11 @@ public abstract class BaseActivity extends RxCacheActivity {
     }
 
     protected abstract void setupActivityComponent();
+
+    protected <ViewType> void bind(BasePresenter<ViewType> presenter) {
+        this.presenter = presenter;
+        presenter.bind((ViewType) this);
+    }
 
     protected void onUpPressed() {
         finish();

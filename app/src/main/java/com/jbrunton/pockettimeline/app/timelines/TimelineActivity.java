@@ -6,25 +6,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.f2prateek.dart.InjectExtra;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.repositories.TimelineEventsRepository;
-import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.Navigator;
-import com.jbrunton.pockettimeline.app.shared.BaseActivity;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorActivity;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import javax.inject.Inject;
 
-public class TimelineActivity extends BaseActivity implements TimelineView {
+public class TimelineActivity extends LoadingIndicatorActivity implements TimelineView {
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
-    @Inject TimelinesRepository timelinesRepository;
-    @Inject @PerActivity TimelineEventsRepository eventsRepository;
+    @Inject @PerActivity TimelinePresenter presenter;
     @Inject Navigator navigator;
 
     @InjectExtra String timelineId;
@@ -47,6 +45,12 @@ public class TimelineActivity extends BaseActivity implements TimelineView {
 
         eventsAdapter = new EventsAdapter();
         recyclerView.setAdapter(eventsAdapter);
+
+        bind(presenter);
+    }
+
+    @Override protected void createContentView(ViewGroup root) {
+        getLayoutInflater().inflate(R.layout.activity_timeline, root);
     }
 
     @Override
