@@ -8,8 +8,6 @@ import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class QuizPresenter extends BasePresenter<QuizView> {
     private final EventsRepository repository;
     private final SchedulerManager schedulerManager;
@@ -18,7 +16,7 @@ public class QuizPresenter extends BasePresenter<QuizView> {
     private Event event;
     private List<Event> events;
 
-    @Inject public QuizPresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {
+    public QuizPresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {
         this.repository = repository;
         this.schedulerManager = schedulerManager;
         this.randomHelper = randomHelper;

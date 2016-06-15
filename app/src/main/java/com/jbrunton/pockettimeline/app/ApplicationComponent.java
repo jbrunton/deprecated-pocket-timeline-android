@@ -5,9 +5,9 @@ import com.jbrunton.pockettimeline.api.repositories.RepositoriesModule;
 import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
-import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.search.SearchFragment;
-import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
+import com.jbrunton.pockettimeline.app.timelines.TimelineActivityComponent;
+import com.jbrunton.pockettimeline.app.timelines.TimelineModule;
 
 import javax.inject.Singleton;
 
@@ -20,11 +20,12 @@ import dagger.Component;
         RestServiceModule.class
 })
 public interface ApplicationComponent {
-    void inject(QuizFragment fragment);
     void inject(SearchFragment fragment);
 
     RestService restService();
     EventsRepository eventsRepository();
     TimelinesRepository timelinesRepository();
-    TimelinesPresenter timelinesPresenter();
+
+    ActivityComponent activityComponent(ActivityModule activityModule);
+    TimelineActivityComponent timelineActivityComponent(TimelineModule timelineModule, ActivityModule activityModule);
 }

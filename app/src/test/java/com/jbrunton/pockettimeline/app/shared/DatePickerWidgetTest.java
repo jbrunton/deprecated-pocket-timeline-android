@@ -3,22 +3,16 @@ package com.jbrunton.pockettimeline.app.shared;
 import android.support.design.widget.TextInputLayout;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
-import com.jbrunton.pockettimeline.fixtures.TestApplicationModule;
-import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
-import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
+import com.jbrunton.pockettimeline.fixtures.TestAppRule;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.shadows.ShadowAlertDialog;
-
-import javax.inject.Singleton;
-
-import dagger.Component;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
@@ -28,7 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricGradleTestRunner.class)
-public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, DatePickerWidgetTest.TestApplicationComponent> {
+public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget> {
+    @Rule public final TestAppRule rule = new TestAppRule();
+
     private DatePickerWidget.OnDateChangedListener listener;
 
     @Before public void setUp() {
@@ -107,14 +103,5 @@ public class DatePickerWidgetTest extends FragmentTestSuite<DatePickerWidget, Da
 
     private void enterDay(String dayOfMonth) {
         textView(R.id.day_of_month).setText(dayOfMonth);
-    }
-
-    @Singleton @Component(modules = {TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
-    public static interface TestApplicationComponent extends ApplicationComponent {
-        void inject(DatePickerWidgetTest test);
-    }
-
-    @Override protected TestApplicationComponent createComponent() {
-        return DaggerDatePickerWidgetTest_TestApplicationComponent.create();
     }
 }

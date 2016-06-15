@@ -3,37 +3,31 @@ package com.jbrunton.pockettimeline.app.quiz;
 import android.app.Dialog;
 
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
-import com.jbrunton.pockettimeline.fixtures.TestApplicationModule;
-import com.jbrunton.pockettimeline.fixtures.TestRepositoriesModule;
-import com.jbrunton.pockettimeline.fixtures.TestRestServiceModule;
+import com.jbrunton.pockettimeline.fixtures.TestAppRule;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.RobolectricGradleTestRunner;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import dagger.Component;
-import dagger.Module;
-import dagger.Provides;
 
 import static com.jbrunton.pockettimeline.fixtures.AlertDialogFixtures.alertDialogButton;
 import static com.jbrunton.pockettimeline.fixtures.AlertDialogFixtures.alertDialogMessage;
 import static com.jbrunton.pockettimeline.fixtures.AlertDialogFixtures.alertDialogShowing;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragmentTest.TestApplicationComponent> {
-    @Inject QuizPresenter presenter;
+public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
+
+    @Rule public final TestAppRule rule = new TestAppRule();
+
+    @Mock QuizPresenter presenter;
 
     final Event EVENT = new Event.Builder()
             .id("1")
@@ -44,9 +38,6 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
 
     @Before public void setUp() {
         configureTestSuite(new QuizFragment());
-
-        component().inject(this);
-
         controller().start().resume();
     }
 
@@ -97,21 +88,5 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment, QuizFragme
 
     private String answer() {
         return textView(R.id.answer).getText().toString();
-    }
-
-    @Singleton @Component(modules = {TestPresentersModule.class, TestRepositoriesModule.class, TestRestServiceModule.class, TestApplicationModule.class})
-    public static interface TestApplicationComponent extends ApplicationComponent {
-        void inject(QuizFragmentTest test);
-    }
-
-    @Override protected TestApplicationComponent createComponent() {
-        return DaggerQuizFragmentTest_TestApplicationComponent.create();
-    }
-
-    @Module
-    public static class TestPresentersModule {
-        @Provides @Singleton public QuizPresenter provideQuizPresenter() {
-            return mock(QuizPresenter.class);
-        }
     }
 }

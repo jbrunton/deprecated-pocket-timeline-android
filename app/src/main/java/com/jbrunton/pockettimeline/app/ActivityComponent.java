@@ -1,13 +1,14 @@
 package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.PerActivity;
+import com.jbrunton.pockettimeline.app.quiz.QuizFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelinesFragment;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 @PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
+@Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
     void inject(TimelinesFragment fragment);
-    Navigator navigator();
+    void inject(QuizFragment fragment);
 }

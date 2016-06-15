@@ -1,10 +1,8 @@
 package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
-import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.shared.RxCache;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
-import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
 
 import javax.inject.Singleton;
 
@@ -19,15 +17,15 @@ public class ApplicationModule {
         this.application = application;
     }
 
-    @Provides @Singleton RxCache provideRxCache() {
+    @Provides @Singleton protected SchedulerManager provideSchedulerManager() {
+        return new SchedulerManager();
+    }
+
+    @Provides @Singleton protected RxCache provideRxCache() {
         return new RxCache();
     }
 
-    @Provides @Singleton PocketTimelineApplication providesApplication() {
+    @Provides @Singleton protected PocketTimelineApplication providesApplication() {
         return application;
-    }
-
-    @Provides @Singleton TimelinesPresenter provideTimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
-        return new TimelinesPresenter(repository, schedulerManager);
     }
 }
