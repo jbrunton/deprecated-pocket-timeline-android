@@ -3,6 +3,12 @@ package com.jbrunton.pockettimeline.app;
 import android.app.Activity;
 
 import com.jbrunton.pockettimeline.PerActivity;
+import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
+import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
+import com.jbrunton.pockettimeline.app.quiz.QuizPresenter;
+import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
+import com.jbrunton.pockettimeline.app.timelines.TimelinesPresenter;
+import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,5 +28,13 @@ public class ActivityModule {
 
     @Provides @PerActivity protected Navigator provideNavigator() {
         return new Navigator(activity);
+    }
+
+    @Provides @PerActivity protected TimelinesPresenter provideTimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
+        return new TimelinesPresenter(repository, schedulerManager);
+    }
+
+    @Provides @PerActivity protected QuizPresenter provideQuizPresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {
+        return new QuizPresenter(repository, schedulerManager, randomHelper);
     }
 }

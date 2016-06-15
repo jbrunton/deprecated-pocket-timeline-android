@@ -19,7 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class TimelinesFragment extends LoadingIndicatorFragment implements TimelinesView {
-    @Inject TimelinesPresenter presenter;
+    @Inject @PerActivity TimelinesPresenter presenter;
     @Inject @PerActivity Navigator navigator;
     private TimelinesAdapter timelinesAdapter;
 

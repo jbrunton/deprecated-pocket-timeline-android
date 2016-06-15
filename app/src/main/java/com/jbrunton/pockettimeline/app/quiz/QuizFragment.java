@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
+import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
@@ -16,7 +18,7 @@ import javax.inject.Inject;
 
 public class QuizFragment extends BaseFragment implements QuizView {
     @Inject RandomHelper randomHelper;
-    @Inject QuizPresenter presenter;
+    @Inject @PerActivity QuizPresenter presenter;
 
     private TextView answerField;
 
@@ -39,7 +41,9 @@ public class QuizFragment extends BaseFragment implements QuizView {
     }
 
     @Override protected void setupActivityComponent() {
-        applicationComponent().inject(this);
+        applicationComponent().activityComponent(
+                new ActivityModule(getActivity())
+        ).inject(this);
     }
 
     @Override public void onResume() {
