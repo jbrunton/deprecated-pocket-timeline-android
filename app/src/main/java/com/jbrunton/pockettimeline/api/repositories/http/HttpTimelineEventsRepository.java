@@ -39,6 +39,10 @@ public class HttpTimelineEventsRepository extends BaseWritableRepository<Event> 
                 .map(response -> null);
     }
 
+    @Override public String timelineId() {
+        return timelineId;
+    }
+
     private Observable<List<Event>> createModels(Observable<List<EventResource>> resources) {
         return resources.flatMap(Observable::from)
                 .map(EventResource::toModel)

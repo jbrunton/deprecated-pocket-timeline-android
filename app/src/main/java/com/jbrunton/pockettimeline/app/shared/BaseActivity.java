@@ -49,12 +49,12 @@ public abstract class BaseActivity extends RxCacheActivity {
         return ((PocketTimelineApplication) getApplication()).component();
     }
 
-    protected void showMessage(String text) {
+    public void showMessage(String text) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
                 .show();
     }
 
-    protected void showMessage(String text, View.OnClickListener action) {
+    public void showMessage(String text, View.OnClickListener action) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
                 .setAction("Undo", action)
                 .show();

@@ -19,10 +19,6 @@ import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-
-import static rx.Observable.zip;
-
 public class TimelineActivity extends BaseActivity implements TimelineView {
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
@@ -53,63 +49,38 @@ public class TimelineActivity extends BaseActivity implements TimelineView {
         recyclerView.setAdapter(eventsAdapter);
     }
 
-    @Override protected void setupActivityComponent() {
-        applicationComponent().timelineActivityComponent(
-                new TimelineModule(timelineId),
-                new ActivityModule(this)
-        ).inject(this);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         setTitle("Timeline");
         setHomeAsUp(true);
-
-        fetchTimeline(false);
-    }
-
-    @Override protected String ownerId() {
-        return timelineId;
-    }
-
-    private Observable<Timeline> getTimeline() {
-        return zip(
-                timelinesRepository.find(timelineId),
-                eventsRepository.all(),
-                Timeline::withEvents
-        );
-    }
-
-    private Observable<Timeline> fetchTimeline(boolean invalidate) {
-        if (invalidate) {
-            invalidate(TIMELINE_CACHE_KEY);
-        }
-
-        Observable<Timeline> timeline = cache(TIMELINE_CACHE_KEY, this::getTimeline)
-                .compose(applySchedulers());
-        timeline.subscribe(this::showTimeline, this::defaultErrorHandler);
-
-        return timeline;
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
             final String eventId = data.getStringExtra(AddEventActivity.ARG_TIMELINE_ID);
             showMessage("Added event", view -> {
-                eventsRepository.delete(eventId)
+                /*eventsRepository.delete(eventId)
                         .compose(applySchedulers())
-                        .subscribe(x -> fetchTimeline(true));
+                        .subscribe(x -> fetchTimeline(true));*/
             });
 
             invalidate(TIMELINE_CACHE_KEY);
         }
     }
 
+
     @Override public void showTimeline(Timeline timeline) {
         setTitle(timeline.getTitle());
         eventsAdapter.setDataSource(timeline.getEvents());
+    }
+
+    @Override protected void setupActivityComponent() {
+        applicationComponent().timelineActivityComponent(
+                new TimelineModule(timelineId),
+                new ActivityModule(this)
+        ).inject(this);
     }
 
     protected String getTimelineId() {
