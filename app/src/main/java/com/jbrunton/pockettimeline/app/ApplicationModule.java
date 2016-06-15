@@ -2,6 +2,7 @@ package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.shared.RxCache;
+import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 
 import javax.inject.Singleton;
 
@@ -14,6 +15,10 @@ public class ApplicationModule {
 
     public ApplicationModule(PocketTimelineApplication application) {
         this.application = application;
+    }
+
+    @Provides @Singleton protected SchedulerManager provideSchedulerManager() {
+        return new SchedulerManager();
     }
 
     @Provides @Singleton protected RxCache provideRxCache() {
