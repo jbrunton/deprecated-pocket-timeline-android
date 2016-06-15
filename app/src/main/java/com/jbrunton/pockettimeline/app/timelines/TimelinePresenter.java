@@ -48,6 +48,18 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
         );
     }
 
+    public void deleteEvent(String eventId) {
+        eventsRepository.delete(eventId)
+                .compose(schedulerManager.applySchedulers())
+                .subscribe(x -> this.fetchTimeline(), this::onError);
+    }
+
+    public void showUndoForNewEvent(String eventId) {
+        withView(view -> view.showMessage(
+                "Added event", "Undo",
+                () -> deleteEvent(eventId)));
+    }
+
     private void onTimelineAvailable(Timeline timeline) {
         withView(view -> view.showTimeline(timeline));
         withView(LoadingIndicatorView::hideLoadingIndicator);
@@ -56,17 +68,4 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
     private void onError(Throwable throwable) {
         withView(view -> view.showMessage("Error: " + throwable.getMessage()));
     }
-
-    public void deleteEvent(String eventId) {
-        eventsRepository.delete(eventId)
-                .compose(schedulerManager.applySchedulers())
-                .subscribe(x -> this.fetchTimeline(), this::onError);
-    }
-
-    public void onEventCreated(String eventId) {
-        withView(view -> view.showMessage(
-                "Added event", "Undo",
-                () -> deleteEvent(eventId)));
-    }
-
 }

@@ -59,7 +59,7 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
             final String eventId = data.getStringExtra(AddEventActivity.ARG_TIMELINE_ID);
-            presenter.onEventCreated(eventId);
+            presenter.showUndoForNewEvent(eventId);
         }
     }
 
