@@ -18,6 +18,7 @@ import com.jbrunton.pockettimeline.helpers.RandomHelper;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
@@ -33,7 +34,9 @@ public class QuizFragment extends BaseFragment implements QuizView {
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_quiz, container, false);
+        View view = inflater.inflate(R.layout.fragment_quiz, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override protected void setupActivityComponent() {
