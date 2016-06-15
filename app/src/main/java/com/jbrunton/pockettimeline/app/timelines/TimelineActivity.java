@@ -23,7 +23,7 @@ import rx.Observable;
 
 import static rx.Observable.zip;
 
-public class TimelineActivity extends BaseActivity {
+public class TimelineActivity extends BaseActivity implements TimelineView {
     private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
@@ -89,14 +89,9 @@ public class TimelineActivity extends BaseActivity {
 
         Observable<Timeline> timeline = cache(TIMELINE_CACHE_KEY, this::getTimeline)
                 .compose(applySchedulers());
-        timeline.subscribe(this::onTimelineAvailable, this::defaultErrorHandler);
+        timeline.subscribe(this::showTimeline, this::defaultErrorHandler);
 
         return timeline;
-    }
-
-    private void onTimelineAvailable(Timeline timeline) {
-        setTitle(timeline.getTitle());
-        eventsAdapter.setDataSource(timeline.getEvents());
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,6 +105,11 @@ public class TimelineActivity extends BaseActivity {
 
             invalidate(TIMELINE_CACHE_KEY);
         }
+    }
+
+    @Override public void showTimeline(Timeline timeline) {
+        setTitle(timeline.getTitle());
+        eventsAdapter.setDataSource(timeline.getEvents());
     }
 
     protected String getTimelineId() {
