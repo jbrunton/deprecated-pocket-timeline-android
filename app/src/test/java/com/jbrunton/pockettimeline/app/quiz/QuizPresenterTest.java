@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
-   public @Rule MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock EventsRepository repository;
     @Mock QuizView view;
