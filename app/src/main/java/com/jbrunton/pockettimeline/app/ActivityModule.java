@@ -30,8 +30,8 @@ public class ActivityModule {
         return new Navigator(activity);
     }
 
-    @Provides @PerActivity protected TimelinesPresenter provideTimelinesPresenter(TimelinesRepository repository, SchedulerManager schedulerManager) {
-        return new TimelinesPresenter(repository, schedulerManager);
+    @Provides @PerActivity protected TimelinesPresenter provideTimelinesPresenter(TimelinesRepository repository, Navigator navigator, SchedulerManager schedulerManager) {
+        return new TimelinesPresenter(repository, navigator, schedulerManager);
     }
 
     @Provides @PerActivity protected QuizPresenter provideQuizPresenter(EventsRepository repository, SchedulerManager schedulerManager, RandomHelper randomHelper) {

@@ -34,7 +34,7 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         timelinesAdapter = new TimelinesAdapter() {
             @Override
             protected void onItemClicked(Timeline timeline) {
-                showTimeline(timeline);
+                presenter.showTimelineDetails(timeline);
             }
         };
         view.setAdapter(timelinesAdapter);
@@ -57,10 +57,6 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     public void onResume() {
         super.onResume();
         setTitle("Timelines");
-    }
-
-    private void showTimeline(Timeline timeline) {
-        navigator.startTimelineActivity(timeline.getId());
     }
 
     @Override public void showTimelines(List<Timeline> timelines) {
