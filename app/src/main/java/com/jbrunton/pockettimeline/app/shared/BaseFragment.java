@@ -8,14 +8,21 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
-public abstract class BaseFragment extends RxCacheFragment implements DisplayErrorView {
+public abstract class BaseFragment extends RxCacheFragment {
 
     private BasePresenter presenter;
 
-    @Override public void showMessage(String text) {
+    public void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showMessage(String text, String actionLabel, Action0 action) {
+        Snackbar.make(getView().findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
+                .setAction(actionLabel, v -> action.call())
+                .show();
     }
 
     @Override public void onAttach(Activity activity) {

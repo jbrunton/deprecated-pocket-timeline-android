@@ -19,7 +19,6 @@ import com.jbrunton.pockettimeline.entities.models.Timeline;
 import javax.inject.Inject;
 
 public class TimelineActivity extends LoadingIndicatorActivity implements TimelineView {
-    private static final String TIMELINE_CACHE_KEY = "timeline";
     private static final int ADD_EVENT_REQUEST_CODE = 1;
 
     @Inject @PerActivity TimelinePresenter presenter;
@@ -34,11 +33,7 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
         setContentView(R.layout.activity_timeline);
 
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
-        addEvent.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                navigator.startAddEventActivityForResult(timelineId, ADD_EVENT_REQUEST_CODE);
-            }
-        });
+        addEvent.setOnClickListener(this::onAddEventClicked);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,11 +59,7 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
             final String eventId = data.getStringExtra(AddEventActivity.ARG_TIMELINE_ID);
-            showMessage("Added event", view -> {
-                presenter.deleteEvent(eventId);
-            });
-
-            invalidate(TIMELINE_CACHE_KEY);
+            presenter.onEventCreated(eventId);
         }
     }
 
@@ -87,5 +78,9 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
 
     protected String getTimelineId() {
         return timelineId;
+    }
+
+    protected void onAddEventClicked(View view) {
+        presenter.startAddEventActivity(ADD_EVENT_REQUEST_CODE);
     }
 }

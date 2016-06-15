@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.f2prateek.dart.Dart;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
@@ -13,6 +12,7 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public abstract class BaseActivity extends RxCacheActivity {
@@ -75,9 +75,9 @@ public abstract class BaseActivity extends RxCacheActivity {
                 .show();
     }
 
-    public void showMessage(String text, View.OnClickListener action) {
+    public void showMessage(String text, String actionLabel, Action0 action) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
-                .setAction("Undo", action)
+                .setAction(actionLabel, v -> action.call())
                 .show();
     }
 

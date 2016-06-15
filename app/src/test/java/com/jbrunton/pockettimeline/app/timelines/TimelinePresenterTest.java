@@ -69,7 +69,7 @@ public class TimelinePresenterTest {
         presenter.onResume();
         verify(view).showMessage("Error: Message");
     }
-    
+
     private class TimelineDsl {
         private final Timeline timeline;
 

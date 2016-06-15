@@ -31,6 +31,10 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
         fetchTimeline();
     }
 
+    public void startAddEventActivity(int requestCode) {
+        navigator.startAddEventActivityForResult(eventsRepository.timelineId(), requestCode);
+    }
+
     private void fetchTimeline() {
         getTimeline().compose(schedulerManager.applySchedulers())
                 .subscribe(this::onTimelineAvailable, this::onError);
@@ -58,4 +62,11 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
                 .compose(schedulerManager.applySchedulers())
                 .subscribe(x -> this.fetchTimeline(), this::onError);
     }
+
+    public void onEventCreated(String eventId) {
+        withView(view -> view.showMessage(
+                "Added event", "Undo",
+                () -> deleteEvent(eventId)));
+    }
+
 }
