@@ -65,9 +65,7 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
         if (resultCode == AddEventActivity.RESULT_CREATED_EVENT) {
             final String eventId = data.getStringExtra(AddEventActivity.ARG_TIMELINE_ID);
             showMessage("Added event", view -> {
-                /*eventsRepository.delete(eventId)
-                        .compose(applySchedulers())
-                        .subscribe(x -> fetchTimeline(true));*/
+                presenter.deleteEvent(eventId);
             });
 
             invalidate(TIMELINE_CACHE_KEY);

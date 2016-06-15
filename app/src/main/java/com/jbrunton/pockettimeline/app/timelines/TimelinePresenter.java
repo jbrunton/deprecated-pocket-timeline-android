@@ -28,6 +28,10 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
     @Override public void onResume() {
         super.onResume();
         withView(LoadingIndicatorView::showLoadingIndicator);
+        fetchTimeline();
+    }
+
+    private void fetchTimeline() {
         getTimeline().compose(schedulerManager.applySchedulers())
                 .subscribe(this::onTimelineAvailable, this::onError);
     }
@@ -47,5 +51,11 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
     private void onError(Throwable throwable) {
         withView(view -> view.showMessage("Error: " + throwable.getMessage()));
+    }
+
+    public void deleteEvent(String eventId) {
+        eventsRepository.delete(eventId)
+                .compose(schedulerManager.applySchedulers())
+                .subscribe(x -> this.fetchTimeline(), this::onError);
     }
 }
