@@ -16,11 +16,11 @@ public class ActivityModule {
         this.activity = activity;
     }
 
-    @Provides @PerActivity Activity provideActivity() {
+    @Provides @PerActivity protected Activity provideActivity() {
         return activity;
     }
 
-    @Provides @PerActivity Navigator provideNavigator() {
+    @Provides @PerActivity protected Navigator provideNavigator() {
         return new Navigator(activity);
     }
 }

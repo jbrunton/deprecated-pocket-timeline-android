@@ -2,12 +2,11 @@ package com.jbrunton.pockettimeline.app.timelines;
 
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.app.ActivityModule;
-import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 @PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = {
+@Subcomponent(modules = {
         TimelineModule.class,
         ActivityModule.class
 })

@@ -54,12 +54,10 @@ public class TimelineActivity extends BaseActivity {
     }
 
     @Override protected void setupActivityComponent() {
-        DaggerTimelineActivityComponent.builder()
-                .applicationComponent(applicationComponent())
-                .activityModule(new ActivityModule(this))
-                .timelineModule(new TimelineModule(timelineId))
-                .build()
-                .inject(this);
+        applicationComponent().timelineActivityComponent(
+                new TimelineModule(timelineId),
+                new ActivityModule(this)
+        ).inject(this);
     }
 
     @Override
