@@ -70,7 +70,7 @@ public class QuizFragment extends BaseFragment implements QuizView {
         return true;
     }
 
-    @OnClick(R.id.answer)
+    @OnClick(R.id.submit)
     protected void onSubmitClicked(View view) {
         submitAnswer();
     }
