@@ -15,7 +15,7 @@ import com.jbrunton.pockettimeline.R;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -30,12 +30,12 @@ public class DatePickerWidget extends Fragment {
 
     private OnDateChangedListener onDateChangedListener;
 
-    @Bind(R.id.month_of_year) EditText monthPicker;
-    @Bind(R.id.day_of_month) EditText dayPicker;
-    @Bind(R.id.year) EditText yearPicker;
+    @BindView(R.id.month_of_year) EditText monthPicker;
+    @BindView(R.id.day_of_month) EditText dayPicker;
+    @BindView(R.id.year) EditText yearPicker;
 
-    @Bind(R.id.day_of_month_wrapper) TextInputLayout dayPickerWrapper;
-    @Bind(R.id.year_wrapper) TextInputLayout yearPickerWrapper;
+    @BindView(R.id.day_of_month_wrapper) TextInputLayout dayPickerWrapper;
+    @BindView(R.id.year_wrapper) TextInputLayout yearPickerWrapper;
 
     private LocalDate selectedDate;
     private Integer dayOfMonth;

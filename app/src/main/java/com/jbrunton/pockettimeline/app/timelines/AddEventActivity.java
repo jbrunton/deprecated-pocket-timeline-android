@@ -20,7 +20,7 @@ import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
@@ -28,8 +28,8 @@ import static com.jbrunton.pockettimeline.helpers.StringUtils.nullOrEmpty;
 
 public class AddEventActivity extends BaseActivity {
     private LocalDate eventDate;
-    @Bind(R.id.event_title) EditText eventTitleText;
-    @Bind(R.id.event_description) EditText eventDescription;
+    @BindView(R.id.event_title) EditText eventTitleText;
+    @BindView(R.id.event_description) EditText eventDescription;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
     @InjectExtra String timelineId;
 
