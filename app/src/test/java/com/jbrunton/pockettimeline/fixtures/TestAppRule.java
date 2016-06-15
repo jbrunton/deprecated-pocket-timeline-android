@@ -6,6 +6,7 @@ import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
 import com.jbrunton.pockettimeline.app.ApplicationModule;
+import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 
 import org.robolectric.RuntimeEnvironment;
 
@@ -16,6 +17,7 @@ public class TestAppRule extends DaggerMockRule<ApplicationComponent> {
     public TestAppRule() {
         super(ApplicationComponent.class, createApplicationModule(), createRestServiceModule());
         providesMock(RestService.class);
+        provides(SchedulerManager.class, new TestSchedulerManager());
         set(application()::setComponent);
     }
 
