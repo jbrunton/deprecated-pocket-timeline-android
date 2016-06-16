@@ -26,4 +26,6 @@ public class BasePresenter<ViewType> {
     public void detach() {
         this.view = null;
     }
+
+    public static final BasePresenter NULL_PRESENTER = new BasePresenter();
 }

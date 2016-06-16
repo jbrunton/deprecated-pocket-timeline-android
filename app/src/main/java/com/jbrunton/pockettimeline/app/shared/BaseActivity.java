@@ -16,7 +16,7 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public abstract class BaseActivity extends RxCacheActivity {
-    private BasePresenter presenter;
+    private BasePresenter presenter = BasePresenter.NULL_PRESENTER;;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -37,16 +37,12 @@ public abstract class BaseActivity extends RxCacheActivity {
 
     @Override public void onResume() {
         super.onResume();
-        if (presenter != null) {
-            presenter.onResume();
-        }
+        presenter.onResume();
     }
 
     @Override public void onDestroy() {
         super.onDestroy();
-        if (presenter != null) {
-            presenter.detach();
-        }
+        presenter.detach();
     }
 
     public void setHomeAsUp(boolean showHomeAsUp) {
