@@ -23,8 +23,6 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
     @Inject @PerActivity Navigator navigator;
     private TimelinesAdapter timelinesAdapter;
 
-    private final static String TIMELINES_CACHE_KEY = "timelines";
-
     @Override protected View createContentView(LayoutInflater inflater, ViewGroup container) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
 
@@ -34,7 +32,7 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         timelinesAdapter = new TimelinesAdapter() {
             @Override
             protected void onItemClicked(Timeline timeline) {
-                showTimeline(timeline);
+                presenter.showTimelineDetails(timeline);
             }
         };
         view.setAdapter(timelinesAdapter);
@@ -47,24 +45,20 @@ public class TimelinesFragment extends LoadingIndicatorFragment implements Timel
         bind(presenter);
     }
 
-    @Override protected void setupActivityComponent() {
-        applicationComponent().activityComponent(
-                new ActivityModule(getActivity())
-        ).inject(this);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         setTitle("Timelines");
     }
 
-    private void showTimeline(Timeline timeline) {
-        navigator.startTimelineActivity(timeline.getId());
-    }
-
     @Override public void showTimelines(List<Timeline> timelines) {
         timelinesAdapter.setDataSource(timelines);
+    }
+
+    @Override protected void setupActivityComponent() {
+        applicationComponent().activityComponent(
+                new ActivityModule(getActivity())
+        ).inject(this);
     }
 
 }

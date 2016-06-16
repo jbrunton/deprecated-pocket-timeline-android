@@ -43,10 +43,23 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
 
     @Test public void shouldDisplayTimelines() {
         fragment().showTimelines(asList(TIMELINE_ONE, TIMELINE_TWO));
-        RecyclerView timelines = (RecyclerView) fragment().getView().findViewById(R.id.recycler_view);
-        shadowOf(timelines).populateItems();
+        shadowOf(timelinesView()).populateItems();
 
-        assertThat(getText(timelines.getChildAt(0), R.id.timeline_title)).isEqualTo(TIMELINE_ONE.getTitle());
-        assertThat(getText(timelines.getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
+        assertThat(getText(timelinesView().getChildAt(0), R.id.timeline_title)).isEqualTo(TIMELINE_ONE.getTitle());
+        assertThat(getText(timelinesView().getChildAt(1), R.id.timeline_title)).isEqualTo(TIMELINE_TWO.getTitle());
+    }
+
+    @Test public void shouldShowTimelineDetails() {
+        fragment().showTimelines(asList(TIMELINE_ONE));
+        shadowOf(timelinesView()).populateItems();
+
+        TimelinesAdapter.ViewHolder viewHolder = (TimelinesAdapter.ViewHolder) timelinesView().findViewHolderForAdapterPosition(0);
+        viewHolder.itemView.performClick();
+
+        verify(presenter).showTimelineDetails(TIMELINE_ONE);
+    }
+
+    private RecyclerView timelinesView() {
+        return (RecyclerView) fragment().getView().findViewById(R.id.recycler_view);
     }
 }

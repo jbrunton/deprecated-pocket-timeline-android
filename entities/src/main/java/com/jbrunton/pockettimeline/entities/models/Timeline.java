@@ -36,6 +36,6 @@ public class Timeline extends Resource {
 
     @Override
     public String toString() {
-        return getTitle();
+        return String.format("Timeline(%s) [%s]", getTitle(), hashCode());
     }
 }

@@ -13,7 +13,7 @@ public class TimelinesAdapter extends BaseRecyclerAdapter<Timeline, TimelinesAda
         super(R.layout.item_timeline, new ViewHolderFactory());
     }
 
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleView;
 
         public ViewHolder(View itemView) {

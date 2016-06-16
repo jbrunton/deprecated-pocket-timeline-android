@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.f2prateek.dart.Dart;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
@@ -13,9 +12,12 @@ import com.jbrunton.pockettimeline.app.ApplicationComponent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public abstract class BaseActivity extends RxCacheActivity {
+    private BasePresenter presenter = BasePresenter.NULL_PRESENTER;;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -33,6 +35,16 @@ public abstract class BaseActivity extends RxCacheActivity {
         setupActivityComponent();
     }
 
+    @Override public void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
+    }
+
     public void setHomeAsUp(boolean showHomeAsUp) {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
@@ -40,6 +52,11 @@ public abstract class BaseActivity extends RxCacheActivity {
     }
 
     protected abstract void setupActivityComponent();
+
+    protected <V> void bind(BasePresenter<V> presenter) {
+        this.presenter = presenter;
+        presenter.bind((V) this);
+    }
 
     protected void onUpPressed() {
         finish();
@@ -49,14 +66,14 @@ public abstract class BaseActivity extends RxCacheActivity {
         return ((PocketTimelineApplication) getApplication()).component();
     }
 
-    protected void showMessage(String text) {
+    public void showMessage(String text) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
                 .show();
     }
 
-    protected void showMessage(String text, View.OnClickListener action) {
+    public void showMessage(String text, String actionLabel, Action0 action) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
-                .setAction("Undo", action)
+                .setAction(actionLabel, v -> action.call())
                 .show();
     }
 
