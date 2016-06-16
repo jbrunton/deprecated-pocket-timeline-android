@@ -2,6 +2,7 @@ package com.jbrunton.pockettimeline.app.quiz;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,16 @@ import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnEditorAction;
+
 public class QuizFragment extends BaseFragment implements QuizView {
     @Inject RandomHelper randomHelper;
     @Inject @PerActivity QuizPresenter presenter;
 
-    private TextView answerField;
+    @BindView(R.id.answer) TextView answerField;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,14 +35,7 @@ public class QuizFragment extends BaseFragment implements QuizView {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
-
-        answerField = (TextView) view.findViewById(R.id.answer);
-        answerField.setOnEditorActionListener((v, actionId, event) -> {
-            submitAnswer();
-            return true;
-        });
-        view.findViewById(R.id.submit).setOnClickListener(v -> submitAnswer());
-
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -64,6 +63,18 @@ public class QuizFragment extends BaseFragment implements QuizView {
     @Override public void showIncorrectDialog(String correctAnswer) {
         showAlert(getString(R.string.incorrect_answer, correctAnswer));
     }
+
+    @OnEditorAction(R.id.answer)
+    protected boolean onSubmitEditorAction(TextView v, int actionId, KeyEvent event) {
+        submitAnswer();
+        return true;
+    }
+
+    @OnClick(R.id.submit)
+    protected void onSubmitClicked(View view) {
+        submitAnswer();
+    }
+
 
     private void submitAnswer() {
         String submittedAnswer = answerField.getText().toString();
