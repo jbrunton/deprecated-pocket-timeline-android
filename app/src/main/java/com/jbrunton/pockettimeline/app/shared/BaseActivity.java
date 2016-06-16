@@ -57,9 +57,9 @@ public abstract class BaseActivity extends RxCacheActivity {
 
     protected abstract void setupActivityComponent();
 
-    protected <ViewType> void bind(BasePresenter<ViewType> presenter) {
+    protected <V> void bind(BasePresenter<V> presenter) {
         this.presenter = presenter;
-        presenter.bind((ViewType) this);
+        presenter.bind((V) this);
     }
 
     protected void onUpPressed() {

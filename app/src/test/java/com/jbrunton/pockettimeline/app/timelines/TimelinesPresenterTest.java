@@ -33,8 +33,8 @@ public class TimelinesPresenterTest {
     @Mock TimelinesRepository repository;
     @Mock Navigator navigator;
 
-    private final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
-    private final List<Timeline> TIMELINES = asList(TIMELINE);
+    private static final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
+    private static final List<Timeline> TIMELINES = asList(TIMELINE);
 
     @Before public void setUp() {
         presenter = new TimelinesPresenter(repository, navigator, new TestSchedulerManager());
