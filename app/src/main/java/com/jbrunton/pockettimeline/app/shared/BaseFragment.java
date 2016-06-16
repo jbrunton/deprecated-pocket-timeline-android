@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 
 public abstract class BaseFragment extends RxCacheFragment {
 
-    private BasePresenter presenter;
+    private BasePresenter presenter = BasePresenter.NULL_PRESENTER;
 
     public void showMessage(String text) {
         Snackbar.make(this.getView(), text, Snackbar.LENGTH_LONG).show();
@@ -64,15 +64,11 @@ public abstract class BaseFragment extends RxCacheFragment {
 
     @Override public void onResume() {
         super.onResume();
-        if (presenter != null) {
-            presenter.onResume();
-        }
+        presenter.onResume();
     }
 
     @Override public void onDestroy() {
         super.onDestroy();
-        if (presenter != null) {
-            presenter.detach();
-        }
+        presenter.detach();
     }
 }

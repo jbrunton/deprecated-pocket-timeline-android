@@ -34,7 +34,7 @@ public class TimelinePresenterTest {
     @Mock TimelineEventsRepository eventsRepository;
     @Mock Navigator navigator;
 
-    private final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
+    private static final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
 
     @Before public void setUp() {
         presenter = new TimelinePresenter(timelinesRepository, eventsRepository, navigator, new TestSchedulerManager());
@@ -50,10 +50,10 @@ public class TimelinePresenterTest {
         verify(view).showLoadingIndicator();
     }
 
+    // Need a different matcher, as we create a new instance using Timeline::withEvents
     @Ignore @Test public void shouldRequestAndPresentTimelines() {
         presenter.onResume();
 
-        // TODO: need a different matcher, as we create a new instance using Timeline::withEvents
         verify(view).showTimeline(TIMELINE);
         verify(view).hideLoadingIndicator();
     }
