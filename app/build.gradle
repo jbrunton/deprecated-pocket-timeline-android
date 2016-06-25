@@ -2,6 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'spoon'
 
 android {
     compileSdkVersion 23
@@ -17,6 +18,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -72,6 +75,14 @@ dependencies {
     testCompile ('com.squareup.assertj:assertj-android:1.1.0') {
         exclude module: 'support-annotations'
     }
+
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.2') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:runner:0.5') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.5.4'
 }
 
 sonarqube {
