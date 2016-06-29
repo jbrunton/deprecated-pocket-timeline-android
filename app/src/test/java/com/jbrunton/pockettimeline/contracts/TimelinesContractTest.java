@@ -4,12 +4,15 @@ import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.api.repositories.http.HttpTimelinesRepository;
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
+import com.jbrunton.pockettimeline.entities.models.Timeline;
+
+import java.util.List;
 
 import au.com.dius.pact.consumer.ConsumerPactTest;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactFragment;
 
-import static com.br.ufs.github.rxassertions.RxAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimelinesContractTest extends ConsumerPactTest {
 
@@ -28,14 +31,7 @@ public class TimelinesContractTest extends ConsumerPactTest {
                 .status(200)
                 //.headers(headers)
                 .body(
-                        "[\n" +
-                                "{\n" +
-                                "id: 1,\n" +
-                                "title: \"World War II\",\n" +
-                                "description: \"Events of the Second World War\",\n" +
-                                "url: \"https://timeline-pocketlearningapps.herokuapp.com/timelines/1.json\"\n" +
-                                "},\n" +
-                         "]"
+                        "[{\"id\":1,\"title\":\"World War II\",\"description\":\"Events of the Second World War\",\"url\":\"https://timeline-pocketlearningapps.herokuapp.com/timelines/1.json\"}]"
                 ).toFragment();
     }
 
@@ -53,9 +49,14 @@ public class TimelinesContractTest extends ConsumerPactTest {
     protected void runTest(String url) {
         RestService service = new RestServiceModule(url).provideRestService(null);
         TimelinesRepository repository = new HttpTimelinesRepository(service);
-        assertThat(repository.all())
-                .completes()
-                .withoutErrors()
-                .emissionsCount(1);
+
+        Timeline expectedTimeline = new Timeline("1", "World War II", "Events of the Second World War");
+
+        List<Timeline> timelines = repository.all().toBlocking().single();
+        assertThat(timelines)
+                .hasSize(1);
+        Timeline timeline = timelines.get(0);
+        assertThat(timeline)
+                .isEqualToComparingFieldByField(expectedTimeline);
     }
 }

@@ -19,7 +19,7 @@ public class CachingInterceptor implements Interceptor {
 
     @Override public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (application.isNetworkAvailable()) {
+        if (application == null || application.isNetworkAvailable()) {
             request = request.newBuilder().header("Cache-Control", "public, max-age=" + ONE_MINUTE).build();
         } else {
             request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + ONE_WEEK).build();
