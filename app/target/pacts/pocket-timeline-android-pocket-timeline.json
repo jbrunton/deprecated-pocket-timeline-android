@@ -1,0 +1,38 @@
+{
+    "provider": {
+        "name": "pocket-timeline"
+    },
+    "consumer": {
+        "name": "pocket-timeline-android"
+    },
+    "interactions": [
+        {
+            "providerState": "WW2 Timeline",
+            "description": "a request for timelines",
+            "request": {
+                "method": "GET",
+                "path": "/timelines.json",
+                "body": null
+            },
+            "response": {
+                "status": 200,
+                "body": [
+                    {
+                        "description": "Events of the Second World War",
+                        "id": 1,
+                        "title": "World War II",
+                        "url": "https://timeline-pocketlearningapps.herokuapp.com/timelines/1.json"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "pact-specification": {
+            "version": "2.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.2.8"
+        }
+    }
+}
