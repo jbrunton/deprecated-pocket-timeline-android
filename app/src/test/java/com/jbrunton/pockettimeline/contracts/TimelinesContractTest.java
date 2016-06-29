@@ -9,30 +9,33 @@ import com.jbrunton.pockettimeline.entities.models.Timeline;
 import java.util.List;
 
 import au.com.dius.pact.consumer.ConsumerPactTest;
+import au.com.dius.pact.consumer.dsl.DslPart;
+import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactFragment;
+import rx.Observable;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.br.ufs.github.rxassertions.RxAssertions.assertThat;
 
 public class TimelinesContractTest extends ConsumerPactTest {
 
     @Override protected PactFragment createFragment(PactDslWithProvider builder) {
-        //Map<String, String> headers = new HashMap<String, String>();
-        //headers.put("testreqheader", "testreqheadervalue");
+        DslPart body = PactDslJsonArray
+                .arrayEachLike()
+                    .id()
+                    .stringType("title")
+                    .stringType("description")
+                .closeObject();
 
         return builder
-                .given("WW2 Timeline") // NOTE: Using provider states are optional, you can leave it out
+                .given("WW2 Timeline")
                 .uponReceiving("a request for timelines")
-                .path("/timelines.json")
-                .method("GET")
-                //.headers(headers)
-                //.body("{\"test\":true}")
+                    .path("/timelines.json")
+                    .method("GET")
                 .willRespondWith()
-                .status(200)
-                //.headers(headers)
-                .body(
-                        "[{\"id\":1,\"title\":\"World War II\",\"description\":\"Events of the Second World War\",\"url\":\"https://timeline-pocketlearningapps.herokuapp.com/timelines/1.json\"}]"
-                ).toFragment();
+                    .status(200)
+                    .body(body)
+                .toFragment();
     }
 
     @Override
@@ -50,13 +53,11 @@ public class TimelinesContractTest extends ConsumerPactTest {
         RestService service = new RestServiceModule(url).provideRestService(null);
         TimelinesRepository repository = new HttpTimelinesRepository(service);
 
-        Timeline expectedTimeline = new Timeline("1", "World War II", "Events of the Second World War");
+        Observable<List<Timeline>> timelines = repository.all();
 
-        List<Timeline> timelines = repository.all().toBlocking().single();
         assertThat(timelines)
-                .hasSize(1);
-        Timeline timeline = timelines.get(0);
-        assertThat(timeline)
-                .isEqualToComparingFieldByField(expectedTimeline);
+                .completes()
+                .withoutErrors()
+                .emissionsCount(1);
     }
 }

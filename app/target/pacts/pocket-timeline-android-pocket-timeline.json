@@ -16,14 +16,31 @@
             },
             "response": {
                 "status": 200,
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
                 "body": [
                     {
-                        "description": "Events of the Second World War",
-                        "id": 1,
-                        "title": "World War II",
-                        "url": "https://timeline-pocketlearningapps.herokuapp.com/timelines/1.json"
+                        "description": "xXKkYaQDDUIzXkUmHOmd",
+                        "id": 1508299957,
+                        "title": "QJKCOGShbfGsXslCUMNt"
                     }
-                ]
+                ],
+                "matchingRules": {
+                    "$.body[*].title": {
+                        "match": "type"
+                    },
+                    "$.body": {
+                        "min": 0,
+                        "match": "type"
+                    },
+                    "$.body[*].description": {
+                        "match": "type"
+                    },
+                    "$.body[*].id": {
+                        "match": "type"
+                    }
+                }
             }
         }
     ],
