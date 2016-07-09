@@ -58,7 +58,8 @@ public class HomeActivity extends BaseActivity {
                                 .withName("Search")
                 )
                 .withOnDrawerItemClickListener(this::onDrawerItemSelected)
-                .withSavedInstance(savedInstanceState);
+                .withSavedInstance(savedInstanceState)
+                .withHeader(R.layout.nav_header_home);
         return builder.build();
     }
 
