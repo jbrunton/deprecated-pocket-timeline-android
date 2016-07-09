@@ -2,6 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'au.com.dius.pact'
 
 android {
     compileSdkVersion 23
@@ -78,5 +79,40 @@ dependencies {
 sonarqube {
     properties {
         property 'sonar.sources', 'src'
+    }
+}
+
+task startServer(type: Exec) << {
+    commandLine 'git clone git@github.com:jbrunton/pocket-timeline.git'
+    workingDir 'pocket-timeline'
+    commandLine 'rake db:prepare server'
+}
+
+// This will be called after the provider task
+task killServer(type: Exec) << {
+
+}
+
+pact {
+    serviceProviders {
+        // You can define as many as you need, but each must have a unique name
+        'pocket-timeline' {
+            startProviderTask = startServer
+            terminateProviderTask = killServer
+
+            // All the provider properties are optional, and have sensible defaults (shown below)
+            protocol = 'http'
+            host = 'localhost'
+            port = 3000
+            path = '/'
+
+            // Again, you can define as many consumers for each provider as you need, but each must have a unique name
+            hasPactWith('pocket-timeline-android') {
+
+                // currently supports a file path using file() or a URL using url()
+                pactFile = file('app/target/pacts/pocket-timeline-android-pocket-timeline.json')
+
+            }
+        }
     }
 }
