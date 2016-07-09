@@ -20,11 +20,7 @@ public class HomeActivity extends BaseActivity {
 
     private Drawer drawer;
 
-    private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>() {{
-        put(R.id.nav_timelines, new TimelinesFragment());
-        put(R.id.nav_quiz, new QuizFragment());
-        put(R.id.nav_search, new SearchFragment());
-    }};
+    private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,20 +42,14 @@ public class HomeActivity extends BaseActivity {
         DrawerBuilder builder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .addDrawerItems(
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.nav_timelines)
-                                .withName("Timelines"),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.nav_quiz)
-                                .withName("Quiz"),
-                        new PrimaryDrawerItem()
-                                .withIdentifier(R.id.nav_search)
-                                .withName("Search")
-                )
+                .withHeader(R.layout.nav_header_home)
                 .withOnDrawerItemClickListener(this::onDrawerItemSelected)
                 .withSavedInstance(savedInstanceState)
-                .withHeader(R.layout.nav_header_home);
+                .addDrawerItems(
+                        createDrawerOption(R.id.nav_timelines, "Timelines", new TimelinesFragment()),
+                        createDrawerOption(R.id.nav_quiz, "Quiz", new QuizFragment()),
+                        createDrawerOption(R.id.nav_search, "Search", new SearchFragment())
+                );
         return builder.build();
     }
 
@@ -74,5 +64,12 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.drawer_content, fragment)
                 .commit();
+    }
+
+    private PrimaryDrawerItem createDrawerOption(int identifier, String name, Fragment fragment) {
+        DRAWER_OPTIONS.put(identifier, fragment);
+        return new PrimaryDrawerItem()
+                .withIdentifier(identifier)
+                .withName(name);
     }
 }
