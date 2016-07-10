@@ -31,12 +31,12 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
 
     @Mock TimelinesPresenter presenter;
 
-    final Timeline TIMELINE_ONE = new Timeline.Builder()
+    static final Timeline TIMELINE_ONE = new Timeline.Builder()
             .id("1")
             .title("Timeline 1")
             .events(Collections.emptyList())
             .build();
-    final Timeline TIMELINE_TWO = new Timeline.Builder()
+    static final Timeline TIMELINE_TWO = new Timeline.Builder()
             .id("2")
             .title("Timeline 2")
             .events(Collections.emptyList())
