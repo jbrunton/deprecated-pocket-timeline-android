@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
+
 import static com.jbrunton.pockettimeline.fixtures.ViewFixtures.getText;
 import static com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView.shadowOf;
 import static java.util.Arrays.asList;
@@ -32,10 +34,12 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
     final Timeline TIMELINE_ONE = new Timeline.Builder()
             .id("1")
             .title("Timeline 1")
+            .events(Collections.emptyList())
             .build();
     final Timeline TIMELINE_TWO = new Timeline.Builder()
             .id("2")
             .title("Timeline 2")
+            .events(Collections.emptyList())
             .build();
 
     @Before public void setUp() {
