@@ -54,7 +54,7 @@ public class QuizPresenterTest {
     }
 
     @Test public void shouldRespondToIncorrectAnswer() {
-        final String correctAnswer = "2015";
+        final String correctAnswer = answerFor(EVENT_TWO);
         presenter.onResume();
 
         submitAnswerFor(EVENT_ONE);
@@ -69,7 +69,11 @@ public class QuizPresenterTest {
     }
 
     private void submitAnswerFor(Event event) {
-        presenter.submitAnswer(Integer.toString(event.getDate().getYear()));
+        presenter.submitAnswer(answerFor(event));
+    }
+
+    private String answerFor(Event event) {
+        return Integer.toString(event.getDate().getYear());
     }
 
     private void stubRepositoryToReturn(List<Event> events) {
