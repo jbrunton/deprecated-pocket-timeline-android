@@ -37,6 +37,7 @@ public class TimelinesPresenterTest {
             .id("1")
             .title("Some Timeline")
             .description("Some description")
+            .events(emptyList())
             .build();
     private static final List<Timeline> TIMELINES = asList(TIMELINE);
 
