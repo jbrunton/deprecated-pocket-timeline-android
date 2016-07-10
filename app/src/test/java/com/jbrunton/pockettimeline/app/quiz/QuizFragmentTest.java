@@ -4,11 +4,10 @@ import android.app.Dialog;
 
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.entities.models.Event;
+import com.jbrunton.pockettimeline.fixtures.EventFactory;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestAppRule;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,12 +28,7 @@ public class QuizFragmentTest extends FragmentTestSuite<QuizFragment> {
 
     @Mock QuizPresenter presenter;
 
-    final Event EVENT = new Event.Builder()
-            .id("1")
-            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
-            .title("Event One")
-            .description("Event One Description")
-            .build();
+    final Event EVENT = EventFactory.create();
 
     @Before public void setUp() {
         configureTestSuite(new QuizFragment());

@@ -21,4 +21,6 @@ dependencies {
     testCompile ('com.squareup.assertj:assertj-android:1.1.0') {
         exclude module: 'support-annotations'
     }
+
+    testCompile project(':fixtures')
 }

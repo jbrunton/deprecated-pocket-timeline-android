@@ -1,1 +1,1 @@
-include ':app', ':entities'
+include ':app', ':entities', ':fixtures'

@@ -6,6 +6,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestAppRule;
+import com.jbrunton.pockettimeline.fixtures.TimelineFactory;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
 
 import org.junit.Before;
@@ -15,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-
-import java.util.Collections;
 
 import static com.jbrunton.pockettimeline.fixtures.ViewFixtures.getText;
 import static com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView.shadowOf;
@@ -31,16 +30,8 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
 
     @Mock TimelinesPresenter presenter;
 
-    static final Timeline TIMELINE_ONE = new Timeline.Builder()
-            .id("1")
-            .title("Timeline 1")
-            .events(Collections.emptyList())
-            .build();
-    static final Timeline TIMELINE_TWO = new Timeline.Builder()
-            .id("2")
-            .title("Timeline 2")
-            .events(Collections.emptyList())
-            .build();
+    static final Timeline TIMELINE_ONE = TimelineFactory.create();
+    static final Timeline TIMELINE_TWO = TimelineFactory.create();
 
     @Before public void setUp() {
         configureTestSuite(new TimelinesFragment());

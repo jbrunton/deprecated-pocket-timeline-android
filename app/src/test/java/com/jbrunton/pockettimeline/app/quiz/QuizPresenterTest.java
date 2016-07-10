@@ -3,11 +3,10 @@ package com.jbrunton.pockettimeline.app.quiz;
 import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
+import com.jbrunton.pockettimeline.fixtures.EventFactory;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,18 +30,8 @@ public class QuizPresenterTest {
     RandomHelper randomHelper;
     QuizPresenter presenter;
 
-    private static final Event EVENT_ONE = new Event.Builder()
-            .id("1")
-            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
-            .title("Event One")
-            .description("Event One Description")
-            .build();
-    private static final Event EVENT_TWO = new Event.Builder()
-            .id("1")
-            .date(new LocalDate(2015, DateTimeConstants.JUNE, 3))
-            .title("Event Two")
-            .description("Event Two Description")
-            .build();
+    private static final Event EVENT_ONE = EventFactory.create();
+    private static final Event EVENT_TWO = EventFactory.create();
     private static final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
 
     @Before public void setUp() {
@@ -65,7 +54,7 @@ public class QuizPresenterTest {
     }
 
     @Test public void shouldRespondToIncorrectAnswer() {
-        final String correctAnswer = "2015";
+        final String correctAnswer = answerFor(EVENT_TWO);
         presenter.onResume();
 
         submitAnswerFor(EVENT_ONE);
@@ -80,7 +69,11 @@ public class QuizPresenterTest {
     }
 
     private void submitAnswerFor(Event event) {
-        presenter.submitAnswer(Integer.toString(event.getDate().getYear()));
+        presenter.submitAnswer(answerFor(event));
+    }
+
+    private String answerFor(Event event) {
+        return Integer.toString(event.getDate().getYear());
     }
 
     private void stubRepositoryToReturn(List<Event> events) {
