@@ -4,6 +4,7 @@ import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
+import com.jbrunton.pockettimeline.fixtures.TimelineFactory;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,12 +34,7 @@ public class TimelinesPresenterTest {
     @Mock TimelinesRepository repository;
     @Mock Navigator navigator;
 
-    private static final Timeline TIMELINE = new Timeline.Builder()
-            .id("1")
-            .title("Some Timeline")
-            .description("Some description")
-            .events(emptyList())
-            .build();
+    private static final Timeline TIMELINE = TimelineFactory.create();
     private static final List<Timeline> TIMELINES = asList(TIMELINE);
 
     @Before public void setUp() {
