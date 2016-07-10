@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.entities.models;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Timeline extends Resource {
@@ -7,19 +8,47 @@ public class Timeline extends Resource {
     private final String description;
     private final List<Event> events;
 
-    public Timeline(String id, String title, String description) {
-        this(id, title, description, null);
+    public static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
+        private String title;
+        private String description;
+        private List<Event> events;
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder events(List<Event> events) {
+            this.events = events;
+            return this;
+        }
+
+        @Override public Timeline build() {
+            return new Timeline(this);
+        }
     }
 
-    public Timeline(String id, String title, String description, List<Event> events) {
-        super(id);
-        this.title = title;
-        this.description = description;
-        this.events = events;
+    public Timeline(Builder builder) {
+        super(builder);
+        this.title = builder.title;
+        this.description = builder.description;
+        this.events = builder.events == null ? null : Collections.unmodifiableList(builder.events);
+
+        validate();
     }
 
     public Timeline withEvents(List<Event> events) {
-        return new Timeline(getId(), getTitle(), getDescription(), events);
+        return new Builder()
+                .id(getId())
+                .title(getTitle())
+                .description(getDescription())
+                .events(events)
+                .build();
     }
 
     public String getTitle() {
@@ -32,6 +61,18 @@ public class Timeline extends Resource {
 
     public List<Event> getEvents() {
         return events;
+    }
+
+    @Override protected void validate() {
+        super.validate();
+
+        if (this.title == null || this.title.isEmpty()) {
+            throw new IllegalStateException("title is empty");
+        }
+
+        if (this.events == null) {
+            throw new IllegalStateException("events is null");
+        }
     }
 
     @Override

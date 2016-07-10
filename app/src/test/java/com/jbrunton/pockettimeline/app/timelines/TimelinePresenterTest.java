@@ -34,7 +34,12 @@ public class TimelinePresenterTest {
     @Mock TimelineEventsRepository eventsRepository;
     @Mock Navigator navigator;
 
-    private static final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
+    private static final Timeline TIMELINE = new Timeline.Builder()
+            .id("1")
+            .title("Some Timeline")
+            .description("Some description")
+            .events(emptyList())
+            .build();
 
     @Before public void setUp() {
         presenter = new TimelinePresenter(timelinesRepository, eventsRepository, navigator, new TestSchedulerManager());
