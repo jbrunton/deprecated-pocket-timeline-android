@@ -24,7 +24,7 @@ public class Resource {
     }
 
     protected void validate() {
-        if (this.id == null) {
+        if (this.id == null || this.id == "") {
             throw new IllegalStateException("id is null");
         }
     }

@@ -29,8 +29,14 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
 
     @Mock TimelinesPresenter presenter;
 
-    final Timeline TIMELINE_ONE = new Timeline("1", "Timeline One", null);
-    final Timeline TIMELINE_TWO = new Timeline("2", "Timeline Two", null);
+    final Timeline TIMELINE_ONE = new Timeline.Builder()
+            .id("1")
+            .title("Timeline 1")
+            .build();
+    final Timeline TIMELINE_TWO = new Timeline.Builder()
+            .id("2")
+            .title("Timeline 2")
+            .build();
 
     @Before public void setUp() {
         configureTestSuite(new TimelinesFragment());

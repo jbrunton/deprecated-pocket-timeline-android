@@ -33,7 +33,11 @@ public class TimelinesPresenterTest {
     @Mock TimelinesRepository repository;
     @Mock Navigator navigator;
 
-    private static final Timeline TIMELINE = new Timeline("1", "Some Timeline", "Some description");
+    private static final Timeline TIMELINE = new Timeline.Builder()
+            .id("1")
+            .title("Some Timeline")
+            .description("Some description")
+            .build();
     private static final List<Timeline> TIMELINES = asList(TIMELINE);
 
     @Before public void setUp() {
