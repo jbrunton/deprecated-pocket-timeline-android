@@ -7,6 +7,10 @@ import java.util.Collections;
 public class TimelineFactory {
     private static int seed = 0;
 
+    private TimelineFactory() {
+        // utility class
+    }
+
     public static Timeline.Builder builder() {
         ++seed;
         return new Timeline.Builder()

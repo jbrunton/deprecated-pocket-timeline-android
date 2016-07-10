@@ -7,6 +7,10 @@ import org.joda.time.LocalDate;
 public class EventFactory {
     private static int seed = 0;
 
+    private EventFactory() {
+        // utility class
+    }
+
     public static Event.Builder builder() {
         ++seed;
         return new Event.Builder()
