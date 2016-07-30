@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.f2prateek.dart.Dart;
@@ -15,7 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
-public abstract class BaseActivity extends RxCacheActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private BasePresenter presenter = BasePresenter.NULL_PRESENTER;;
 
     @Override

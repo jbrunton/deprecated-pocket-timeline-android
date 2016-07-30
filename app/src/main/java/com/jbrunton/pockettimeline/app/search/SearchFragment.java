@@ -27,7 +27,6 @@ import rx.Observable;
 public class SearchFragment extends BaseFragment {
     @Inject EventsRepository eventsRepository;
     private EventsAdapter eventsAdapter;
-    private final String SEARCH_CACHE_KEY = "search";
     private String query;
     private SearchView searchView;
 
@@ -58,12 +57,6 @@ public class SearchFragment extends BaseFragment {
         super.onResume();
         setTitle("Search");
         setHasOptionsMenu(true);
-
-        Observable<List<Event>> search = fetch(SEARCH_CACHE_KEY);
-        if (search != null) {
-            search.compose(applySchedulers())
-                    .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
-        }
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {
@@ -89,8 +82,7 @@ public class SearchFragment extends BaseFragment {
 
         eventsAdapter.setDataSource(Collections.<Event>emptyList());
 
-        invalidate(SEARCH_CACHE_KEY);
-        cache(SEARCH_CACHE_KEY, () -> doSearch(query))
+        doSearch(query)
                 .compose(applySchedulers())
                 .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
     }
