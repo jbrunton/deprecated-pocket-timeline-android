@@ -5,7 +5,6 @@ import com.jbrunton.pockettimeline.api.repositories.RepositoriesModule;
 import com.jbrunton.pockettimeline.api.repositories.TimelinesRepository;
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.api.service.RestServiceModule;
-import com.jbrunton.pockettimeline.app.search.SearchFragment;
 import com.jbrunton.pockettimeline.app.timelines.TimelineActivityComponent;
 import com.jbrunton.pockettimeline.app.timelines.TimelineModule;
 
