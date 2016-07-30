@@ -42,12 +42,12 @@ public class SearchFragment extends BaseFragment implements com.jbrunton.pockett
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bind(presenter);
 
         if (savedInstanceState != null) {
             query = savedInstanceState.getString("query");
+            presenter.performSearch(query);
         }
-
-        bind(presenter);
     }
 
     @Override protected void setupActivityComponent() {
