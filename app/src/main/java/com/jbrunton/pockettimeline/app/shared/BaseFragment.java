@@ -5,13 +5,14 @@ import android.support.design.widget.Snackbar;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
 import com.jbrunton.pockettimeline.app.ApplicationComponent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
-public abstract class BaseFragment extends RxCacheFragment {
+public abstract class BaseFragment extends RxFragment {
 
     private BasePresenter presenter = BasePresenter.NULL_PRESENTER;
 
