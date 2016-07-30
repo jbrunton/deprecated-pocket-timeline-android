@@ -11,8 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
+import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.shared.BaseFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.entities.models.Event;
@@ -22,10 +23,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-
-public class SearchFragment extends BaseFragment {
-    @Inject EventsRepository eventsRepository;
+public class SearchFragment extends BaseFragment implements com.jbrunton.pockettimeline.app.search.SearchView {
+    @Inject @PerActivity SearchPresenter presenter;
     private EventsAdapter eventsAdapter;
     private String query;
     private SearchView searchView;
@@ -47,10 +46,14 @@ public class SearchFragment extends BaseFragment {
         if (savedInstanceState != null) {
             query = savedInstanceState.getString("query");
         }
+
+        bind(presenter);
     }
 
     @Override protected void setupActivityComponent() {
-        applicationComponent().inject(this);
+        applicationComponent()
+                .activityComponent(new ActivityModule(getActivity()))
+                .inject(this);
     }
 
     @Override public void onResume() {
@@ -79,19 +82,12 @@ public class SearchFragment extends BaseFragment {
 
     private void searchFor(String query) {
         this.query = query;
-
         eventsAdapter.setDataSource(Collections.<Event>emptyList());
-
-        doSearch(query)
-                .compose(applySchedulers())
-                .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
+        presenter.performSearch(query);
     }
 
-    private Observable<List<Event>> doSearch(String query) {
-        return eventsRepository.search(query);
-    }
-
-    private void searchResultsAvailable(List<Event> events) {
+    @Override
+    public void showResults(List<Event> events) {
         eventsAdapter.setDataSource(events);
     }
 

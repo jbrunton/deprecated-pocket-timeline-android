@@ -20,8 +20,6 @@ import dagger.Component;
         RestServiceModule.class
 })
 public interface ApplicationComponent {
-    void inject(SearchFragment fragment);
-
     RestService restService();
     EventsRepository eventsRepository();
     TimelinesRepository timelinesRepository();
