@@ -14,6 +14,12 @@ public abstract class Timeline extends Resource {
         return new AutoValue_Timeline.Builder();
     }
 
+    public abstract Builder toBuilder();
+
+    public Timeline withEvents(List<Event> events) {
+        return toBuilder().events(events).build();
+    }
+
     @AutoValue.Builder
     public static abstract class Builder extends AbstractBuilder<Timeline.Builder> {
         public abstract Builder title(String title);
