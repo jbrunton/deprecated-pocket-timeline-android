@@ -23,7 +23,7 @@ public class TimelineTest {
     private Timeline.Builder builder;
 
     @Before public void setUp() {
-        builder = new Timeline.Builder()
+        builder = Timeline.builder()
                 .id(ID)
                 .title(TITLE)
                 .description(DESCRIPTION)

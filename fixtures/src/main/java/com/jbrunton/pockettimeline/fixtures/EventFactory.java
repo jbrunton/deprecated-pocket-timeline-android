@@ -13,7 +13,7 @@ public class EventFactory {
 
     public static Event.Builder builder() {
         ++seed;
-        return new Event.Builder()
+        return Event.builder()
                 .id(Integer.toString(seed))
                 .title("Event " + seed)
                 .description("Event " + seed + " Description")

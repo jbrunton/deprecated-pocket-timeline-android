@@ -1,44 +1,38 @@
 package com.jbrunton.pockettimeline.entities.models;
 
-import com.jbrunton.pockettimeline.entities.data.Builder;
+import com.google.common.base.Preconditions;
 
-public class Resource {
-    private final String id;
-
+public abstract class Resource {
     private static final String NEW_RESOURCE_ID = "0";
 
-    protected Resource(AbstractBuilder builder) {
-        this.id = builder.id;
-    }
-
-    public Resource(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
+    public abstract String getId();
 
     public boolean isNewResource() {
-        return NEW_RESOURCE_ID.equals(id);
+        return NEW_RESOURCE_ID.equals(getId());
     }
 
-    protected void validate() {
-        if (this.id == null || this.id == "") {
-            throw new IllegalStateException("id is null");
+    public abstract static class AbstractBuilder<T extends Resource, B extends AbstractBuilder<T, B>> {
+        public abstract B id(String id);
+
+        public abstract T autoBuild();
+
+        public T build() {
+            preprocess();
+            T instance = autoBuild();
+            validate(instance);
+            return instance;
         }
-    }
 
-    public abstract static class AbstractBuilder<T extends Resource, B extends AbstractBuilder> implements Builder<T> {
-        private String id;
+        public void validate(T instance) {
+            Preconditions.checkState(instance.getId().length() > 0, "id must not be empty");
+        }
 
-        public B id(String id) {
-            this.id = id;
-            return (B) this;
+        protected void preprocess() {
+            // nothing by default
         }
 
         public B asNewResource() {
-            this.id = NEW_RESOURCE_ID;
+            id(NEW_RESOURCE_ID);
             return (B) this;
         }
     }

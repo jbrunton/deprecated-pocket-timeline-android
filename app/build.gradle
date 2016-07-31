@@ -28,6 +28,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+        exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+    }
 }
 
 dependencies {
@@ -74,6 +79,7 @@ dependencies {
     testCompile ('com.squareup.assertj:assertj-android:1.1.0') {
         exclude module: 'support-annotations'
     }
+
 }
 
 sonarqube {

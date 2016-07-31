@@ -1,82 +1,42 @@
 package com.jbrunton.pockettimeline.entities.models;
 
+import com.google.auto.value.AutoValue;
+import com.google.common.base.Preconditions;
+
 import java.util.Collections;
 import java.util.List;
 
-public class Timeline extends Resource {
-    private final String title;
-    private final String description;
-    private final List<Event> events;
+@AutoValue
+public abstract class Timeline extends Resource {
+    public abstract String getTitle();
+    public abstract String getDescription();
+    public abstract List<Event> getEvents();
 
-    public static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
-        private String title;
-        private String description;
-        private List<Event> events;
-
-        public Builder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder events(List<Event> events) {
-            this.events = events;
-            return this;
-        }
-
-        @Override public Timeline build() {
-            return new Timeline(this);
-        }
+    public static Builder builder() {
+        return new AutoValue_Timeline.Builder();
     }
 
-    public Timeline(Builder builder) {
-        super(builder);
-        this.title = builder.title;
-        this.description = builder.description;
-        this.events = builder.events == null ? null : Collections.unmodifiableList(builder.events);
-
-        validate();
-    }
+    public abstract Builder toBuilder();
 
     public Timeline withEvents(List<Event> events) {
-        return new Builder()
-                .id(getId())
-                .title(getTitle())
-                .description(getDescription())
-                .events(events)
-                .build();
+        return toBuilder().events(events).build();
     }
 
-    public String getTitle() {
-        return title;
-    }
+    @AutoValue.Builder
+    public abstract static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
+        public abstract Builder title(String title);
+        public abstract Builder description(String description);
+        public abstract List<Event> getEvents();
+        public abstract Builder events(List<Event> events);
 
-    public String getDescription() {
-        return description;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    @Override protected void validate() {
-        super.validate();
-
-        if (this.title == null || this.title.isEmpty()) {
-            throw new IllegalStateException("title is empty");
+        @Override protected void preprocess() {
+            List<Event> events = getEvents();
+            events(events == null ? null : Collections.unmodifiableList(events));
         }
 
-        if (this.events == null) {
-            throw new IllegalStateException("events is null");
+        @Override public void validate(Timeline instance) {
+            super.validate(instance);
+            Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Timeline(%s) [%s]", getTitle(), hashCode());
     }
 }
