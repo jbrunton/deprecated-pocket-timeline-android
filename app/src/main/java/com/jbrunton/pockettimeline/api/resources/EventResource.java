@@ -10,12 +10,11 @@ public class EventResource extends Resource {
     protected String description;
 
     public static Event toModel(EventResource resource) {
-        return new Event.Builder()
+        return Event.builder()
                 .id(resource.id)
                 .date(resource.date)
                 .title(resource.title)
                 .description(resource.description)
                 .build();
     }
-
 }

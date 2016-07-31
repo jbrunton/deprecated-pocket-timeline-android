@@ -13,7 +13,7 @@ public class TimelineFactory {
 
     public static Timeline.Builder builder() {
         ++seed;
-        return new Timeline.Builder()
+        return Timeline.builder()
                 .id(Integer.toString(seed))
                 .title("Event " + seed)
                 .description("Event " + seed + " Description")

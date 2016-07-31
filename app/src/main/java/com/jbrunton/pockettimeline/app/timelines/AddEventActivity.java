@@ -65,7 +65,7 @@ public class AddEventActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            Event event = new Event.Builder()
+            Event event = Event.builder()
                     .asNewResource()
                     .title(eventTitleText.getText().toString())
                     .date(eventDate)

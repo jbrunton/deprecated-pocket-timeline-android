@@ -9,7 +9,7 @@ public class TimelineResource extends Resource {
     protected String description;
 
     public static Timeline toModel(TimelineResource resource) {
-        return new Timeline.Builder()
+        return Timeline.builder()
                 .id(resource.id)
                 .title(resource.title)
                 .description(resource.description)
