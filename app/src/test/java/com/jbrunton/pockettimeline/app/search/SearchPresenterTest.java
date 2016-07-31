@@ -16,16 +16,14 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
-import rx.Observable;
-
+import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stubSearch;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class SearchPresenterTest {
-    public static final String QUERY = "query";
-    public static final List<Event> RESULTS = asList(
+    static final String QUERY = "query";
+    static final List<Event> RESULTS = asList(
             EventFactory.create(),
             EventFactory.create());
 
@@ -38,17 +36,16 @@ public class SearchPresenterTest {
     @Before public void setUp() {
         presenter = new SearchPresenter(repository, new TestSchedulerManager());
         presenter.bind(view);
-
-        when(repository.search(QUERY)).thenReturn(Observable.just(RESULTS));
     }
 
     @Test public void shouldRequestAndPresentResults() {
+        stubSearch(repository, QUERY).toReturn(RESULTS);
         presenter.performSearch(QUERY);
         verify(view).showResults(RESULTS);
     }
 
     @Test public void shouldPresentMessageOnError() {
-        when(repository.search(QUERY)).thenReturn(Observable.error(new Throwable("Message")));
+        stubSearch(repository, QUERY).toErrorWith(new Throwable("Message"));
         presenter.performSearch(QUERY);
         verify(view).showMessage("Error: Message");
     }

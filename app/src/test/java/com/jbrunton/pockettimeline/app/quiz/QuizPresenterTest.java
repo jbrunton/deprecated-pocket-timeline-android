@@ -16,28 +16,25 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
-import rx.Observable;
-
+import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stub;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    static final Event EVENT_ONE = EventFactory.create();
+    static final Event EVENT_TWO = EventFactory.create();
+    static final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
 
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock EventsRepository repository;
     @Mock QuizView view;
-    RandomHelper randomHelper;
-    QuizPresenter presenter;
 
-    private static final Event EVENT_ONE = EventFactory.create();
-    private static final Event EVENT_TWO = EventFactory.create();
-    private static final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
+    private QuizPresenter presenter;
 
     @Before public void setUp() {
-        randomHelper = new DeterministicRandomHelper(asList(1, 0));
+        RandomHelper randomHelper = new DeterministicRandomHelper(asList(1, 0));
         presenter = new QuizPresenter(repository, new TestSchedulerManager(), randomHelper);
-        stubRepositoryToReturn(EVENTS);
+        stub(repository).toReturn(EVENTS);
 
         presenter.bind(view);
     }
@@ -74,9 +71,5 @@ public class QuizPresenterTest {
 
     private String answerFor(Event event) {
         return Integer.toString(event.getDate().getYear());
-    }
-
-    private void stubRepositoryToReturn(List<Event> events) {
-        when(repository.all()).thenReturn(Observable.just(events));
     }
 }
