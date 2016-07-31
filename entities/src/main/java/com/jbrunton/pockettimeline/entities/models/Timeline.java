@@ -29,7 +29,7 @@ public abstract class Timeline extends Resource {
     }
 
     @AutoValue.Builder
-    public abstract static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
+    public abstract static class Builder extends AbstractResourceBuilder<Timeline, Builder> {
         public abstract Builder title(String title);
         public abstract Builder description(String description);
         public abstract Builder events(List<Event> events);
@@ -46,7 +46,7 @@ public abstract class Timeline extends Resource {
             }
         }
 
-        @Override public void validate(Timeline instance) throws InvalidInstantiationException {
+        @Override protected void validate(Timeline instance) throws InvalidInstantiationException {
             super.validate(instance);
             Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }
