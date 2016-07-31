@@ -1,5 +1,6 @@
 package com.jbrunton.pockettimeline.fixtures;
 
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.Collections;
@@ -21,6 +22,10 @@ public class TimelineFactory {
     }
 
     public static Timeline create() {
-        return builder().build();
+        try {
+            return builder().build();
+        } catch (InvalidInstantiationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

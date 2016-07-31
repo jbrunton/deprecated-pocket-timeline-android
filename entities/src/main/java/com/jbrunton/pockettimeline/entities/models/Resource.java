@@ -16,14 +16,18 @@ public abstract class Resource {
 
         public abstract T autoBuild();
 
-        public T build() {
-            preprocess();
-            T instance = autoBuild();
-            validate(instance);
-            return instance;
+        public T build() throws InvalidInstantiationException {
+            try {
+                preprocess();
+                T instance = autoBuild();
+                validate(instance);
+                return instance;
+            } catch (IllegalStateException e) {
+                throw new InvalidInstantiationException(e);
+            }
         }
 
-        public void validate(T instance) {
+        public void validate(T instance) throws InvalidInstantiationException {
             Preconditions.checkState(instance.getId().length() > 0, "id must not be empty");
         }
 

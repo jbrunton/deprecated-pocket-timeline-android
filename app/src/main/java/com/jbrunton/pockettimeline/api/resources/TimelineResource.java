@@ -1,18 +1,20 @@
 package com.jbrunton.pockettimeline.api.resources;
 
+import com.jbrunton.pockettimeline.entities.models.Instantiable;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 
 import java.util.Collections;
 
-public class TimelineResource extends Resource {
+public class TimelineResource extends Resource implements Instantiable<Timeline> {
     protected String title;
     protected String description;
 
-    public static Timeline toModel(TimelineResource resource) {
+    @Override public Timeline instantiate() throws InvalidInstantiationException {
         return Timeline.builder()
-                .id(resource.id)
-                .title(resource.title)
-                .description(resource.description)
+                .id(id)
+                .title(title)
+                .description(description)
                 .events(Collections.emptyList())
                 .build();
     }

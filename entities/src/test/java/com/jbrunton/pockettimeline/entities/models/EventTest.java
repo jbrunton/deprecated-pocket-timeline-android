@@ -22,7 +22,7 @@ public class EventTest {
                 .date(DATE);
     }
 
-    @Test public void shouldBuildEvent() {
+    @Test public void shouldBuildEvent() throws InvalidInstantiationException {
         Event event = builder.build();
 
         assertThat(event.getId()).isEqualTo(ID);
@@ -31,20 +31,20 @@ public class EventTest {
         assertThat(event.getDate()).isEqualTo(DATE);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateNullTitle() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateNullTitle() throws InvalidInstantiationException {
         builder.title(null);
         builder.build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateEmptyTitle() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateEmptyTitle() throws InvalidInstantiationException {
         builder.title("");
         builder.build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateDate() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateDate() throws InvalidInstantiationException {
         builder.date(null);
         builder.build();
     }

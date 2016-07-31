@@ -19,7 +19,12 @@ public abstract class Timeline extends Resource {
     public abstract Builder toBuilder();
 
     public Timeline withEvents(List<Event> events) {
-        return toBuilder().events(events).build();
+        try {
+            return toBuilder().events(events).build();
+        } catch (InvalidInstantiationException e) {
+            // a valid Timeline should always produce another valid Timeline
+            throw new IllegalStateException(e);
+        }
     }
 
     @AutoValue.Builder
@@ -34,7 +39,7 @@ public abstract class Timeline extends Resource {
             events(events == null ? null : Collections.unmodifiableList(events));
         }
 
-        @Override public void validate(Timeline instance) {
+        @Override public void validate(Timeline instance) throws InvalidInstantiationException {
             super.validate(instance);
             Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }

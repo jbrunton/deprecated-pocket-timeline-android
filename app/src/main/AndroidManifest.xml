@@ -26,6 +26,10 @@
         <activity android:name=".app.timelines.TimelineActivity" />
         <activity android:name=".app.timelines.AddEventActivity" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8f9bc823ae8b6b8c1ecfc5a6ec883c73e0abb270"
+            />
     </application>
 
 </manifest>

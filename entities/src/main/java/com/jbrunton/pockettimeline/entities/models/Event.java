@@ -21,7 +21,7 @@ public abstract class Event extends Resource {
         public abstract Builder title(String title);
         public abstract Builder description(String description);
 
-        @Override public void validate(Event instance) {
+        @Override public void validate(Event instance) throws InvalidInstantiationException {
             super.validate(instance);
             Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }

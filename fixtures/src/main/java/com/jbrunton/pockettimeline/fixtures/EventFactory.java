@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.fixtures;
 
 import com.jbrunton.pockettimeline.entities.models.Event;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 
 import org.joda.time.LocalDate;
 
@@ -21,6 +22,10 @@ public class EventFactory {
     }
 
     public static Event create() {
-        return builder().build();
+        try {
+            return builder().build();
+        } catch (InvalidInstantiationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
