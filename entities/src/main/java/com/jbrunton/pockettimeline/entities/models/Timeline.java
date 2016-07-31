@@ -19,13 +19,8 @@ public abstract class Timeline extends Resource {
 
     public abstract Builder toBuilder();
 
-    public Timeline withEvents(List<Event> events) {
-        try {
-            return toBuilder().events(events).build();
-        } catch (InvalidInstantiationException e) {
-            // a valid Timeline should always produce another valid Timeline
-            throw new IllegalStateException(e);
-        }
+    public Timeline withEvents(List<Event> events) throws InvalidInstantiationException {
+        return toBuilder().events(events).build();
     }
 
     @AutoValue.Builder

@@ -19,7 +19,6 @@ import org.mockito.junit.MockitoRule;
 
 import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stub;
 import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stubFind;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.verify;
 
@@ -34,9 +33,7 @@ public class TimelinePresenterTest {
 
     private TimelinePresenter presenter;
 
-    private static final Timeline TIMELINE = TimelineFactory
-            .create()
-            .withEvents(emptyList());
+    private static final Timeline TIMELINE = TimelineFactory.create();
     private static final String TIMELINE_ID = TIMELINE.getId();
 
     @Before public void setUp() {
