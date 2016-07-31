@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.entities.models;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
@@ -33,11 +34,16 @@ public abstract class Timeline extends Resource {
         public abstract Builder description(String description);
         public abstract Builder events(List<Event> events);
 
-        abstract List<Event> getEvents();
+        abstract Optional<String> getDescription();
+        abstract Optional<List<Event>> getEvents();
 
         @Override protected void normalizeValues() {
-            List<Event> events = getEvents();
-            events(events == null ? null : Collections.unmodifiableList(events));
+            if (!getDescription().isPresent()) {
+                description("");
+            }
+            if (getEvents().isPresent()) {
+                events(Collections.unmodifiableList(getEvents().get()));
+            }
         }
 
         @Override public void validate(Timeline instance) throws InvalidInstantiationException {
