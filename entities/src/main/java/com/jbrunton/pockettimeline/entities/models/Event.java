@@ -17,7 +17,7 @@ public abstract class Event extends Resource {
     }
 
     @AutoValue.Builder
-    public abstract static class Builder extends AbstractBuilder<Event, Event.Builder> {
+    public abstract static class Builder extends AbstractResourceBuilder<Event, Builder> {
         public abstract Builder date(LocalDate date);
         public abstract Builder title(String title);
         public abstract Builder description(String description);
@@ -30,7 +30,7 @@ public abstract class Event extends Resource {
             }
         }
 
-        @Override public void validate(Event instance) throws InvalidInstantiationException {
+        @Override protected void validate(Event instance) throws InvalidInstantiationException {
             super.validate(instance);
             Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }

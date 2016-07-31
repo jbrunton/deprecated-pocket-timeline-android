@@ -10,7 +10,7 @@ public abstract class TestResource extends Resource {
     }
 
     @AutoValue.Builder
-    public abstract static class Builder extends AbstractBuilder<TestResource, TestResource.Builder> {
+    public abstract static class Builder extends AbstractResourceBuilder<TestResource, Builder> {
 
     }
 }

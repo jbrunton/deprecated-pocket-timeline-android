@@ -11,28 +11,11 @@ public abstract class Resource {
         return NEW_RESOURCE_ID.equals(getId());
     }
 
-    public abstract static class AbstractBuilder<T extends Resource, B extends AbstractBuilder<T, B>> {
+    public abstract static class AbstractResourceBuilder<T extends Resource, B extends AbstractResourceBuilder<T, B>> extends AbstractBuilder<T, B> {
         public abstract B id(String id);
 
-        public abstract T autoBuild();
-
-        public T build() throws InvalidInstantiationException {
-            try {
-                normalizeValues();
-                T instance = autoBuild();
-                validate(instance);
-                return instance;
-            } catch (IllegalStateException e) {
-                throw new InvalidInstantiationException(e);
-            }
-        }
-
-        public void validate(T instance) throws InvalidInstantiationException {
+        @Override protected void validate(T instance) throws InvalidInstantiationException {
             Preconditions.checkState(instance.getId().length() > 0, "id must not be empty");
-        }
-
-        protected void normalizeValues() {
-            // nothing by default
         }
 
         public B asNewResource() {
