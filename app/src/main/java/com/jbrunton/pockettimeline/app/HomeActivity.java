@@ -21,7 +21,7 @@ public class HomeActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     
-    private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>() {{
+    private final SparseArray<Fragment> drawerOptions = new SparseArray<Fragment>() {{
         put(R.id.nav_timelines, new TimelinesFragment());
         put(R.id.nav_quiz, new QuizFragment());
         put(R.id.nav_search, new SearchFragment());
@@ -86,7 +86,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void selectDrawerOption(int menuItemId) {
-        Fragment fragment = DRAWER_OPTIONS.get(menuItemId);
+        Fragment fragment = drawerOptions.get(menuItemId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.drawer_content, fragment)
                 .commit();
