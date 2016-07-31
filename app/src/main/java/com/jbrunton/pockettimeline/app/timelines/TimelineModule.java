@@ -7,6 +7,7 @@ import com.jbrunton.pockettimeline.api.repositories.http.HttpTimelineEventsRepos
 import com.jbrunton.pockettimeline.api.service.RestService;
 import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
+import com.jbrunton.pockettimeline.helpers.CrashlyticsHelper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,8 +21,8 @@ public class TimelineModule {
         this.timelineId = timelineId;
     }
 
-    @Provides @PerActivity TimelineEventsRepository provideRepository(RestService service) {
-        return new HttpTimelineEventsRepository(timelineId, service);
+    @Provides @PerActivity TimelineEventsRepository provideRepository(RestService service, CrashlyticsHelper crashlyticsHelper) {
+        return new HttpTimelineEventsRepository(timelineId, service, crashlyticsHelper);
     }
 
 

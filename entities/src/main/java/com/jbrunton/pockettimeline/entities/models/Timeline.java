@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.entities.models;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import java.util.Collections;
@@ -19,22 +20,33 @@ public abstract class Timeline extends Resource {
     public abstract Builder toBuilder();
 
     public Timeline withEvents(List<Event> events) {
-        return toBuilder().events(events).build();
+        try {
+            return toBuilder().events(events).build();
+        } catch (InvalidInstantiationException e) {
+            // a valid Timeline should always produce another valid Timeline
+            throw new IllegalStateException(e);
+        }
     }
 
     @AutoValue.Builder
     public abstract static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
         public abstract Builder title(String title);
         public abstract Builder description(String description);
-        public abstract List<Event> getEvents();
         public abstract Builder events(List<Event> events);
 
-        @Override protected void preprocess() {
-            List<Event> events = getEvents();
-            events(events == null ? null : Collections.unmodifiableList(events));
+        abstract Optional<String> getDescription();
+        abstract Optional<List<Event>> getEvents();
+
+        @Override protected void normalizeValues() {
+            if (!getDescription().isPresent()) {
+                description("");
+            }
+            if (getEvents().isPresent()) {
+                events(Collections.unmodifiableList(getEvents().get()));
+            }
         }
 
-        @Override public void validate(Timeline instance) {
+        @Override public void validate(Timeline instance) throws InvalidInstantiationException {
             super.validate(instance);
             Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
         }

@@ -16,19 +16,19 @@ public class ResourceTest {
                 .id(ID);
     }
 
-    @Test public void shouldBuildResource() {
+    @Test public void shouldBuildResource() throws InvalidInstantiationException {
         TestResource resource = builder.build();
         assertThat(resource.getId()).isEqualTo(ID);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateNullId() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateNullId() throws InvalidInstantiationException {
         builder.id(null);
         builder.build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateEmptyId() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateEmptyId() throws InvalidInstantiationException {
         builder.id("");
         builder.build();
     }

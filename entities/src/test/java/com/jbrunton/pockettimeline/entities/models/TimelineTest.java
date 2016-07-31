@@ -30,7 +30,7 @@ public class TimelineTest {
                 .events(EVENTS);
     }
 
-    @Test public void shouldBuildTimeline() {
+    @Test public void shouldBuildTimeline() throws InvalidInstantiationException {
         Timeline timeline = builder.build();
 
         assertThat(timeline.getId()).isEqualTo(ID);
@@ -40,7 +40,7 @@ public class TimelineTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void shouldHaveImmutableEventsList() {
+    public void shouldHaveImmutableEventsList() throws InvalidInstantiationException {
         List<Event> mutableList = new LinkedList<>();
         mutableList.addAll(EVENTS);
         builder.events(mutableList);
@@ -50,21 +50,27 @@ public class TimelineTest {
         timeline.getEvents().clear();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateNullTitle() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateNullTitle() throws InvalidInstantiationException {
         builder.title(null);
         builder.build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateEmptyTitle() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateEmptyTitle() throws InvalidInstantiationException {
         builder.title("");
         builder.build();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldValidateEvents() {
+    @Test(expected = InvalidInstantiationException.class)
+    public void shouldValidateEvents() throws InvalidInstantiationException {
         builder.events(null);
         builder.build();
+    }
+
+    @Test
+    public void shouldNormalizeDescription() throws InvalidInstantiationException {
+        builder.description(null);
+        assertThat(builder.build().getDescription()).isEqualTo("");
     }
 }

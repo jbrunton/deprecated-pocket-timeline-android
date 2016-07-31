@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.entities.data;
 
 import com.jbrunton.pockettimeline.entities.fixtures.TestResource;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 import com.jbrunton.pockettimeline.entities.models.Resource;
 
 import org.junit.Before;
@@ -20,8 +21,8 @@ import static rx.Observable.just;
 public class BaseReadableRespositoryTest {
     private ReadableRepository<Resource> repository;
 
-    private final Resource RESOURCE_ONE = TestResource.builder().id("1").build();
-    private final Resource RESOURCE_TWO = TestResource.builder().id("2").build();
+    private final Resource RESOURCE_ONE = buildResource("1");
+    private final Resource RESOURCE_TWO = buildResource("2");
     private final List<Resource> RESOURCES = asList(RESOURCE_ONE, RESOURCE_TWO);
 
     @Before public void setUp() {
@@ -46,5 +47,13 @@ public class BaseReadableRespositoryTest {
                 return just(RESOURCES);
             }
         };
+    }
+
+    private TestResource buildResource(String id) {
+        try {
+            return TestResource.builder().id(id).build();
+        } catch (InvalidInstantiationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
