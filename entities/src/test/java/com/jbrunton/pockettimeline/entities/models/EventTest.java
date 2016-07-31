@@ -15,7 +15,7 @@ public class EventTest {
     private Event.Builder builder;
 
     @Before public void setUp() {
-        builder = new Event.Builder()
+        builder = Event.builder()
                 .id(ID)
                 .title(TITLE)
                 .description(DESCRIPTION)

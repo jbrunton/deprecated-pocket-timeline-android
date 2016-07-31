@@ -1,5 +1,7 @@
 package com.jbrunton.pockettimeline.entities.models;
 
+import com.jbrunton.pockettimeline.entities.fixtures.TestResource;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +12,7 @@ public class ResourceTest {
     private static final String ID = "1234";
 
     @Before public void setUp() {
-        builder = new TestResource.Builder()
+        builder = TestResource.builder()
                 .id(ID);
     }
 
@@ -31,16 +33,5 @@ public class ResourceTest {
         builder.build();
     }
 
-    private static class TestResource extends Resource {
-        protected TestResource(AbstractBuilder builder) {
-            super(builder);
-            validate();
-        }
 
-        private static class Builder extends AbstractBuilder<TestResource, TestResource.Builder> {
-            @Override public TestResource build() {
-                return new TestResource(this);
-            }
-        }
-    }
 }

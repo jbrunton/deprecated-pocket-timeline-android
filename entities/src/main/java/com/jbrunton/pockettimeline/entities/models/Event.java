@@ -1,6 +1,7 @@
 package com.jbrunton.pockettimeline.entities.models;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Preconditions;
 
 import org.joda.time.LocalDate;
 
@@ -15,11 +16,14 @@ public abstract class Event extends Resource {
     }
 
     @AutoValue.Builder
-    public abstract static class Builder extends AbstractBuilder<Event.Builder> {
+    public abstract static class Builder extends AbstractBuilder<Event, Event.Builder> {
         public abstract Builder date(LocalDate date);
         public abstract Builder title(String title);
         public abstract Builder description(String description);
 
-        public abstract Event build();
+        @Override public void validate(Event instance) {
+            super.validate(instance);
+            Preconditions.checkState(instance.getTitle().length() > 0, "title must not be empty");
+        }
     }
 }
