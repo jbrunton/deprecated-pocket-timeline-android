@@ -23,7 +23,7 @@ public abstract class Timeline extends Resource {
     }
 
     @AutoValue.Builder
-    public static abstract class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
+    public abstract static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
         public abstract Builder title(String title);
         public abstract Builder description(String description);
         public abstract List<Event> getEvents();
