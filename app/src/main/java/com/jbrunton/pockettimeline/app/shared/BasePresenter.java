@@ -13,7 +13,9 @@ public class BasePresenter<ViewType> {
         this.view = view;
     }
 
-    public void onResume() {}
+    public void onResume() {
+        // do nothing by default
+    }
 
     public void detach() {
         this.view = null;
@@ -24,8 +26,8 @@ public class BasePresenter<ViewType> {
     }
 
     protected void withView(Action1<ViewType> action) {
-        for (ViewType view : getView().asSet()) {
-            action.call(view);
+        for (ViewType v : getView().asSet()) {
+            action.call(v);
         }
     }
 }
