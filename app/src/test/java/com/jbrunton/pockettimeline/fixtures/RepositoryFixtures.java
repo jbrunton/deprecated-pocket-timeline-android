@@ -16,17 +16,15 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class RepositoryFixtures {
-    public static abstract class ReadableRepositoryDsl<T extends Resource> {
-        protected final ReadableRepository<T> repository;
-
-        public ReadableRepositoryDsl(ReadableRepository<T> repository) {
-            this.repository = repository;
-        }
+    private RepositoryFixtures() {
+        // should never be instantiated
     }
 
-    public static class FakeReadableRepositoryDsl<T extends Resource> extends ReadableRepositoryDsl<T> {
+    public static class FakeReadableRepositoryDsl<T extends Resource> {
+        private final ReadableRepository<T> repository;
+
         public FakeReadableRepositoryDsl(ReadableRepository<T> repository) {
-            super(repository);
+            this.repository = repository;
         }
 
         public void toReturn(List<T> resources) {
@@ -45,11 +43,12 @@ public class RepositoryFixtures {
         }
     }
 
-    public static class ReadableRepositoryFindDsl<T extends Resource> extends ReadableRepositoryDsl<T> {
+    public static class ReadableRepositoryFindDsl<T extends Resource> {
+        private final ReadableRepository<T> repository;
         private final String id;
 
         public ReadableRepositoryFindDsl(ReadableRepository<T> repository, String id) {
-            super(repository);
+            this.repository = repository;
             this.id = id;
         }
 
