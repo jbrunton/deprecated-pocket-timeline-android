@@ -38,7 +38,7 @@ public class RepositoryFixtures {
             });
         }
 
-        public void toError(Throwable error) {
+        public void toErrorWith(Throwable error) {
             when(repository.all()).thenReturn(Observable.error(error));
         }
     }
@@ -74,7 +74,7 @@ public class RepositoryFixtures {
             when(repository.search(query)).thenReturn(Observable.just(resources));
         }
 
-        public void toError(Throwable throwable) {
+        public void toErrorWith(Throwable throwable) {
             when(repository.search(query)).thenReturn(Observable.error(throwable));
         }
     }

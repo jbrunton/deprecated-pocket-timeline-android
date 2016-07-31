@@ -22,8 +22,8 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class SearchPresenterTest {
-    public static final String QUERY = "query";
-    public static final List<Event> RESULTS = asList(
+    static final String QUERY = "query";
+    static final List<Event> RESULTS = asList(
             EventFactory.create(),
             EventFactory.create());
 
@@ -45,7 +45,7 @@ public class SearchPresenterTest {
     }
 
     @Test public void shouldPresentMessageOnError() {
-        stubSearch(repository, QUERY).toError(new Throwable("Message"));
+        stubSearch(repository, QUERY).toErrorWith(new Throwable("Message"));
         presenter.performSearch(QUERY);
         verify(view).showMessage("Error: Message");
     }
