@@ -16,11 +16,9 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
-import rx.Observable;
-
+import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stub;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -37,7 +35,7 @@ public class QuizPresenterTest {
     @Before public void setUp() {
         randomHelper = new DeterministicRandomHelper(asList(1, 0));
         presenter = new QuizPresenter(repository, new TestSchedulerManager(), randomHelper);
-        stubRepositoryToReturn(EVENTS);
+        stub(repository).toReturn(EVENTS);
 
         presenter.bind(view);
     }
@@ -74,9 +72,5 @@ public class QuizPresenterTest {
 
     private String answerFor(Event event) {
         return Integer.toString(event.getDate().getYear());
-    }
-
-    private void stubRepositoryToReturn(List<Event> events) {
-        when(repository.all()).thenReturn(Observable.just(events));
     }
 }
