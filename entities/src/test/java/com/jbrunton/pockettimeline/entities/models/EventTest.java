@@ -48,4 +48,10 @@ public class EventTest {
         builder.date(null);
         builder.build();
     }
+
+    @Test
+    public void shouldNormalizeDescription() throws InvalidInstantiationException {
+        builder.description(null);
+        assertThat(builder.build().getDescription()).isEqualTo("");
+    }
 }

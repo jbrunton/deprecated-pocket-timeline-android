@@ -18,7 +18,7 @@ public abstract class Resource {
 
         public T build() throws InvalidInstantiationException {
             try {
-                preprocess();
+                normalizeValues();
                 T instance = autoBuild();
                 validate(instance);
                 return instance;
@@ -31,7 +31,7 @@ public abstract class Resource {
             Preconditions.checkState(instance.getId().length() > 0, "id must not be empty");
         }
 
-        protected void preprocess() {
+        protected void normalizeValues() {
             // nothing by default
         }
 

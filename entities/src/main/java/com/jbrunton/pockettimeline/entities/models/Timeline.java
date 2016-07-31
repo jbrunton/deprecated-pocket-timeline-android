@@ -31,10 +31,11 @@ public abstract class Timeline extends Resource {
     public abstract static class Builder extends AbstractBuilder<Timeline, Timeline.Builder> {
         public abstract Builder title(String title);
         public abstract Builder description(String description);
-        public abstract List<Event> getEvents();
         public abstract Builder events(List<Event> events);
 
-        @Override protected void preprocess() {
+        abstract List<Event> getEvents();
+
+        @Override protected void normalizeValues() {
             List<Event> events = getEvents();
             events(events == null ? null : Collections.unmodifiableList(events));
         }
