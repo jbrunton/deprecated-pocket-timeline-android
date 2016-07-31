@@ -28,6 +28,7 @@ public class SearchFragment extends BaseFragment implements com.jbrunton.pockett
     private EventsAdapter eventsAdapter;
     private String query;
     private SearchView searchView;
+    private final SearchView.OnQueryTextListener onQueryTextListener = new SearchQueryTextListener();
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
@@ -80,18 +81,12 @@ public class SearchFragment extends BaseFragment implements com.jbrunton.pockett
         searchView.setOnQueryTextListener(onQueryTextListener);
     }
 
-    private void searchFor(String query) {
-        this.query = query;
-        eventsAdapter.setDataSource(Collections.<Event>emptyList());
-        presenter.performSearch(query);
-    }
-
     @Override
     public void showResults(List<Event> events) {
         eventsAdapter.setDataSource(events);
     }
 
-    private final SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+    private class SearchQueryTextListener implements SearchView.OnQueryTextListener {
         @Override public boolean onQueryTextSubmit(String query) {
             return false;
         }
@@ -99,6 +94,12 @@ public class SearchFragment extends BaseFragment implements com.jbrunton.pockett
         @Override public boolean onQueryTextChange(String query) {
             searchFor(query);
             return true;
+        }
+
+        private void searchFor(String query) {
+            SearchFragment.this.query = query;
+            eventsAdapter.setDataSource(Collections.<Event>emptyList());
+            presenter.performSearch(query);
         }
     };
 }

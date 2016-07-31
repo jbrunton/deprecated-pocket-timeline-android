@@ -26,7 +26,7 @@ public class DatePickerWidget extends Fragment {
         void onDateChanged(LocalDate date);
     }
 
-    private final String[] MONTHS = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    private static final String[] MONTHS = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     private OnDateChangedListener onDateChangedListener;
 
@@ -63,7 +63,7 @@ public class DatePickerWidget extends Fragment {
 
     @OnTextChanged(R.id.day_of_month) void onDayChanged(CharSequence text) {
         dayPickerWrapper.setError(null);
-        if (validNumber(text, dayOfMonth -> dayOfMonth <= 31)) {
+        if (validNumber(text, dom -> dom <= 31)) {
             dayOfMonth = Integer.valueOf(text.toString());
             validateDate();
         } else {
@@ -81,7 +81,7 @@ public class DatePickerWidget extends Fragment {
     @OnTextChanged(R.id.year) void onYearChanged(CharSequence text) {
         dayPickerWrapper.setError(null);
         yearPickerWrapper.setError(null);
-        if (validNumber(text, year -> year <= LocalDate.now().getYear())) {
+        if (validNumber(text, y -> y <= LocalDate.now().getYear())) {
             year = Integer.valueOf(text.toString());
             validateDate();
         } else {

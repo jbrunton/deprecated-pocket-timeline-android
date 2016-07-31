@@ -21,13 +21,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onUpPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onUpPressed();
+            return true;
         }
 
-        return(super.onOptionsItemSelected(item));
+        return super.onOptionsItemSelected(item);
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
