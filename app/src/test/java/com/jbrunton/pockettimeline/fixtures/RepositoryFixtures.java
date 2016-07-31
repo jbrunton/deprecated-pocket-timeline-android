@@ -56,7 +56,7 @@ public class RepositoryFixtures {
             when(repository.find(id)).thenReturn(Observable.just(resource));
         }
 
-        public void toError(Throwable throwable) {
+        public void toErrorWith(Throwable throwable) {
             when(repository.find(id)).thenReturn(Observable.error(throwable));
         }
     }

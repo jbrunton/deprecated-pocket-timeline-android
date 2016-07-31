@@ -61,7 +61,7 @@ public class TimelinePresenterTest {
     }
 
     @Test public void shouldPresentMessageOnTimelinesRepositoryError() {
-        stubFind(timelinesRepository, TIMELINE_ID).toError(new Throwable("Message"));
+        stubFind(timelinesRepository, TIMELINE_ID).toErrorWith(new Throwable("Message"));
         presenter.onResume();
         verify(view).showMessage("Error: Message");
     }
