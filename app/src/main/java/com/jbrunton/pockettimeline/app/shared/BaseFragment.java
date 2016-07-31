@@ -47,7 +47,7 @@ public abstract class BaseFragment extends RxFragment {
     }
 
     protected PocketTimelineApplication getApplication() {
-        return ((PocketTimelineApplication) getActivity().getApplication());
+        return (PocketTimelineApplication) getActivity().getApplication();
     }
 
     protected ApplicationComponent applicationComponent() {
