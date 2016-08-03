@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.ActivityModule;
-import com.jbrunton.pockettimeline.app.shared.BaseFragment;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.entities.models.Event;
 
@@ -23,14 +23,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SearchFragment extends BaseFragment implements com.jbrunton.pockettimeline.app.search.SearchView {
+public class SearchFragment extends LoadingIndicatorFragment implements com.jbrunton.pockettimeline.app.search.SearchView {
     @Inject @PerActivity SearchPresenter presenter;
     private EventsAdapter eventsAdapter;
     private String query;
     private SearchView searchView;
     private final SearchView.OnQueryTextListener onQueryTextListener = new SearchQueryTextListener();
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override protected View createContentView(LayoutInflater inflater, ViewGroup container) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
 
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
