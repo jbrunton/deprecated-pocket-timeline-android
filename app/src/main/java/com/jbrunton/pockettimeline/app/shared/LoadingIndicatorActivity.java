@@ -17,10 +17,12 @@ public abstract class LoadingIndicatorActivity extends BaseActivity implements L
         contentHolder = (ViewGroup) findViewById(R.id.content_holder);
         loadingIndicator = findViewById(R.id.progress_bar);
 
-        createContentView(contentHolder);
+        View content = createContentView(contentHolder);
+
+        contentHolder.addView(content);
     }
 
-    protected abstract void createContentView(ViewGroup container);
+    protected abstract View createContentView(ViewGroup container);
 
     @Override public void showLoadingIndicator() {
         loadingIndicator.setVisibility(View.VISIBLE);

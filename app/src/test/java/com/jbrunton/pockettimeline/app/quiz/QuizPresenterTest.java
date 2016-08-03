@@ -39,8 +39,15 @@ public class QuizPresenterTest {
         presenter.bind(view);
     }
 
-    @Test public void shouldRequestEvents() {
+    @Test public void shouldShowLoadingIndicator() {
         presenter.onResume();
+        verify(view).showLoadingIndicator();
+    }
+
+    @Test public void shouldPresentQuestion() {
+        presenter.onResume();
+
+        verify(view).hideLoadingIndicator();
         verify(view).displayEvent(EVENT_TWO);
     }
 
