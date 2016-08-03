@@ -38,10 +38,19 @@ public class SearchPresenterTest {
         presenter.bind(view);
     }
 
-    @Test public void shouldRequestAndPresentResults() {
+    @Test public void shouldShowLoadingIndicator() {
         stubSearch(repository, QUERY).toReturn(RESULTS);
         presenter.performSearch(QUERY);
+        verify(view).showLoadingIndicator();
+    }
+
+    @Test public void shouldRequestAndPresentResults() {
+        stubSearch(repository, QUERY).toReturn(RESULTS);
+
+        presenter.performSearch(QUERY);
+
         verify(view).showResults(RESULTS);
+        verify(view).hideLoadingIndicator();
     }
 
     @Test public void shouldPresentMessageOnError() {

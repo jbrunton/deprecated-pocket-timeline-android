@@ -30,22 +30,22 @@ public class TimelineActivity extends LoadingIndicatorActivity implements Timeli
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+        bind(presenter);
+    }
 
-        FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add_event);
+    @Override protected View createContentView(ViewGroup root) {
+        View view = getLayoutInflater().inflate(R.layout.activity_timeline, root, false);
+
+        FloatingActionButton addEvent = (FloatingActionButton) view.findViewById(R.id.add_event);
         addEvent.setOnClickListener(this::onAddEventClicked);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         eventsAdapter = new EventsAdapter();
         recyclerView.setAdapter(eventsAdapter);
 
-        bind(presenter);
-    }
-
-    @Override protected void createContentView(ViewGroup root) {
-        getLayoutInflater().inflate(R.layout.activity_timeline, root);
+        return view;
     }
 
     @Override

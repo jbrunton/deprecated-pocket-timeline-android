@@ -2,6 +2,7 @@ package com.jbrunton.pockettimeline.app.quiz;
 
 import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
@@ -24,6 +25,7 @@ public class QuizPresenter extends BasePresenter<QuizView> {
 
     @Override public void onResume() {
         super.onResume();
+        withView(LoadingIndicatorView::showLoadingIndicator);
         repository.all()
                 .compose(schedulerManager.applySchedulers())
                 .subscribe(this::onEventsAvailable);
@@ -32,6 +34,7 @@ public class QuizPresenter extends BasePresenter<QuizView> {
     private void onEventsAvailable(List<Event> events) {
         this.events = events;
         nextQuestion();
+        withView(LoadingIndicatorView::hideLoadingIndicator);
     }
 
     public void submitAnswer(String submittedAnswer) {
