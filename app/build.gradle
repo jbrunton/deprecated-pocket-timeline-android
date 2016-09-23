@@ -101,11 +101,7 @@ dependencies {
     testCompile ('com.squareup.assertj:assertj-android:1.1.0') {
         exclude module: 'support-annotations'
     }
-<<<<<<< HEAD
     testCompile 'au.com.dius:pact-jvm-consumer-junit_2.11:3.2.8'
-=======
-
->>>>>>> origin/master
 }
 
 sonarqube {
