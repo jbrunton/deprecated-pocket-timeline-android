@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
-import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
-import com.jbrunton.pockettimeline.app.shared.BaseFragment;
+import com.jbrunton.pockettimeline.app.ActivityModule;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.app.timelines.EventsAdapter;
 import com.jbrunton.pockettimeline.entities.models.Event;
 
@@ -22,16 +23,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-
-public class SearchFragment extends BaseFragment {
-    @Inject EventsRepository eventsRepository;
+public class SearchFragment extends LoadingIndicatorFragment implements com.jbrunton.pockettimeline.app.search.SearchView {
+    @Inject @PerActivity SearchPresenter presenter;
     private EventsAdapter eventsAdapter;
-    private final String SEARCH_CACHE_KEY = "search";
     private String query;
     private SearchView searchView;
+    private final SearchView.OnQueryTextListener onQueryTextListener = new SearchQueryTextListener();
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override protected View createContentView(LayoutInflater inflater, ViewGroup container) {
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
 
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -44,26 +43,24 @@ public class SearchFragment extends BaseFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bind(presenter);
 
         if (savedInstanceState != null) {
             query = savedInstanceState.getString("query");
+            presenter.performSearch(query);
         }
     }
 
     @Override protected void setupActivityComponent() {
-        applicationComponent().inject(this);
+        applicationComponent()
+                .activityComponent(new ActivityModule(getActivity()))
+                .inject(this);
     }
 
     @Override public void onResume() {
         super.onResume();
         setTitle("Search");
         setHasOptionsMenu(true);
-
-        Observable<List<Event>> search = fetch(SEARCH_CACHE_KEY);
-        if (search != null) {
-            search.compose(applySchedulers())
-                    .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
-        }
     }
 
     @Override public void onSaveInstanceState(Bundle outState) {
@@ -84,26 +81,12 @@ public class SearchFragment extends BaseFragment {
         searchView.setOnQueryTextListener(onQueryTextListener);
     }
 
-    private void searchFor(String query) {
-        this.query = query;
-
-        eventsAdapter.setDataSource(Collections.<Event>emptyList());
-
-        invalidate(SEARCH_CACHE_KEY);
-        cache(SEARCH_CACHE_KEY, () -> doSearch(query))
-                .compose(applySchedulers())
-                .subscribe(this::searchResultsAvailable, this::defaultErrorHandler);
-    }
-
-    private Observable<List<Event>> doSearch(String query) {
-        return eventsRepository.search(query);
-    }
-
-    private void searchResultsAvailable(List<Event> events) {
+    @Override
+    public void showResults(List<Event> events) {
         eventsAdapter.setDataSource(events);
     }
 
-    private final SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+    private class SearchQueryTextListener implements SearchView.OnQueryTextListener {
         @Override public boolean onQueryTextSubmit(String query) {
             return false;
         }
@@ -111,6 +94,12 @@ public class SearchFragment extends BaseFragment {
         @Override public boolean onQueryTextChange(String query) {
             searchFor(query);
             return true;
+        }
+
+        private void searchFor(String query) {
+            SearchFragment.this.query = query;
+            eventsAdapter.setDataSource(Collections.<Event>emptyList());
+            presenter.performSearch(query);
         }
     };
 }

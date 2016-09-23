@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.jbrunton.pockettimeline.PerActivity;
 import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.app.ActivityModule;
-import com.jbrunton.pockettimeline.app.shared.BaseFragment;
+import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorFragment;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-public class QuizFragment extends BaseFragment implements QuizView {
+public class QuizFragment extends LoadingIndicatorFragment implements QuizView {
     @Inject RandomHelper randomHelper;
     @Inject @PerActivity QuizPresenter presenter;
 
@@ -33,7 +33,7 @@ public class QuizFragment extends BaseFragment implements QuizView {
         bind(presenter);
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override protected View createContentView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         ButterKnife.bind(this, view);
         return view;

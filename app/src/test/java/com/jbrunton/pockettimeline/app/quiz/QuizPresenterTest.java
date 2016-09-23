@@ -3,11 +3,10 @@ package com.jbrunton.pockettimeline.app.quiz;
 import com.jbrunton.pockettimeline.api.repositories.EventsRepository;
 import com.jbrunton.pockettimeline.entities.models.Event;
 import com.jbrunton.pockettimeline.fixtures.DeterministicRandomHelper;
+import com.jbrunton.pockettimeline.fixtures.EventFactory;
 import com.jbrunton.pockettimeline.fixtures.TestSchedulerManager;
 import com.jbrunton.pockettimeline.helpers.RandomHelper;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,44 +16,38 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.List;
 
-import rx.Observable;
-
+import static com.jbrunton.pockettimeline.fixtures.RepositoryFixtures.stub;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class QuizPresenterTest {
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    static final Event EVENT_ONE = EventFactory.create();
+    static final Event EVENT_TWO = EventFactory.create();
+    static final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
 
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock EventsRepository repository;
     @Mock QuizView view;
-    RandomHelper randomHelper;
-    QuizPresenter presenter;
 
-    private static final Event EVENT_ONE = new Event.Builder()
-            .id("1")
-            .date(new LocalDate(2014, DateTimeConstants.JUNE, 3))
-            .title("Event One")
-            .description("Event One Description")
-            .build();
-    private static final Event EVENT_TWO = new Event.Builder()
-            .id("1")
-            .date(new LocalDate(2015, DateTimeConstants.JUNE, 3))
-            .title("Event Two")
-            .description("Event Two Description")
-            .build();
-    private static final List<Event> EVENTS = asList(EVENT_ONE, EVENT_TWO);
+    private QuizPresenter presenter;
 
     @Before public void setUp() {
-        randomHelper = new DeterministicRandomHelper(asList(1, 0));
+        RandomHelper randomHelper = new DeterministicRandomHelper(asList(1, 0));
         presenter = new QuizPresenter(repository, new TestSchedulerManager(), randomHelper);
-        stubRepositoryToReturn(EVENTS);
+        stub(repository).toReturn(EVENTS);
 
         presenter.bind(view);
     }
 
-    @Test public void shouldRequestEvents() {
+    @Test public void shouldShowLoadingIndicator() {
         presenter.onResume();
+        verify(view).showLoadingIndicator();
+    }
+
+    @Test public void shouldPresentQuestion() {
+        presenter.onResume();
+
+        verify(view).hideLoadingIndicator();
         verify(view).displayEvent(EVENT_TWO);
     }
 
@@ -65,7 +58,7 @@ public class QuizPresenterTest {
     }
 
     @Test public void shouldRespondToIncorrectAnswer() {
-        final String correctAnswer = "2015";
+        final String correctAnswer = answerFor(EVENT_TWO);
         presenter.onResume();
 
         submitAnswerFor(EVENT_ONE);
@@ -80,10 +73,10 @@ public class QuizPresenterTest {
     }
 
     private void submitAnswerFor(Event event) {
-        presenter.submitAnswer(Integer.toString(event.getDate().getYear()));
+        presenter.submitAnswer(answerFor(event));
     }
 
-    private void stubRepositoryToReturn(List<Event> events) {
-        when(repository.all()).thenReturn(Observable.just(events));
+    private String answerFor(Event event) {
+        return Integer.toString(event.getDate().getYear());
     }
 }

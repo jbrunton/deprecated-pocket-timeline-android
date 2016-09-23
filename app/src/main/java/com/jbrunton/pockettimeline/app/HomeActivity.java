@@ -21,11 +21,7 @@ public class HomeActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     
-    private final SparseArray<Fragment> DRAWER_OPTIONS = new SparseArray<Fragment>() {{
-        put(R.id.nav_timelines, new TimelinesFragment());
-        put(R.id.nav_quiz, new QuizFragment());
-        put(R.id.nav_search, new SearchFragment());
-    }};
+    private final SparseArray<Fragment> drawerOptions = createDrawerOptions();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +36,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override protected void setupActivityComponent() {
-
+        // nothing to inject in this class
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -48,10 +44,9 @@ public class HomeActivity extends BaseActivity {
             return true;
         }
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -86,9 +81,17 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void selectDrawerOption(int menuItemId) {
-        Fragment fragment = DRAWER_OPTIONS.get(menuItemId);
+        Fragment fragment = drawerOptions.get(menuItemId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.drawer_content, fragment)
                 .commit();
+    }
+
+    private SparseArray<Fragment> createDrawerOptions() {
+        SparseArray<Fragment> options = new SparseArray<>();
+        options.put(R.id.nav_timelines, new TimelinesFragment());
+        options.put(R.id.nav_quiz, new QuizFragment());
+        options.put(R.id.nav_search, new SearchFragment());
+        return options;
     }
 }

@@ -1,21 +1,22 @@
 package com.jbrunton.pockettimeline.api.resources;
 
 import com.jbrunton.pockettimeline.entities.models.Event;
+import com.jbrunton.pockettimeline.entities.models.Instantiable;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 
 import org.joda.time.LocalDate;
 
-public class EventResource extends Resource {
+public class EventResource extends Resource implements Instantiable<Event> {
     protected LocalDate date;
     protected String title;
     protected String description;
 
-    public static Event toModel(EventResource resource) {
-        return new Event.Builder()
-                .id(resource.id)
-                .date(resource.date)
-                .title(resource.title)
-                .description(resource.description)
+    @Override public Event instantiate() throws InvalidInstantiationException {
+        return Event.builder()
+                .id(id)
+                .date(date)
+                .title(title)
+                .description(description)
                 .build();
     }
-
 }

@@ -15,6 +15,8 @@ import com.jbrunton.pockettimeline.app.ActivityModule;
 import com.jbrunton.pockettimeline.app.shared.BaseActivity;
 import com.jbrunton.pockettimeline.app.shared.DatePickerWidget;
 import com.jbrunton.pockettimeline.entities.models.Event;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
+import com.jbrunton.pockettimeline.helpers.CrashlyticsHelper;
 
 import org.joda.time.LocalDate;
 
@@ -31,6 +33,7 @@ public class AddEventActivity extends BaseActivity {
     @BindView(R.id.event_title) EditText eventTitleText;
     @BindView(R.id.event_description) EditText eventDescription;
     @Inject @PerActivity TimelineEventsRepository eventsRepository;
+    @Inject CrashlyticsHelper crashlyticsHelper;
     @InjectExtra String timelineId;
 
     public final static int RESULT_CREATED_EVENT = 1;
@@ -65,18 +68,29 @@ public class AddEventActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            Event event = new Event.Builder()
+            addEvent();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addEvent() {
+        Event event = buildNewEvent();
+        eventsRepository.save(event)
+                .compose(applySchedulers())
+                .subscribe(this::eventCreated, this::defaultErrorHandler);
+    }
+
+    private Event buildNewEvent() {
+        try {
+            return Event.builder()
                     .asNewResource()
                     .title(eventTitleText.getText().toString())
                     .date(eventDate)
                     .description(eventDescription.getText().toString())
                     .build();
-
-            eventsRepository.save(event)
-                    .compose(applySchedulers())
-                    .subscribe(this::eventCreated, this::defaultErrorHandler);
+        } catch (InvalidInstantiationException e) {
+            throw new IllegalStateException(e);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void eventCreated(Event event) {

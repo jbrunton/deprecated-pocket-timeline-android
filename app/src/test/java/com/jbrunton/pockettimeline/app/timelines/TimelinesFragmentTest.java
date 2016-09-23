@@ -6,6 +6,7 @@ import com.jbrunton.pockettimeline.R;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
 import com.jbrunton.pockettimeline.fixtures.FragmentTestSuite;
 import com.jbrunton.pockettimeline.fixtures.TestAppRule;
+import com.jbrunton.pockettimeline.fixtures.TimelineFactory;
 import com.jbrunton.pockettimeline.fixtures.shadows.ShadowRecyclerView;
 
 import org.junit.Before;
@@ -29,8 +30,8 @@ public class TimelinesFragmentTest extends FragmentTestSuite<TimelinesFragment> 
 
     @Mock TimelinesPresenter presenter;
 
-    final Timeline TIMELINE_ONE = new Timeline("1", "Timeline One", null);
-    final Timeline TIMELINE_TWO = new Timeline("2", "Timeline Two", null);
+    static final Timeline TIMELINE_ONE = TimelineFactory.create();
+    static final Timeline TIMELINE_TWO = TimelineFactory.create();
 
     @Before public void setUp() {
         configureTestSuite(new TimelinesFragment());

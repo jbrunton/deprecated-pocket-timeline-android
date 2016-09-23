@@ -1,8 +1,8 @@
 package com.jbrunton.pockettimeline.app;
 
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
-import com.jbrunton.pockettimeline.app.shared.RxCache;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
+import com.jbrunton.pockettimeline.helpers.CrashlyticsHelper;
 
 import javax.inject.Singleton;
 
@@ -21,11 +21,11 @@ public class ApplicationModule {
         return new SchedulerManager();
     }
 
-    @Provides @Singleton protected RxCache provideRxCache() {
-        return new RxCache();
+    @Provides @Singleton protected PocketTimelineApplication provideApplication() {
+        return application;
     }
 
-    @Provides @Singleton protected PocketTimelineApplication providesApplication() {
-        return application;
+    @Provides @Singleton protected CrashlyticsHelper provideCrashlyticsHelper() {
+        return new CrashlyticsHelper(application);
     }
 }

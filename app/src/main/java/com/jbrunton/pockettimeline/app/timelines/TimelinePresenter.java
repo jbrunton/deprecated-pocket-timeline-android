@@ -6,7 +6,11 @@ import com.jbrunton.pockettimeline.app.Navigator;
 import com.jbrunton.pockettimeline.app.shared.BasePresenter;
 import com.jbrunton.pockettimeline.app.shared.LoadingIndicatorView;
 import com.jbrunton.pockettimeline.app.shared.SchedulerManager;
+import com.jbrunton.pockettimeline.entities.models.Event;
+import com.jbrunton.pockettimeline.entities.models.InvalidInstantiationException;
 import com.jbrunton.pockettimeline.entities.models.Timeline;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -44,7 +48,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
         return zip(
                 timelinesRepository.find(eventsRepository.timelineId()),
                 eventsRepository.all(),
-                Timeline::withEvents
+                this::buildTimeline
         );
     }
 
@@ -67,5 +71,13 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
     private void onError(Throwable throwable) {
         withView(view -> view.showMessage("Error: " + throwable.getMessage()));
+    }
+
+    private Timeline buildTimeline(Timeline timeline, List<Event> events) {
+        try {
+            return timeline.withEvents(events);
+        } catch (InvalidInstantiationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
