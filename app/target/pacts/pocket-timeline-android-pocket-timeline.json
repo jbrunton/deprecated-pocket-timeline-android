@@ -1,0 +1,55 @@
+{
+    "provider": {
+        "name": "pocket-timeline"
+    },
+    "consumer": {
+        "name": "pocket-timeline-android"
+    },
+    "interactions": [
+        {
+            "providerState": "WW2 Timeline",
+            "description": "a request for timelines",
+            "request": {
+                "method": "GET",
+                "path": "/timelines.json",
+                "body": null
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                "body": [
+                    {
+                        "description": "xXKkYaQDDUIzXkUmHOmd",
+                        "id": 1508299957,
+                        "title": "QJKCOGShbfGsXslCUMNt"
+                    }
+                ],
+                "matchingRules": {
+                    "$.body[*].title": {
+                        "match": "type"
+                    },
+                    "$.body": {
+                        "min": 0,
+                        "match": "type"
+                    },
+                    "$.body[*].description": {
+                        "match": "type"
+                    },
+                    "$.body[*].id": {
+                        "match": "type"
+                    }
+                }
+            }
+        }
+    ],
+    "metadata": {
+        "pact-specification": {
+            "version": "2.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.2.8"
+        }
+    }
+}

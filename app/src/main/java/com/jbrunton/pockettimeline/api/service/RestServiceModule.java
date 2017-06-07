@@ -1,7 +1,5 @@
 package com.jbrunton.pockettimeline.api.service;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jbrunton.pockettimeline.PocketTimelineApplication;
@@ -27,7 +25,7 @@ public class RestServiceModule {
         this.baseUrl = baseUrl;
     }
 
-    @Provides @Singleton protected RestService provideRestService(PocketTimelineApplication application) {
+    @Provides @Singleton public RestService provideRestService(PocketTimelineApplication application) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
@@ -42,11 +40,15 @@ public class RestServiceModule {
         return retrofit.create(RestService.class);
     }
 
-    @NonNull private OkHttpClient createClient(final PocketTimelineApplication application) {
-        return new OkHttpClient.Builder()
-                .cache(new Cache(application.getCacheDir(), TEN_MEGABYTES))
-                .addInterceptor(new CachingInterceptor(application))
-                .build();
+    private OkHttpClient createClient(final PocketTimelineApplication application) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .addInterceptor(new CachingInterceptor(application));
+
+        if (application != null) {
+            builder.cache(new Cache(application.getCacheDir(), TEN_MEGABYTES));
+        }
+
+        return builder.build();
     }
 
 }
